@@ -1009,13 +1009,13 @@
 
                     <div class="mb-3">
                         <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">Number of Days</label>
-                        <input type="number" class="form-control" id="questionnaire_days" min="1" max="365" placeholder="Enter number of days" style="max-width: 200px; font-size: 13px;" disabled>
+                        <input type="number" class="form-control" id="questionnaire_days" min="0" max="365" placeholder="Enter number of days (optional)" style="max-width: 200px; font-size: 13px;" disabled>
                     </div>
                 </div>
 
                 <!-- Mandatory Reminder -->
                 <div class="mb-4" id="questionnaire_mandatory_reminder_section" style="display: none;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">3. Mandatory Reminder</h3>
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">2.1 Mandatory Reminder</h3>
 
                     <div class="mb-3">
                         <div class="form-check form-switch">
@@ -1034,7 +1034,7 @@
 
                 <!-- Question Configuration -->
                 <div class="mb-4">
-                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">4. Question and Option Configuration</h3>
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">3. Question and Option Configuration</h3>
 
                     <!-- Questions List -->
                     <div id="questionnaire_questions_list" style="display: none; margin-top: 16px;">
@@ -3255,11 +3255,7 @@ function saveQuestionnaireConfig() {
         const mandatoryReminder = $('#questionnaire_mandatory_reminder').prop('checked');
         const reminderText = $('#questionnaire_reminder_text').val().trim();
 
-        // Validate days to complete
-        if (!daysToComplete || daysToComplete < 1) {
-            showToast('Please enter a valid number of days to complete', 'error');
-            return;
-        }
+        // Days to complete is optional, no validation needed
 
         // Validate reminder text if mandatory reminder is enabled
         if (mandatoryReminder && !reminderText) {
