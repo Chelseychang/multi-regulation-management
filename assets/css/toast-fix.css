@@ -1,0 +1,114 @@
+/* Toast Fix - Simplified and Guaranteed to Work */
+.toast-container {
+  position: fixed !important;
+  top: 24px !important;
+  right: 24px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  max-width: 400px !important;
+  pointer-events: none !important;
+}
+
+.toast {
+  background-color: #FFFFFF !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  padding: 16px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  animation: slideInRight 0.3s ease !important;
+  border-left: 4px solid #CBD5E0 !important;
+  pointer-events: auto !important;
+  min-width: 300px !important;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-success {
+  border-left-color: #52C41A !important;
+}
+
+.toast-error {
+  border-left-color: #FF4D4F !important;
+}
+
+.toast-warning {
+  border-left-color: #FAAD14 !important;
+}
+
+.toast-info {
+  border-left-color: #1890FF !important;
+}
+
+.toast-icon {
+  font-size: 20px !important;
+  flex-shrink: 0 !important;
+  width: 24px !important;
+  text-align: center !important;
+}
+
+.toast-success .toast-icon {
+  color: #52C41A !important;
+}
+
+.toast-error .toast-icon {
+  color: #FF4D4F !important;
+}
+
+.toast-warning .toast-icon {
+  color: #FAAD14 !important;
+}
+
+.toast-info .toast-icon {
+  color: #1890FF !important;
+}
+
+.toast-content {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.toast-title {
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+  color: #2C3E50 !important;
+  font-size: 14px !important;
+}
+
+.toast-message {
+  font-size: 13px !important;
+  color: #718096 !important;
+  line-height: 1.4 !important;
+}
+
+.toast-close {
+  background: none !important;
+  border: none !important;
+  color: #718096 !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  padding: 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: color 0.15s ease !important;
+}
+
+.toast-close:hover {
+  color: #2C3E50 !important;
+}

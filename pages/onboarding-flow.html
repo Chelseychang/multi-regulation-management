@@ -1,0 +1,3913 @@
+<!-- Onboarding Flow Configuration Page -->
+<style>
+    /* Page-specific styles */
+    .onboarding-page {
+        padding: 24px;
+    }
+
+    .page-header {
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .page-header-left {
+        flex: 1;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+    }
+
+    .page-description {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .page-header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        background-color: #FFFFFF;
+        border-radius: var(--border-radius);
+        border: 2px solid var(--primary-color);
+    }
+
+    .current-config-label {
+        font-size: 11px;
+        color: #718096 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+    }
+
+    .current-config-value {
+        font-size: 15px;
+        color: #2C3E50 !important;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .config-divider {
+        width: 1px;
+        height: 20px;
+        background-color: var(--border-color);
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+    }
+
+    .filter-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    /* Tab Container */
+    .config-tabs-container {
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        overflow: hidden;
+    }
+
+    /* Nav Tabs Styling */
+    .nav-tabs {
+        border-bottom: 2px solid var(--border-color);
+        background-color: var(--gray-50);
+        padding: 0 16px;
+        margin: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .nav-tabs .nav-item {
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--text-secondary);
+        padding: 16px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: transparent;
+    }
+
+    .nav-tabs .nav-link i {
+        font-size: 16px;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-color);
+        background-color: var(--bg-hover);
+        border-bottom-color: var(--primary-color);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        background-color: var(--bg-primary);
+        border-bottom-color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    /* Tab Content */
+    .tab-content {
+        padding: 32px;
+        min-height: 400px;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+    .tab-pane.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Section Content */
+    .section-header {
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 4px 0;
+    }
+
+    .section-subtitle {
+        font-size: 13px;
+        color: #718096 !important;
+        margin: 0;
+    }
+
+    /* Table Styles */
+    .table-responsive {
+        margin-top: 0;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .table {
+        margin-bottom: 0;
+        background-color: var(--bg-primary);
+    }
+
+    .table thead th {
+        background-color: var(--gray-50);
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 13px;
+        border-bottom: 2px solid var(--border-color);
+        padding: 14px 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody td {
+        padding: 14px 16px;
+        vertical-align: middle;
+        font-size: 14px;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--bg-hover);
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Form Switch Styling */
+    .form-check-input {
+        cursor: pointer;
+        width: 40px;
+        height: 20px;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .form-check-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(8, 178, 164, 0.25);
+    }
+
+    /* Section Actions */
+    .section-actions {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-color);
+        text-align: right;
+    }
+
+    /* Placeholder Content */
+    .section-placeholder {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-tertiary);
+    }
+
+    .section-placeholder i {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.3;
+    }
+
+    .section-placeholder p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        background-color: var(--bg-secondary);
+        border-radius: var(--border-radius-lg);
+        margin-top: 24px;
+    }
+
+    .empty-state-icon {
+        font-size: 64px;
+        color: var(--text-disabled);
+        margin-bottom: 16px;
+    }
+
+    .empty-state-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+    }
+
+    .empty-state-description {
+        font-size: 14px;
+        color: var(--text-secondary);
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .page-header-right {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .filter-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .filter-row .form-group {
+            width: 100%;
+        }
+
+        .filter-actions {
+            width: 100%;
+        }
+
+        .filter-actions .btn {
+            flex: 1;
+        }
+
+        .nav-tabs {
+            padding: 0 8px;
+        }
+
+        .nav-tabs .nav-link {
+            padding: 12px 12px;
+            font-size: 13px;
+        }
+
+        .tab-content {
+            padding: 20px 16px;
+        }
+    }
+</style>
+
+<div class="onboarding-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1 class="page-title" style="color: #010F2C;">Onboarding Flow Configuration</h1>
+            <p class="page-description" style="color: rgba(0, 15, 44, 0.80);">Configure user onboarding steps and requirements for each Brand + License combination</p>
+        </div>
+        <div class="page-header-right" id="currentConfigInfo" style="display: none; background: white;">
+            <div>
+                <div class="current-config-label" style="color: #718096 !important; font-size: 11px;">BRAND</div>
+                <div class="current-config-value" id="currentBrandDisplay" style="color: #2C3E50 !important; font-size: 15px; font-weight: 700;">-</div>
+            </div>
+            <div class="config-divider" style="background-color: #D5E0E2;"></div>
+            <div>
+                <div class="current-config-label" style="color: #718096 !important; font-size: 11px;">LICENSE</div>
+                <div class="current-config-value" id="currentLicenseDisplay" style="color: #2C3E50 !important; font-size: 15px; font-weight: 700;">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-row">
+            <div class="form-group">
+                <label class="form-label">Brand <span class="required">*</span></label>
+                <select id="filterBrand" class="form-select form-control">
+                    <option value="">Select Brand</option>
+                    <option value="VAU">VAU</option>
+                    <option value="VT">VT</option>
+                    <option value="PU">PU</option>
+                    <option value="ST">ST</option>
+                    <option value="MM">MM</option>
+                    <option value="UM">UM</option>
+                    <option value="VTJ">VTJ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">License <span class="required">*</span></label>
+                <select id="filterLicense" class="form-select form-control" disabled>
+                    <option value="">Please select a brand first</option>
+                </select>
+            </div>
+            <div class="filter-actions">
+                <button type="button" id="searchBtn" class="btn btn-primary" disabled>
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <button type="button" id="resetBtn" class="btn btn-outline-secondary">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs Container -->
+    <div id="configTabsContainer" class="config-tabs-container" style="display: none;">
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" id="configTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="registration-tab" data-bs-toggle="tab" data-bs-target="#registration" type="button" role="tab">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Registration</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="personalInfo-tab" data-bs-toggle="tab" data-bs-target="#personalInfo" type="button" role="tab">
+                    <i class="fas fa-id-card"></i>
+                    <span>Personal Info</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="goldenFlow-tab" data-bs-toggle="tab" data-bs-target="#goldenFlow" type="button" role="tab">
+                    <i class="fas fa-star"></i>
+                    <span>KYC System</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="otp-tab" data-bs-toggle="tab" data-bs-target="#otp" type="button" role="tab">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>OTP Verification</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="kyc-tab" data-bs-toggle="tab" data-bs-target="#kyc" type="button" role="tab">
+                    <i class="fas fa-file-alt"></i>
+                    <span>POI & POA</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tradingAccount-tab" data-bs-toggle="tab" data-bs-target="#tradingAccount" type="button" role="tab">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Trading Account</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="agreement-tab" data-bs-toggle="tab" data-bs-target="#agreement" type="button" role="tab">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Agreement Config</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="serverRouting-tab" data-bs-toggle="tab" data-bs-target="#serverRouting" type="button" role="tab">
+                    <i class="fas fa-server"></i>
+                    <span>Server Routing</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="questionnaire-tab" data-bs-toggle="tab" data-bs-target="#questionnaire" type="button" role="tab">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Questionnaire</span>
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="configTabsContent">
+            <!-- Registration Tab -->
+            <div class="tab-pane active" id="registration" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">Registration Fields</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure required field validation for user registration API</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70%;">Field Name</th>
+                                <th style="width: 30%; text-align: center;">Required</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrationFieldsTable">
+                            <!-- Fields will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveRegistrationFields()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+
+            <!-- Personal Info Tab -->
+            <div class="tab-pane" id="personalInfo" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">Personal Information Fields</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure user profile fields (filled after registration)</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60%;">Field Name</th>
+                                <th style="width: 20%; text-align: center;">Enable</th>
+                                <th style="width: 20%; text-align: center;">Required</th>
+                            </tr>
+                        </thead>
+                        <tbody id="personalInfoFieldsTable">
+                            <!-- Fields will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="savePersonalInfoFields()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Golden Flow Tab -->
+            <div class="tab-pane" id="goldenFlow" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">KYC System</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">KYC system configuration and flow management</p>
+                </div>
+
+                <!-- Sub-tabs for System Configuration and Config Overview -->
+                <ul class="nav nav-tabs" id="goldenFlowSubTabs" role="tablist" style="margin-bottom: 24px;">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="systemConfig-tab" data-bs-toggle="tab" data-bs-target="#systemConfig" type="button" role="tab" style="font-size: 14px;">
+                            <i class="fas fa-cog"></i> System Configuration
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="configOverview-tab" data-bs-toggle="tab" data-bs-target="#configOverview" type="button" role="tab" style="font-size: 14px;">
+                            <i class="fas fa-th-list"></i> Config Overview
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="goldenFlowSubTabsContent">
+                    <!-- System Configuration Sub-tab -->
+                    <div class="tab-pane fade show active" id="systemConfig" role="tabpanel">
+                        <!-- KYC System Section -->
+                        <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                                    <i class="fas fa-shield-alt" style="color: #08B2A4; margin-right: 8px;"></i>
+                                    KYC System
+                                </h3>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="openAddKycSystemModal()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+
+                            <!-- KYC System Table -->
+                            <div class="table-responsive">
+                                <table class="table" style="margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10%;">KYC ID</th>
+                                            <th style="width: 15%;">KYC Type</th>
+                                            <th style="width: 25%;">KYC System Name</th>
+                                            <th style="width: 30%;">Countries</th>
+                                            <th style="width: 20%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="kycSystemTableBody">
+                                        <!-- Will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Config Overview Sub-tab -->
+                    <div class="tab-pane fade" id="configOverview" role="tabpanel">
+                        <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
+                            <div style="margin-bottom: 16px;">
+                                <h6 style="font-size: 15px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                                    <i class="fas fa-info-circle" style="color: #08B2A4; margin-right: 6px;"></i>
+                                    KYC Configuration Overview
+                                </h6>
+                                <p style="font-size: 13px; color: #718096; margin: 0;">
+                                    View all configured KYC levels with their associated account features and limits.
+                                </p>
+                            </div>
+
+                            <!-- Overview Table -->
+                            <div class="table-responsive" style="margin-top: 20px;">
+                                <table class="table" style="font-size: 13px; border-collapse: collapse;">
+                                    <thead>
+                                        <!-- Group headers row -->
+                                        <tr>
+                                            <th rowspan="2" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; font-weight: 600; color: #2C3E50; vertical-align: middle; width: 150px;"></th>
+                                            <th colspan="3" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
+                                                KYC Main Flow
+                                            </th>
+                                            <th colspan="3" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
+                                                Independent Verification Flow
+                                            </th>
+                                        </tr>
+                                        <!-- Level headers row -->
+                                        <tr>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">level1</th>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">level2</th>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">level3</th>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">level11</th>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">level12</th>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">level13</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="configOverviewTableBody">
+                                        <!-- Rows will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div id="configOverviewEmpty" style="display: none; padding: 60px 20px; text-align: center;">
+                                <i class="fas fa-info-circle" style="font-size: 48px; color: #CBD5E0; margin-bottom: 16px;"></i>
+                                <p style="color: #718096; font-size: 14px; margin: 0;">
+                                    No levels configured yet. Go to System Configuration to add KYC Main Flow or Independent Verification Flow levels.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- OTP Tab -->
+            <div class="tab-pane" id="otp" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">OTP Verification</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure which verification methods are required during user registration</p>
+                </div>
+
+                <!-- Email Verification (Fixed) -->
+                <div style="background: #F5F7FA; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                                <i class="fas fa-envelope" style="color: #08B2A4; margin-right: 8px;"></i>
+                                Email Verification
+                            </h3>
+                            <p style="margin: 8px 0 0 28px; font-size: 13px; color: #718096;">
+                                <i class="fas fa-info-circle"></i> Always enabled for all countries
+                            </p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 13px; color: #718096;">Enabled:</span>
+                            <div class="form-check form-switch" style="margin: 0;">
+                                <input class="form-check-input" type="checkbox" checked disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone Number Verification (Configurable) -->
+                <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div>
+                            <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                                <i class="fas fa-phone" style="color: #08B2A4; margin-right: 8px;"></i>
+                                Phone Number Verification
+                            </h3>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 13px; color: #718096;">Enabled:</span>
+                            <div class="form-check form-switch" style="margin: 0;">
+                                <input class="form-check-input" type="checkbox" id="otp_phone_enabled" checked
+                                       onchange="updateOtpPhoneEnabled(this.checked)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Country Configuration (shown when Phone is enabled) -->
+                    <div id="phoneCountryConfig" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #E1EDF2;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                <i class="fas fa-globe" style="color: #718096; margin-right: 6px;"></i>
+                                Whitelisted Country <span style="color: #F6465D;">*</span>
+                            </label>
+                            <div class="tag-input-container" id="otp_country_tag_container" style="min-height: 45px; padding: 6px 10px; border: 1px solid #D5E0E2; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; background: white;">
+                                <input type="text" id="otp_country_search" placeholder="Type to search countries..." style="border: none; outline: none; flex: 1; min-width: 200px; padding: 4px; font-size: 13px;">
+                            </div>
+                            <input type="hidden" id="otp_country_hidden" value="">
+                            <div class="tag-dropdown" id="otp_country_dropdown" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #E1EDF2; border-radius: 4px; max-height: 300px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; margin-top: 4px;"></div>
+                            <div style="margin-top: 8px; font-size: 12px; color: #718096;">
+                                <i class="fas fa-info-circle"></i> Leave empty to require phone verification for ALL countries
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveOtpConfig()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- KYC Tab -->
+            <div class="tab-pane" id="kyc" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">POI & POA</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure KYC provider and document verification requirements</p>
+                </div>
+
+                <!-- KYC Provider Selection -->
+                <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                        <i class="fas fa-user-shield" style="color: #08B2A4; margin-right: 8px;"></i>
+                        KYC Provider <span style="color: #F6465D;">*</span>
+                    </h3>
+
+                    <div class="kyc-radio-group" style="display: flex; flex-direction: column; gap: 8px;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="kycProvider" id="kyc_sumsub" value="Sumsub" checked
+                                   onchange="updateKycProvider(this.value)">
+                            <label class="form-check-label" for="kyc_sumsub" style="font-size: 14px; font-weight: 500; color: #2C3E50;">
+                                Sumsub
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="kycProvider" id="kyc_advanceai" value="Advance AI"
+                                   onchange="updateKycProvider(this.value)">
+                            <label class="form-check-label" for="kyc_advanceai" style="font-size: 14px; font-weight: 500; color: #2C3E50;">
+                                Advance AI
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="kycProvider" id="kyc_greenid" value="Green ID"
+                                   onchange="updateKycProvider(this.value)">
+                            <label class="form-check-label" for="kyc_greenid" style="font-size: 14px; font-weight: 500; color: #2C3E50;">
+                                Green ID
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POI Documents Configuration -->
+                <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                        <i class="fas fa-id-card" style="color: #0E64D2; margin-right: 8px;"></i>
+                        POI Documents (Proof of Identity) <span style="color: #F6465D;">*</span>
+                    </h3>
+
+                    <div class="form-group">
+                        <div class="tag-input-container" id="kyc_poi_tag_container" style="min-height: 45px; padding: 6px 10px; border: 1px solid #D5E0E2; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; background: white;">
+                            <input type="text" id="kyc_poi_search" placeholder="Type to search POI documents..." style="border: none; outline: none; flex: 1; min-width: 200px; padding: 4px; font-size: 13px;">
+                        </div>
+                        <input type="hidden" id="kyc_poi_hidden" value="">
+                        <div class="tag-dropdown" id="kyc_poi_dropdown" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #E1EDF2; border-radius: 4px; max-height: 300px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; margin-top: 4px;"></div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #718096;">
+                            <i class="fas fa-info-circle"></i> Select acceptable identity documents for verification
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POA Documents Configuration -->
+                <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                    <h3 style="margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                        <i class="fas fa-file-alt" style="color: #F79E2B; margin-right: 8px;"></i>
+                        POA Documents (Proof of Address) <span style="color: #F6465D;">*</span>
+                    </h3>
+
+                    <div class="form-group">
+                        <div class="tag-input-container" id="kyc_poa_tag_container" style="min-height: 45px; padding: 6px 10px; border: 1px solid #D5E0E2; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; background: white;">
+                            <input type="text" id="kyc_poa_search" placeholder="Type to search POA documents..." style="border: none; outline: none; flex: 1; min-width: 200px; padding: 4px; font-size: 13px;">
+                        </div>
+                        <input type="hidden" id="kyc_poa_hidden" value="">
+                        <div class="tag-dropdown" id="kyc_poa_dropdown" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #E1EDF2; border-radius: 4px; max-height: 300px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; margin-top: 4px;"></div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #718096;">
+                            <i class="fas fa-info-circle"></i> Select acceptable address verification documents
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveKycConfig()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Trading Account Tab -->
+            <div class="tab-pane" id="tradingAccount" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">Trading Account Setup</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure account types and default settings for new users</p>
+                </div>
+
+                <!-- Primary Account Configuration -->
+                <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
+                    <div style="margin-bottom: 16px;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                            <i class="fas fa-star" style="color: #F79E2B; margin-right: 8px;"></i>
+                            Primary Trading Account
+                        </h3>
+                        <p style="margin: 6px 0 0 28px; font-size: 12px; color: #718096;">Main trading account (required for all users)</p>
+                    </div>
+
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #E1EDF2;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
+                                <i class="fas fa-chart-line" style="color: #718096; margin-right: 6px;"></i>
+                                Default Trading Platform <span style="color: #F6465D;">*</span>
+                            </label>
+                            <select id="primary_trading_platform" class="form-select" style="width: 300px; font-size: 13px;">
+                                <option value="MT4">MT4</option>
+                                <option value="MT5" selected>MT5</option>
+                                <option value="CopyTrading">Copy Trading</option>
+                            </select>
+                            <div style="margin-top: 8px; font-size: 12px; color: #718096;">
+                                <i class="fas fa-info-circle"></i> This trading platform will be created automatically when users register
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Account Configuration -->
+                <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                    <div style="margin-bottom: 16px;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                            <i class="fas fa-plus-circle" style="color: #08B2A4; margin-right: 8px;"></i>
+                            Additional Trading Account
+                        </h3>
+                        <p style="margin: 6px 0 0 28px; font-size: 12px; color: #718096;">Additional trading platforms users can optionally create</p>
+                    </div>
+
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #E1EDF2;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 12px;">
+                                <i class="fas fa-list-check" style="color: #718096; margin-right: 6px;"></i>
+                                Supported Trading Platforms <span style="color: #F6465D;">*</span>
+                            </label>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="additional_platform_mt4" value="MT4" checked
+                                           onchange="updateAdditionalPlatforms()">
+                                    <label class="form-check-label" for="additional_platform_mt4" style="font-size: 13px; color: #2C3E50;">
+                                        MT4
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="additional_platform_mt5" value="MT5" checked
+                                           onchange="updateAdditionalPlatforms()">
+                                    <label class="form-check-label" for="additional_platform_mt5" style="font-size: 13px; color: #2C3E50;">
+                                        MT5
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="additional_platform_copytrading" value="CopyTrading" checked
+                                           onchange="updateAdditionalPlatforms()">
+                                    <label class="form-check-label" for="additional_platform_copytrading" style="font-size: 13px; color: #2C3E50;">
+                                        Copy Trading
+                                    </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px; font-size: 12px; color: #718096;">
+                                <i class="fas fa-info-circle"></i> Users can create additional accounts of the selected platforms after registration
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveTradingAccountConfig()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Server Routing Tab -->
+            <div class="tab-pane" id="serverRouting" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">Server Routing Configuration</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">VFX Server and routing by license settings</p>
+                </div>
+
+                <div class="section-placeholder" style="padding: 80px 20px; text-align: center; background: #F5F7FA; border-radius: 8px;">
+                    <i class="fas fa-tools" style="font-size: 64px; color: #CBD5E0; margin-bottom: 16px;"></i>
+                    <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">Coming Soon</h3>
+                    <p style="color: #718096; font-size: 14px; margin: 0; max-width: 400px; margin: 0 auto;">
+                        Server routing configuration features are under development and will be available in a future release.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Agreement Configuration Tab -->
+            <div class="tab-pane" id="agreement" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">Agreement Configuration</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure agreement documents and PDF download settings</p>
+                </div>
+
+                <!-- Agreement List Section -->
+                <div class="mb-4">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">1. Agreement Configuration</h3>
+
+                    <!-- Add Agreement Form -->
+                    <div class="mb-3" style="background: #F5F7FA; padding: 16px; border-radius: 8px; border: 1px solid #E8EAED;">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                    <span style="color: #F6465D;">*</span> Key
+                                </label>
+                                <input type="text" class="form-control" id="agreement_key_input" placeholder="Enter key" style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                    Description <span style="font-size: 12px; color: #718096;">(Optional)</span>
+                                </label>
+                                <input type="text" class="form-control" id="agreement_description_input" placeholder="Enter description" style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-2" style="display: flex; align-items: flex-end;">
+                                <button type="button" class="btn btn-primary w-100" onclick="addAgreementItem()" style="height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    <i class="fas fa-plus-circle" style="font-size: 16px;"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agreement Items List -->
+                    <div id="agreement_items_list" style="display: none;">
+                        <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 12px;">Configured Agreements:</label>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="margin-bottom: 0;">
+                                <thead style="background: #F5F7FA;">
+                                    <tr>
+                                        <th style="width: 30%; font-size: 13px; font-weight: 600; color: #2C3E50;">Key</th>
+                                        <th style="width: 60%; font-size: 13px; font-weight: 600; color: #2C3E50;">Description</th>
+                                        <th style="width: 10%; text-align: center; font-size: 13px; font-weight: 600; color: #2C3E50;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="agreement_items_tbody">
+                                    <!-- Items will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PDF Download Feature -->
+                <div class="mb-4">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">2. PDF Download Feature</h3>
+
+                    <!-- Generate PDF Toggle -->
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="agreement_generate_pdf" style="width: 44px; height: 24px; cursor: pointer;">
+                            <label class="form-check-label" for="agreement_generate_pdf" style="font-size: 13px; color: #2C3E50; margin-left: 8px; cursor: pointer;">
+                                Enable "Generate PDF" Feature
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Selection Method -->
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">Selection Method</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="agreement_selection_method" id="agreement_one_time" value="one_time" checked>
+                            <label class="form-check-label" for="agreement_one_time" style="font-size: 13px;">
+                                One-time Selection
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="agreement_selection_method" id="agreement_single" value="single">
+                            <label class="form-check-label" for="agreement_single" style="font-size: 13px;">
+                                Single Selection
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveAgreementConfig()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+
+            <!-- Questionnaire Management Tab -->
+            <div class="tab-pane" id="questionnaire" role="tabpanel">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">Questionnaire Management</h2>
+                    <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure questionnaire completion settings</p>
+                </div>
+
+                <!-- Enable Questionnaire -->
+                <div class="mb-4">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">1. Enable Questionnaire</h3>
+
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="questionnaire_enabled" style="width: 44px; height: 24px; cursor: pointer;">
+                            <label class="form-check-label" for="questionnaire_enabled" style="font-size: 13px; color: #2C3E50; margin-left: 8px; cursor: pointer;">
+                                Enable Questionnaire
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Days to Complete -->
+                <div class="mb-4">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">2. Days to Complete Questionnaire</h3>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">Number of Days</label>
+                        <input type="number" class="form-control" id="questionnaire_days" min="1" max="365" placeholder="Enter number of days" style="max-width: 200px; font-size: 13px;" disabled>
+                    </div>
+                </div>
+
+                <!-- Mandatory Reminder -->
+                <div class="mb-4" id="questionnaire_mandatory_reminder_section" style="display: none;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">3. Mandatory Reminder</h3>
+
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="questionnaire_mandatory_reminder" style="width: 44px; height: 24px; cursor: pointer;" disabled>
+                            <label class="form-check-label" for="questionnaire_mandatory_reminder" style="font-size: 13px; color: #2C3E50; margin-left: 8px; cursor: pointer;">
+                                Enable Mandatory Reminder
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3" id="questionnaire_reminder_text_section">
+                        <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">Reminder Text</label>
+                        <textarea class="form-control" id="questionnaire_reminder_text" rows="3" placeholder="Enter reminder text..." style="font-size: 13px;" disabled></textarea>
+                    </div>
+                </div>
+
+                <!-- Question Configuration -->
+                <div class="mb-4">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">4. Question and Option Configuration</h3>
+
+                    <!-- Questions List -->
+                    <div id="questionnaire_questions_list" style="display: none; margin-top: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 0;">Configured Questions:</label>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="addQuestionModal()" disabled id="add_question_btn">
+                                <i class="fas fa-plus-circle"></i> Add Question
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="margin-bottom: 0;">
+                                <thead style="background: #F5F7FA;">
+                                    <tr>
+                                        <th style="width: 5%; text-align: center; font-size: 13px; font-weight: 600; color: #2C3E50;">#</th>
+                                        <th style="width: 50%; font-size: 13px; font-weight: 600; color: #2C3E50;">Question</th>
+                                        <th style="width: 15%; text-align: center; font-size: 13px; font-weight: 600; color: #2C3E50;">Type</th>
+                                        <th style="width: 20%; text-align: center; font-size: 13px; font-weight: 600; color: #2C3E50;">Options</th>
+                                        <th style="width: 10%; text-align: center; font-size: 13px; font-weight: 600; color: #2C3E50;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="questionnaire_questions_tbody">
+                                    <!-- Questions will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="questionnaire_questions_empty" style="text-align: center; padding: 40px 20px; background: #F5F7FA; border-radius: 8px; margin-top: 16px; display: none;">
+                        <i class="fas fa-clipboard-list" style="font-size: 48px; color: #CBD5E0; margin-bottom: 16px;"></i>
+                        <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">No questions configured yet</p>
+                        <button type="button" class="btn btn-primary" onclick="addQuestionModal()" disabled id="add_question_empty_btn">
+                            <i class="fas fa-plus-circle"></i> Add First Question
+                        </button>
+                    </div>
+                </div>
+
+                <div class="section-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveQuestionnaireConfig()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State (shown when no brand/license selected) -->
+    <div id="emptyState" class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-filter"></i>
+        </div>
+        <h3 class="empty-state-title">Select Brand and License</h3>
+        <p class="empty-state-description">
+            Choose a Brand and License combination from the filters above to view and configure the onboarding flow.
+        </p>
+    </div>
+</div>
+
+<!-- Add KYC System Modal -->
+<div class="modal fade" id="addKycSystemModal" tabindex="-1" aria-labelledby="addKycSystemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addKycSystemModalLabel" style="font-weight: 600; color: #2C3E50;">Add KYC System</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addKycSystemForm">
+                    <div class="mb-3">
+                        <label for="kyc_system_name" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                            <span style="color: #F6465D;">*</span> KYC System Name
+                        </label>
+                        <input type="text" class="form-control" id="kyc_system_name" required style="font-size: 13px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="kyc_system_countries" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                            <span style="color: #F6465D;">*</span> Countries
+                        </label>
+                        <div class="tag-input-container" id="kyc_system_countries_tag_container" style="min-height: 45px; padding: 6px 10px; border: 1px solid #D5E0E2; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; background: white;">
+                            <input type="text" id="kyc_system_countries_search" placeholder="Type to search countries..." style="border: none; outline: none; flex: 1; min-width: 200px; padding: 4px; font-size: 13px;">
+                        </div>
+                        <input type="hidden" id="kyc_system_countries_hidden" value="">
+                        <div class="tag-dropdown" id="kyc_system_countries_dropdown" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #E1EDF2; border-radius: 4px; max-height: 300px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; margin-top: 4px;"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveKycSystem()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KYC System Configuration Modal -->
+<!-- KYC System Configuration Modal -->
+<div class="modal fade" id="kycSystemConfigModal" tabindex="-1" aria-labelledby="kycSystemConfigModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="max-width: 1400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="kycSystemConfigModalLabel" style="font-weight: 600; color: #2C3E50;">
+                    <i class="fas fa-cog" style="color: #08B2A4; margin-right: 8px;"></i>
+                    KYC System Configuration
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <!-- KYC System Info Display -->
+                <div id="kycSystemInfo" style="background: #F5F7FA; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+                    <div style="display: flex; gap: 24px; align-items: center;">
+                        <div>
+                            <span style="font-size: 12px; color: #718096;">KYC ID:</span>
+                            <strong id="config_kyc_id" style="font-size: 14px; color: #2C3E50; margin-left: 8px;">-</strong>
+                        </div>
+                        <div>
+                            <span style="font-size: 12px; color: #718096;">System Name:</span>
+                            <strong id="config_kyc_name" style="font-size: 14px; color: #2C3E50; margin-left: 8px;">-</strong>
+                        </div>
+                        <div>
+                            <span style="font-size: 12px; color: #718096;">Countries:</span>
+                            <span id="config_kyc_countries" style="font-size: 14px; color: #2C3E50; margin-left: 8px;">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration Tabs -->
+                <ul class="nav nav-tabs" id="kycConfigTabs" role="tablist" style="margin-bottom: 24px; border-bottom: 2px solid #E1EDF2;">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="mainFlow-tab" data-bs-toggle="tab" data-bs-target="#mainFlow" type="button" role="tab" style="font-size: 14px; font-weight: 500; padding: 12px 24px;">
+                            <i class="fas fa-stream" style="margin-right: 6px;"></i> KYC Main Flow
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="independentFlow-tab" data-bs-toggle="tab" data-bs-target="#independentFlow" type="button" role="tab" style="font-size: 14px; font-weight: 500; padding: 12px 24px;">
+                            <i class="fas fa-check-double" style="margin-right: 6px;"></i> Independent Verification Flow
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="kycConfigTabContent">
+                    <!-- KYC Main Flow Tab -->
+                    <div class="tab-pane fade show active" id="mainFlow" role="tabpanel">
+                        <p style="font-size: 13px; color: #718096; margin-bottom: 20px;">
+                            Configure KYC levels with descriptions and account features for each verification stage.
+                        </p>
+
+                        <!-- Main Flow Levels Table -->
+                        <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h6 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                                    <i class="fas fa-stream" style="color: #08B2A4; margin-right: 8px;"></i>
+                                    KYC Main Flow Levels
+                                </h6>
+                                <button class="btn btn-sm" style="background: #08B2A4; color: white; padding: 6px 14px;" onclick="addMainFlowLevelRow()">
+                                    <i class="fas fa-plus" style="margin-right: 6px;"></i> Add Level
+                                </button>
+                            </div>
+
+                            <table class="table" style="margin-bottom: 0;">
+                                <thead style="background: #F5F7FA;">
+                                    <tr>
+                                        <th style="width: 15%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;">KYC Main Flow</th>
+                                        <th style="width: 20%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;">Level Description</th>
+                                        <th style="width: 60%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;">Actions</th>
+                                        <th style="width: 5%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mainFlowLevelsTable">
+                                    <!-- Rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Independent Verification Flow Tab -->
+                    <div class="tab-pane fade" id="independentFlow" role="tabpanel">
+                        <p style="font-size: 13px; color: #718096; margin-bottom: 20px;">
+                            Configure Independent Verification Flow with Bank Transfer Verification (AKYC).
+                        </p>
+
+                        <!-- Independent Verification Flow Table -->
+                        <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h6 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
+                                    <i class="fas fa-check-double" style="color: #15D977; margin-right: 8px;"></i>
+                                    Independent Verification Flow Levels
+                                </h6>
+                                <button class="btn btn-sm" style="background: #15D977; color: white; padding: 6px 14px;" onclick="addIndependentFlowLevelRow()">
+                                    <i class="fas fa-plus" style="margin-right: 6px;"></i> Add Level
+                                </button>
+                            </div>
+
+                            <table class="table" style="margin-bottom: 0;">
+                                <thead style="background: #F5F7FA;">
+                                    <tr>
+                                        <th style="width: 15%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;">KYC Main Flow</th>
+                                        <th style="width: 20%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;">Level Description</th>
+                                        <th style="width: 60%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;">Actions</th>
+                                        <th style="width: 5%; font-size: 13px; font-weight: 600; color: #2C3E50; border-bottom: 2px solid #E1EDF2; padding: 12px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="independentFlowLevelsTable">
+                                    <!-- Rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveKycSystemConfig()">
+                    <i class="fas fa-save" style="margin-right: 6px;"></i> Save Configuration
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Question Configuration Modal -->
+<div class="modal fade" id="questionConfigModal" tabindex="-1" aria-labelledby="questionConfigModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="questionConfigModalLabel" style="font-weight: 600; color: #2C3E50;">
+                    <span id="question_modal_title">Add Question</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <form id="questionConfigForm" onsubmit="return false;">
+                    <!-- Question Key and Text -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="question_key" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                <span style="color: #F6465D;">*</span> Question Key
+                            </label>
+                            <input type="text" class="form-control" id="question_key" placeholder="e.g., q_investment_exp" style="font-size: 13px;" required>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="question_text" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                <span style="color: #F6465D;">*</span> Question Text
+                            </label>
+                            <textarea class="form-control" id="question_text" rows="2" placeholder="Enter question text..." style="font-size: 13px;" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Question Type -->
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                            <span style="color: #F6465D;">*</span> Question Type
+                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="question_type" id="question_type_single" value="single_choice" checked>
+                            <label class="form-check-label" for="question_type_single" style="font-size: 13px;">
+                                Single Choice
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="question_type" id="question_type_multiple" value="multiple_choice">
+                            <label class="form-check-label" for="question_type_multiple" style="font-size: 13px;">
+                                Multiple Choice
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Options Section -->
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                            <span style="color: #F6465D;">*</span> Options
+                        </label>
+
+                        <!-- Add Option Input -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" id="option_key_input" placeholder="e.g., opt_beginner" style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="option_text_input" placeholder="Enter option text..." style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary w-100" onclick="addQuestionOption()" style="white-space: nowrap;">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Options List -->
+                        <div id="question_options_container" style="background: #F5F7FA; padding: 12px; border-radius: 8px; min-height: 100px;">
+                            <div id="question_options_list">
+                                <!-- Options will be populated here -->
+                            </div>
+                            <div id="question_options_empty" style="text-align: center; color: #718096; font-size: 13px; padding: 20px;">
+                                No options added yet. Add at least 2 options.
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="question_edit_index" value="-1">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveQuestionBtn">
+                    <i class="fas fa-save"></i> Save Question
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Level Configuration Detail Modal -->
+<div class="modal fade" id="levelConfigModal" tabindex="-1" aria-labelledby="levelConfigModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="levelConfigModalLabel" style="font-weight: 600; color: #2C3E50;">
+                    KYC Main Flow Level Config
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <form id="levelConfigForm">
+                    <!-- Basic Information Section -->
+                    <div style="background: #F5F7FA; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                        <h6 style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
+                            <i class="fas fa-info-circle" style="color: #08B2A4; margin-right: 6px;"></i>
+                            Basic Information
+                        </h6>
+
+                        <div class="mb-3">
+                            <label for="level_kyc_level" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                <span style="color: #F6465D;">*</span> KYC Level
+                            </label>
+                            <select class="form-select" id="level_kyc_level" required style="font-size: 13px;">
+                                <option value="">Please select</option>
+                                <!-- Options will be populated dynamically by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="level_description" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                <span style="color: #F6465D;">*</span> Level Description
+                            </label>
+                            <input type="text" class="form-control" id="level_description" required style="font-size: 13px;" placeholder="e.g., Level 1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="level_subdescription" class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                <span style="color: #F6465D;">*</span> Level Subdescription
+                            </label>
+                            <input type="text" class="form-control" id="level_subdescription" required style="font-size: 13px;" placeholder="e.g., Level 3">
+                        </div>
+                    </div>
+
+                    <!-- Trading Account Features Section -->
+                    <div style="background: #FFFFFF; padding: 16px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
+                        <h6 style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
+                            <i class="fas fa-chart-line" style="color: #0E64D2; margin-right: 6px;"></i>
+                            Trading Account Features
+                        </h6>
+
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="trading_deposit" value="Deposit">
+                                <label class="form-check-label" for="trading_deposit" style="font-size: 13px;">Deposit</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="trading_withdrawal" value="Withdrawal">
+                                <label class="form-check-label" for="trading_withdrawal" style="font-size: 13px;">Withdrawal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="trading_live_trading" value="Live Trading">
+                                <label class="form-check-label" for="trading_live_trading" style="font-size: 13px;">Live Trading</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="trading_open_live_account" value="Open Live Trading Account">
+                                <label class="form-check-label" for="trading_open_live_account" style="font-size: 13px;">Open Live Trading Account</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="trading_open_additional_account" value="Open Additional Account">
+                                <label class="form-check-label" for="trading_open_additional_account" style="font-size: 13px;">Open Additional Account</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wallet Account Features Section -->
+                    <div style="background: #FFFFFF; padding: 16px; border-radius: 8px; border: 1px solid #E1EDF2;">
+                        <h6 style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
+                            <i class="fas fa-wallet" style="color: #F79E2B; margin-right: 6px;"></i>
+                            Wallet Account Features
+                        </h6>
+
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="wallet_deposit" value="Deposit">
+                                <label class="form-check-label" for="wallet_deposit" style="font-size: 13px;">Deposit</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="wallet_withdrawal" value="Withdrawal">
+                                <label class="form-check-label" for="wallet_withdrawal" style="font-size: 13px;">Withdrawal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="wallet_live_trading" value="Live Trading">
+                                <label class="form-check-label" for="wallet_live_trading" style="font-size: 13px;">Live Trading</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="wallet_open_live_account" value="Open Live Trading Account">
+                                <label class="form-check-label" for="wallet_open_live_account" style="font-size: 13px;">Open Live Trading Account</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="wallet_open_additional_account" value="Open Additional Account">
+                                <label class="form-check-label" for="wallet_open_additional_account" style="font-size: 13px;">Open Additional Account</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="level_edit_index" value="-1">
+                    <input type="hidden" id="level_edit_flow_type" value="main">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveLevelConfig()">
+                    <i class="fas fa-save" style="margin-right: 6px;"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global variables
+let currentBrand = '';
+let currentLicense = '';
+
+// ========== OnboardingService - Data Persistence Layer ==========
+
+class OnboardingService {
+    constructor() {
+        this.storageKey = 'onboardingFlows';
+    }
+
+    /**
+     * Get configuration for a specific Brand + License combination
+     */
+    getConfig(brand, license) {
+        const allConfigs = this.loadAll();
+        return allConfigs.find(c => c.brand === brand && c.license === license);
+    }
+
+    /**
+     * Save or update configuration for Brand + License
+     */
+    saveConfig(brand, license, configData) {
+        const allConfigs = this.loadAll();
+        const existingIndex = allConfigs.findIndex(
+            c => c.brand === brand && c.license === license
+        );
+
+        const timestamp = new Date().toISOString();
+
+        if (existingIndex !== -1) {
+            // Update existing config
+            allConfigs[existingIndex] = {
+                ...allConfigs[existingIndex],
+                ...configData,
+                brand,
+                license,
+                updatedAt: timestamp
+            };
+        } else {
+            // Create new config
+            allConfigs.push({
+                id: Date.now(),
+                brand,
+                license,
+                ...configData,
+                createdAt: timestamp,
+                updatedAt: timestamp
+            });
+        }
+
+        localStorage.setItem(this.storageKey, JSON.stringify(allConfigs));
+        return configData;
+    }
+
+    /**
+     * Load all onboarding configurations
+     */
+    loadAll() {
+        const data = localStorage.getItem(this.storageKey);
+        return data ? JSON.parse(data) : [];
+    }
+
+    /**
+     * Delete configuration for Brand + License
+     */
+    deleteConfig(brand, license) {
+        const allConfigs = this.loadAll();
+        const filtered = allConfigs.filter(
+            c => !(c.brand === brand && c.license === license)
+        );
+        localStorage.setItem(this.storageKey, JSON.stringify(filtered));
+    }
+
+    /**
+     * Save a specific section of configuration
+     */
+    saveSection(brand, license, sectionName, sectionData) {
+        const config = this.getConfig(brand, license) || {};
+        config[sectionName] = sectionData;
+        return this.saveConfig(brand, license, config);
+    }
+
+    /**
+     * Get a specific section of configuration
+     */
+    getSection(brand, license, sectionName) {
+        const config = this.getConfig(brand, license);
+        return config ? config[sectionName] : null;
+    }
+}
+
+// Initialize OnboardingService
+const onboardingService = new OnboardingService();
+
+// Initialize when page loads
+$(document).one('pageLoaded', function(event, data) {
+    if (data.route === '#/regulation/onboarding') {
+        console.log('✅ Onboarding Flow Configuration page loaded');
+        initOnboardingFlowPage();
+    }
+});
+
+function initOnboardingFlowPage() {
+    // Bind filter events
+    $('#filterBrand').on('change', handleBrandChange);
+    $('#filterLicense').on('change', handleLicenseChange);
+    $('#searchBtn').on('click', handleSearch);
+    $('#resetBtn').on('click', handleReset);
+
+    // Bind questionnaire toggle events
+    $('#questionnaire_enabled').on('change', handleQuestionnaireEnabledChange);
+    $('#questionnaire_days').on('input', handleQuestionnaireDaysChange);
+    $('#questionnaire_mandatory_reminder').on('change', handleQuestionnaireMandatoryReminderChange);
+
+    // Bind save question button event
+    $(document).on('click', '#saveQuestionBtn', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Save Question button clicked');
+        saveQuestion();
+    });
+
+    // Initialize Bootstrap tabs
+    const triggerTabList = [].slice.call(document.querySelectorAll('#configTabs button'));
+    triggerTabList.forEach(function (triggerEl) {
+        const tabTrigger = new bootstrap.Tab(triggerEl);
+        triggerEl.addEventListener('click', function (event) {
+            event.preventDefault();
+            tabTrigger.show();
+        });
+    });
+}
+
+function handleBrandChange() {
+    const brand = $('#filterBrand').val();
+    currentBrand = brand;
+
+    if (brand) {
+        // Load licenses for this brand from Regulation List
+        loadLicensesForBrand(brand);
+        $('#filterLicense').prop('disabled', false);
+    } else {
+        // Reset license dropdown
+        $('#filterLicense').html('<option value="">Please select a brand first</option>').prop('disabled', true);
+        $('#searchBtn').prop('disabled', true);
+        currentLicense = '';
+    }
+}
+
+function loadLicensesForBrand(brand) {
+    // Get regulations from localStorage
+    const regulationsData = localStorage.getItem('regulations');
+    if (!regulationsData) {
+        $('#filterLicense').html('<option value="">No licenses available</option>');
+        return;
+    }
+
+    const regulations = JSON.parse(regulationsData);
+
+    // Get unique licenses for this brand from the "code" field
+    const licenses = regulations
+        .filter(r => r.brand === brand && r.code)
+        .map(r => r.code);
+
+    if (licenses.length === 0) {
+        $('#filterLicense').html('<option value="">No licenses available for this brand</option>');
+        $('#searchBtn').prop('disabled', true);
+        return;
+    }
+
+    // Remove duplicates
+    const uniqueLicenses = [...new Set(licenses)];
+
+    // Populate license dropdown
+    let options = '<option value="">Select License</option>';
+    uniqueLicenses.forEach(license => {
+        options += `<option value="${license}">${license}</option>`;
+    });
+    $('#filterLicense').html(options);
+}
+
+function handleLicenseChange() {
+    const license = $('#filterLicense').val();
+    currentLicense = license;
+
+    if (license && currentBrand) {
+        $('#searchBtn').prop('disabled', false);
+    } else {
+        $('#searchBtn').prop('disabled', true);
+    }
+}
+
+function handleSearch() {
+    if (!currentBrand || !currentLicense) {
+        showToast('Please select both Brand and License', 'warning');
+        return;
+    }
+
+    console.log(`🔍 Searching configuration for Brand: ${currentBrand}, License: ${currentLicense}`);
+
+    // Update current config display in header
+    $('#currentBrandDisplay').text(currentBrand);
+    $('#currentLicenseDisplay').text(currentLicense);
+    $('#currentConfigInfo').show();
+
+    // Hide empty state, show tabs container
+    $('#emptyState').hide();
+    $('#configTabsContainer').show();
+
+    // Switch to first tab (Registration)
+    const firstTab = new bootstrap.Tab(document.getElementById('registration-tab'));
+    firstTab.show();
+
+    // Load configuration
+    showToast(`Loading configuration for ${currentBrand} - ${currentLicense}`, 'info');
+
+    // Load Registration Fields
+    loadRegistrationFields();
+
+    // Load Personal Info Fields
+    loadPersonalInfoFields();
+
+    // Load OTP Configuration
+    loadOtpConfig();
+
+    // Load Trading Account Configuration
+    loadTradingAccountConfig();
+
+    // Load KYC Configuration
+    loadKycConfig();
+
+    // Load Golden Flow Configuration
+    loadGoldenFlowConfig();
+
+    // Server Routing Configuration - Coming Soon (no load needed)
+
+    // Load Agreement Configuration
+    loadAgreementConfig();
+
+    // Load Questionnaire Configuration
+    loadQuestionnaireConfig();
+}
+
+function handleReset() {
+    // Reset filters
+    $('#filterBrand').val('');
+    $('#filterLicense').html('<option value="">Please select a brand first</option>').prop('disabled', true);
+    $('#searchBtn').prop('disabled', true);
+
+    currentBrand = '';
+    currentLicense = '';
+
+    // Hide current config info
+    $('#currentConfigInfo').hide();
+
+    // Hide tabs container, show empty state
+    $('#configTabsContainer').hide();
+    $('#emptyState').show();
+
+    showToast('Filters reset', 'info');
+}
+
+function showToast(message, type = 'info') {
+    console.log('🔔 Toast triggered:', message, type);
+
+    // Toast types: success, error, warning, info
+    const iconMap = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+
+    // Use hardcoded hex colors instead of CSS variables
+    const colorMap = {
+        success: '#15D977',   // Green
+        error: '#F6465D',     // Red
+        warning: '#F79E2B',   // Orange
+        info: '#1776E5'       // Blue
+    };
+
+    // Create toast element using plain DOM
+    const toastDiv = document.createElement('div');
+    toastDiv.className = `custom-toast custom-toast-${type}`;
+    toastDiv.style.cssText = `
+        position: fixed !important;
+        top: 80px !important;
+        right: 24px !important;
+        background-color: ${colorMap[type]} !important;
+        color: #FFFFFF !important;
+        padding: 16px 24px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        z-index: 99999 !important;
+        min-width: 300px !important;
+        max-width: 500px !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        animation: toastSlideIn 0.3s ease !important;
+    `;
+
+    toastDiv.innerHTML = `
+        <i class="fas ${iconMap[type]}" style="font-size: 18px; color: #FFFFFF !important;"></i>
+        <span style="color: #FFFFFF !important; flex: 1;">${message}</span>
+    `;
+
+    document.body.appendChild(toastDiv);
+    console.log('✅ Toast element appended to body');
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        toastDiv.style.opacity = '0';
+        toastDiv.style.transform = 'translateX(100%)';
+        toastDiv.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+            if (toastDiv.parentNode) {
+                toastDiv.parentNode.removeChild(toastDiv);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// ========== Registration Fields Functions ==========
+
+// Default registration fields configuration
+const defaultRegistrationFields = [
+    { fieldName: "countryOfResidence", displayName: "Country of Residence", required: true },
+    { fieldName: "nationality", displayName: "Nationality", required: true },
+    { fieldName: "email", displayName: "Email", required: true },
+    { fieldName: "phoneNumber", displayName: "Phone Number", required: true },
+    { fieldName: "password", displayName: "Password", required: true },
+    { fieldName: "referredBy", displayName: "Referred By", required: false },
+    { fieldName: "firstName", displayName: "First Name", required: true },
+    { fieldName: "lastName", displayName: "Last Name", required: true }
+];
+
+function loadRegistrationFields() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedFields = onboardingService.getSection(currentBrand, currentLicense, 'registrationFields');
+    const fields = savedFields || defaultRegistrationFields;
+
+    // Render fields table
+    let html = '';
+    fields.forEach(field => {
+        html += `
+            <tr>
+                <td><strong>${field.displayName}</strong></td>
+                <td style="text-align: center;">
+                    <div class="form-check form-switch" style="display: inline-block;">
+                        <input class="form-check-input" type="checkbox"
+                               id="required_${field.fieldName}"
+                               ${field.required ? 'checked' : ''}
+                               onchange="updateFieldConfig('${field.fieldName}', 'required', this.checked)">
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+
+    $('#registrationFieldsTable').html(html);
+}
+
+// Temporary storage for field changes (will be replaced with proper state management in Phase 8)
+let registrationFieldsState = [...defaultRegistrationFields];
+
+function updateFieldConfig(fieldName, property, value) {
+    const fieldIndex = registrationFieldsState.findIndex(f => f.fieldName === fieldName);
+    if (fieldIndex !== -1) {
+        registrationFieldsState[fieldIndex][property] = value;
+        console.log(`Updated ${fieldName}.${property} = ${value}`);
+    }
+}
+
+function saveRegistrationFields() {
+    console.log('💾 Saving registration fields configuration:', registrationFieldsState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'registrationFields', registrationFieldsState);
+    showToast('Registration fields configuration saved successfully!', 'success');
+}
+
+// ========== Personal Information Fields Functions ==========
+
+// Default personal info fields configuration
+const defaultPersonalInfoFields = [
+    { fieldName: "firstName", displayName: "First Name", enabled: true, required: true },
+    { fieldName: "middleName", displayName: "Middle Name", enabled: true, required: false },
+    { fieldName: "lastName", displayName: "Last Name", enabled: true, required: true },
+    { fieldName: "gender", displayName: "Gender", enabled: true, required: true },
+    { fieldName: "dateOfBirth", displayName: "Date of Birth", enabled: true, required: true },
+    { fieldName: "countryOfResidence", displayName: "Country of Residence", enabled: true, required: true },
+    { fieldName: "nationality", displayName: "Nationality", enabled: true, required: true },
+    { fieldName: "placeOfBirth", displayName: "Place of Birth", enabled: true, required: true }
+];
+
+function loadPersonalInfoFields() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedFields = onboardingService.getSection(currentBrand, currentLicense, 'personalInfoFields');
+    const fields = savedFields || defaultPersonalInfoFields;
+
+    // Render fields table
+    let html = '';
+    fields.forEach(field => {
+        html += `
+            <tr>
+                <td><strong>${field.displayName}</strong></td>
+                <td style="text-align: center;">
+                    <div class="form-check form-switch" style="display: inline-block;">
+                        <input class="form-check-input" type="checkbox"
+                               id="enabled_pi_${field.fieldName}"
+                               ${field.enabled ? 'checked' : ''}
+                               onchange="updatePersonalInfoFieldConfig('${field.fieldName}', 'enabled', this.checked)">
+                    </div>
+                </td>
+                <td style="text-align: center;">
+                    <div class="form-check form-switch" style="display: inline-block;">
+                        <input class="form-check-input" type="checkbox"
+                               id="required_pi_${field.fieldName}"
+                               ${field.required ? 'checked' : ''}
+                               ${!field.enabled ? 'disabled' : ''}
+                               onchange="updatePersonalInfoFieldConfig('${field.fieldName}', 'required', this.checked)">
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+
+    $('#personalInfoFieldsTable').html(html);
+}
+
+// Temporary storage for personal info field changes
+let personalInfoFieldsState = [...defaultPersonalInfoFields];
+
+function updatePersonalInfoFieldConfig(fieldName, property, value) {
+    const fieldIndex = personalInfoFieldsState.findIndex(f => f.fieldName === fieldName);
+    if (fieldIndex !== -1) {
+        personalInfoFieldsState[fieldIndex][property] = value;
+        console.log(`Updated Personal Info ${fieldName}.${property} = ${value}`);
+
+        // If enabling/disabling the field, update the Required toggle state
+        if (property === 'enabled') {
+            const requiredCheckbox = document.getElementById(`required_pi_${fieldName}`);
+            if (requiredCheckbox) {
+                requiredCheckbox.disabled = !value;
+                // If disabling the field, also uncheck Required
+                if (!value) {
+                    requiredCheckbox.checked = false;
+                    personalInfoFieldsState[fieldIndex].required = false;
+                }
+            }
+        }
+    }
+}
+
+function savePersonalInfoFields() {
+    console.log('💾 Saving personal info fields configuration:', personalInfoFieldsState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'personalInfoFields', personalInfoFieldsState);
+    showToast('Personal information fields configuration saved successfully!', 'success');
+}
+
+// ========== Lv1 OTP Configuration Functions ==========
+
+// Default OTP configuration
+const defaultOtpConfig = {
+    email: {
+        enabled: true         // Email is always enabled (fixed)
+    },
+    phoneNumber: {
+        enabled: true,        // Phone is enabled by default
+        countries: []         // Empty = all countries require phone verification
+    }
+};
+
+// Country list for phone verification
+const countries = [
+    { code: "AF", name: "Afghanistan" },
+    { code: "AL", name: "Albania" },
+    { code: "DZ", name: "Algeria" },
+    { code: "AD", name: "Andorra" },
+    { code: "AO", name: "Angola" },
+    { code: "AR", name: "Argentina" },
+    { code: "AM", name: "Armenia" },
+    { code: "AU", name: "Australia" },
+    { code: "AT", name: "Austria" },
+    { code: "AZ", name: "Azerbaijan" },
+    { code: "BH", name: "Bahrain" },
+    { code: "BD", name: "Bangladesh" },
+    { code: "BY", name: "Belarus" },
+    { code: "BE", name: "Belgium" },
+    { code: "BR", name: "Brazil" },
+    { code: "BG", name: "Bulgaria" },
+    { code: "KH", name: "Cambodia" },
+    { code: "CA", name: "Canada" },
+    { code: "CL", name: "Chile" },
+    { code: "CN", name: "China" },
+    { code: "CO", name: "Colombia" },
+    { code: "HR", name: "Croatia" },
+    { code: "CY", name: "Cyprus" },
+    { code: "CZ", name: "Czech Republic" },
+    { code: "DK", name: "Denmark" },
+    { code: "EG", name: "Egypt" },
+    { code: "EE", name: "Estonia" },
+    { code: "FI", name: "Finland" },
+    { code: "FR", name: "France" },
+    { code: "GE", name: "Georgia" },
+    { code: "DE", name: "Germany" },
+    { code: "GR", name: "Greece" },
+    { code: "HK", name: "Hong Kong" },
+    { code: "HU", name: "Hungary" },
+    { code: "IS", name: "Iceland" },
+    { code: "IN", name: "India" },
+    { code: "ID", name: "Indonesia" },
+    { code: "IE", name: "Ireland" },
+    { code: "IL", name: "Israel" },
+    { code: "IT", name: "Italy" },
+    { code: "JP", name: "Japan" },
+    { code: "JO", name: "Jordan" },
+    { code: "KZ", name: "Kazakhstan" },
+    { code: "KW", name: "Kuwait" },
+    { code: "LV", name: "Latvia" },
+    { code: "LB", name: "Lebanon" },
+    { code: "LT", name: "Lithuania" },
+    { code: "LU", name: "Luxembourg" },
+    { code: "MY", name: "Malaysia" },
+    { code: "MT", name: "Malta" },
+    { code: "MX", name: "Mexico" },
+    { code: "NL", name: "Netherlands" },
+    { code: "NZ", name: "New Zealand" },
+    { code: "NO", name: "Norway" },
+    { code: "OM", name: "Oman" },
+    { code: "PK", name: "Pakistan" },
+    { code: "PH", name: "Philippines" },
+    { code: "PL", name: "Poland" },
+    { code: "PT", name: "Portugal" },
+    { code: "QA", name: "Qatar" },
+    { code: "RO", name: "Romania" },
+    { code: "RU", name: "Russia" },
+    { code: "SA", name: "Saudi Arabia" },
+    { code: "SG", name: "Singapore" },
+    { code: "SK", name: "Slovakia" },
+    { code: "SI", name: "Slovenia" },
+    { code: "ZA", name: "South Africa" },
+    { code: "KR", name: "South Korea" },
+    { code: "ES", name: "Spain" },
+    { code: "LK", name: "Sri Lanka" },
+    { code: "SE", name: "Sweden" },
+    { code: "CH", name: "Switzerland" },
+    { code: "TW", name: "Taiwan" },
+    { code: "TH", name: "Thailand" },
+    { code: "TR", name: "Turkey" },
+    { code: "UA", name: "Ukraine" },
+    { code: "AE", name: "United Arab Emirates" },
+    { code: "GB", name: "United Kingdom" },
+    { code: "US", name: "United States" },
+    { code: "VN", name: "Vietnam" }
+];
+
+// OTP Country Tag Input Manager
+let otpCountryTagManager = null;
+
+function loadOtpConfig() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'otpConfig');
+    const config = savedConfig || defaultOtpConfig;
+
+    // Set phone enabled toggle
+    $('#otp_phone_enabled').prop('checked', config.phoneNumber.enabled);
+
+    // Initialize TagInputManager for country selection
+    otpCountryTagManager = new TagInputManager(
+        'otp_country_search',
+        'otp_country_tag_container',
+        'otp_country_dropdown',
+        'otp_country_hidden',
+        countries
+    );
+
+    // Set selected countries
+    if (config.phoneNumber.countries && config.phoneNumber.countries.length > 0) {
+        otpCountryTagManager.setCountries(config.phoneNumber.countries);
+    }
+
+    // Show/hide phone config based on enabled state
+    updatePhoneConfigVisibility();
+}
+
+// Temporary storage for OTP config changes
+let otpConfigState = JSON.parse(JSON.stringify(defaultOtpConfig));
+
+function updateOtpPhoneEnabled(enabled) {
+    otpConfigState.phoneNumber.enabled = enabled;
+    console.log('Updated Phone Enabled:', enabled);
+    updatePhoneConfigVisibility();
+}
+
+function updatePhoneConfigVisibility() {
+    const enabled = $('#otp_phone_enabled').prop('checked');
+    if (enabled) {
+        $('#phoneCountryConfig').show();
+    } else {
+        $('#phoneCountryConfig').hide();
+    }
+}
+
+function saveOtpConfig() {
+    // Get selected countries from TagInputManager
+    if (otpCountryTagManager) {
+        otpConfigState.phoneNumber.countries = otpCountryTagManager.getCountries();
+    }
+
+    console.log('💾 Saving OTP configuration:', otpConfigState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'otpConfig', otpConfigState);
+    showToast('OTP verification configuration saved successfully!', 'success');
+}
+
+// ========== Section 5: Trading Account Configuration ==========
+
+const defaultTradingAccountConfig = {
+    primaryAccount: {
+        defaultPlatform: 'MT5'  // Options: MT4, MT5, CopyTrading
+    },
+    additionalAccount: {
+        supportedPlatforms: ['MT4', 'MT5', 'CopyTrading']  // Multi-select
+    }
+};
+
+function loadTradingAccountConfig() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'tradingAccountConfig');
+    const config = savedConfig || defaultTradingAccountConfig;
+
+    // Primary Account
+    $('#primary_trading_platform').val(config.primaryAccount.defaultPlatform);
+
+    // Additional Account - Check the supported platforms
+    $('#additional_platform_mt4').prop('checked', config.additionalAccount.supportedPlatforms.includes('MT4'));
+    $('#additional_platform_mt5').prop('checked', config.additionalAccount.supportedPlatforms.includes('MT5'));
+    $('#additional_platform_copytrading').prop('checked', config.additionalAccount.supportedPlatforms.includes('CopyTrading'));
+
+    // Update state
+    tradingAccountConfigState = JSON.parse(JSON.stringify(config));
+}
+
+// Temporary storage for Trading Account config changes
+let tradingAccountConfigState = JSON.parse(JSON.stringify(defaultTradingAccountConfig));
+
+function updateAdditionalPlatforms() {
+    // Collect all checked platforms
+    const supportedPlatforms = [];
+    if ($('#additional_platform_mt4').prop('checked')) supportedPlatforms.push('MT4');
+    if ($('#additional_platform_mt5').prop('checked')) supportedPlatforms.push('MT5');
+    if ($('#additional_platform_copytrading').prop('checked')) supportedPlatforms.push('CopyTrading');
+
+    tradingAccountConfigState.additionalAccount.supportedPlatforms = supportedPlatforms;
+    console.log('Updated Additional Account Platforms:', supportedPlatforms);
+}
+
+function saveTradingAccountConfig() {
+    // Update primary account default platform
+    tradingAccountConfigState.primaryAccount.defaultPlatform = $('#primary_trading_platform').val();
+
+    // Validate at least one platform is selected for additional account
+    if (tradingAccountConfigState.additionalAccount.supportedPlatforms.length === 0) {
+        showToast('Please select at least one supported trading platform for Additional Account', 'error');
+        return;
+    }
+
+    console.log('💾 Saving Trading Account configuration:', tradingAccountConfigState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'tradingAccountConfig', tradingAccountConfigState);
+    showToast('Trading account configuration saved successfully!', 'success');
+}
+
+// ========== Section 6: KYC Requirements Configuration ==========
+
+// POI document options
+const poiDocuments = [
+    { code: "passport", name: "Passport" },
+    { code: "national_id", name: "National ID Card" },
+    { code: "driving_license", name: "Driving License" },
+    { code: "government_id", name: "Government Issued ID (e.g., Resident Permit-BRP)" }
+];
+
+// POA document options
+const poaDocuments = [
+    { code: "bank_statement", name: "Bank statements" },
+    { code: "utility_bill", name: "Utility bills" },
+    { code: "voting_slip", name: "Voting slips (must contain full name and address)" },
+    { code: "council_tax", name: "UK council tax bills/statements" },
+    { code: "gov_letter", name: "Other Official Government-Issued Letters" }
+];
+
+const defaultKycConfig = {
+    provider: 'Sumsub',  // Options: Sumsub, Advance AI, Green ID
+    poiDocuments: ['passport', 'national_id', 'driving_license', 'government_id'],  // All selected by default
+    poaDocuments: ['bank_statement', 'utility_bill', 'voting_slip', 'council_tax', 'gov_letter']  // All selected by default
+};
+
+let kycPoiTagManager = null;
+let kycPoaTagManager = null;
+
+function loadKycConfig() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'kycConfig');
+    const config = savedConfig || defaultKycConfig;
+
+    // Set KYC Provider radio button
+    $(`input[name="kycProvider"][value="${config.provider}"]`).prop('checked', true);
+
+    // Initialize POI TagInputManager
+    kycPoiTagManager = new TagInputManager(
+        'kyc_poi_search',
+        'kyc_poi_tag_container',
+        'kyc_poi_dropdown',
+        'kyc_poi_hidden',
+        poiDocuments
+    );
+
+    // Set default POI documents
+    if (config.poiDocuments && config.poiDocuments.length > 0) {
+        config.poiDocuments.forEach(code => {
+            const doc = poiDocuments.find(d => d.code === code);
+            if (doc) {
+                kycPoiTagManager.addTag(doc.code, doc.name);
+            }
+        });
+    }
+
+    // Initialize POA TagInputManager
+    kycPoaTagManager = new TagInputManager(
+        'kyc_poa_search',
+        'kyc_poa_tag_container',
+        'kyc_poa_dropdown',
+        'kyc_poa_hidden',
+        poaDocuments
+    );
+
+    // Set default POA documents
+    if (config.poaDocuments && config.poaDocuments.length > 0) {
+        config.poaDocuments.forEach(code => {
+            const doc = poaDocuments.find(d => d.code === code);
+            if (doc) {
+                kycPoaTagManager.addTag(doc.code, doc.name);
+            }
+        });
+    }
+
+    // Update state
+    kycConfigState = JSON.parse(JSON.stringify(config));
+}
+
+// Temporary storage for KYC config changes
+let kycConfigState = JSON.parse(JSON.stringify(defaultKycConfig));
+
+function updateKycProvider(provider) {
+    kycConfigState.provider = provider;
+    console.log('Updated KYC Provider:', provider);
+}
+
+function saveKycConfig() {
+    // Get selected POI documents from TagInputManager
+    if (kycPoiTagManager) {
+        kycConfigState.poiDocuments = kycPoiTagManager.getCountries(); // Reusing getCountries() method
+    }
+
+    // Get selected POA documents from TagInputManager
+    if (kycPoaTagManager) {
+        kycConfigState.poaDocuments = kycPoaTagManager.getCountries();
+    }
+
+    // Validate at least one POI document is selected
+    if (kycConfigState.poiDocuments.length === 0) {
+        showToast('Please select at least one POI document type', 'error');
+        return;
+    }
+
+    // Validate at least one POA document is selected
+    if (kycConfigState.poaDocuments.length === 0) {
+        showToast('Please select at least one POA document type', 'error');
+        return;
+    }
+
+    console.log('💾 Saving KYC configuration:', kycConfigState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'kycConfig', kycConfigState);
+    showToast('KYC requirements configuration saved successfully!', 'success');
+}
+
+// ========== Section 2: Golden Flow Configuration ==========
+
+// KYC System storage (per Brand + License)
+let kycSystemsData = [];
+let kycSystemCountryTagManager = null;
+
+function loadGoldenFlowConfig() {
+    // Load KYC Systems for current Brand + License
+    loadKycSystems();
+
+    // Load Config Overview
+    loadConfigOverview();
+}
+
+function loadKycSystems() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'goldenFlowConfig');
+
+    if (savedConfig && savedConfig.kycSystems) {
+        kycSystemsData = savedConfig.kycSystems;
+    } else {
+        // Default: one standard KYC system
+        kycSystemsData = [
+            {
+                id: 1,
+                type: 'Standard',
+                name: '通用KYC体系',
+                countries: ['All']
+            }
+        ];
+    }
+
+    renderKycSystemTable();
+}
+
+function renderKycSystemTable() {
+    const tbody = $('#kycSystemTableBody');
+    tbody.empty();
+
+    if (kycSystemsData.length === 0) {
+        tbody.html(`
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 40px; color: #718096;">
+                    <i class="fas fa-inbox" style="font-size: 48px; opacity: 0.3; display: block; margin-bottom: 12px;"></i>
+                    No KYC Systems configured yet. Click "Add" to create one.
+                </td>
+            </tr>
+        `);
+        return;
+    }
+
+    kycSystemsData.forEach(system => {
+        const countriesDisplay = system.countries.includes('All') ? 'All' :
+            system.countries.length > 2 ?
+            `${system.countries.slice(0, 2).join(', ')} +${system.countries.length - 2}` :
+            system.countries.join(', ');
+
+        tbody.append(`
+            <tr>
+                <td><strong>${system.id}</strong></td>
+                <td>${system.type}</td>
+                <td>${system.name}</td>
+                <td><span style="color: #718096;">${countriesDisplay}</span></td>
+                <td>
+                    <button class="btn btn-sm" style="color: #08B2A4; padding: 4px 8px;" onclick="viewKycSystemConfig(${system.id})">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="btn btn-sm" style="color: #0E64D2; padding: 4px 8px;" onclick="editKycSystem(${system.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm" style="color: #F6465D; padding: 4px 8px;" onclick="deleteKycSystem(${system.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `);
+    });
+}
+
+function loadConfigOverview() {
+    // Collect all Main Flow and Independent Flow levels from all KYC systems
+    // Organize by level identifier (level1, level2, level3, level11, level12, level13)
+    const levelMap = {
+        'level1': null,
+        'level2': null,
+        'level3': null,
+        'level11': null,
+        'level12': null,
+        'level13': null
+    };
+
+    kycSystemsData.forEach(system => {
+        if (system.config) {
+            // Process Main Flow Levels
+            if (system.config.mainFlowLevels && system.config.mainFlowLevels.length > 0) {
+                system.config.mainFlowLevels.forEach((level, index) => {
+                    const levelKey = `level${index + 1}`;
+                    if (levelMap.hasOwnProperty(levelKey) && index < 3) {
+                        levelMap[levelKey] = level;
+                    }
+                });
+            }
+
+            // Process Independent Flow Levels
+            if (system.config.independentFlowLevels && system.config.independentFlowLevels.length > 0) {
+                system.config.independentFlowLevels.forEach((level, index) => {
+                    const levelKey = `level1${index + 1}`;
+                    if (levelMap.hasOwnProperty(levelKey) && index < 3) {
+                        levelMap[levelKey] = level;
+                    }
+                });
+            }
+        }
+    });
+
+    renderConfigOverview(levelMap);
+}
+
+function renderConfigOverview(levelMap) {
+    const tbody = $('#configOverviewTableBody');
+    tbody.empty();
+
+    // Check if there are any levels configured
+    const hasAnyLevel = Object.values(levelMap).some(level => level !== null);
+    if (!hasAnyLevel) {
+        $('#configOverviewEmpty').show();
+        tbody.closest('.table-responsive').hide();
+        return;
+    }
+
+    $('#configOverviewEmpty').hide();
+    tbody.closest('.table-responsive').show();
+
+    // Fixed column order
+    const columnOrder = ['level1', 'level2', 'level3', 'level11', 'level12', 'level13'];
+
+    // Define rows to display
+    const rows = [
+        {
+            label: '',
+            field: 'kycLevel',
+            type: 'header'
+        },
+        {
+            label: 'Trading Account',
+            field: 'tradingAccountFeatures',
+            type: 'features'
+        },
+        {
+            label: 'Wallet Account',
+            field: 'walletAccountFeatures',
+            type: 'features'
+        },
+        {
+            label: 'Limit Type',
+            field: 'limitType',
+            type: 'text'
+        },
+        {
+            label: 'Limit',
+            field: 'limit',
+            type: 'text'
+        },
+        {
+            label: 'Deposit Channel',
+            field: 'depositChannel',
+            type: 'link'
+        },
+        {
+            label: 'Withdrawal Channel',
+            field: 'withdrawalChannel',
+            type: 'link'
+        },
+        {
+            label: 'Level Description',
+            field: 'levelDescription',
+            type: 'text'
+        },
+        {
+            label: 'Level Subdescription',
+            field: 'levelSubdescription',
+            type: 'text'
+        }
+    ];
+
+    // Render each row
+    rows.forEach(row => {
+        let rowHtml = '<tr>';
+
+        // Row label column
+        const labelBgColor = row.type === 'header' ? '#F5F7FA' : '#FFFFFF';
+        const labelWeight = row.type === 'header' ? '600' : '500';
+        rowHtml += `<td style="border: 1px solid #E1EDF2; padding: 12px; font-weight: ${labelWeight}; color: #2C3E50; background: ${labelBgColor}; vertical-align: top;">${row.label}</td>`;
+
+        // Render data for each fixed column
+        columnOrder.forEach(levelKey => {
+            const level = levelMap[levelKey];
+            const value = level ? level[row.field] : null;
+
+            if (row.type === 'header') {
+                // This is the KYC Level row (Personal Details Verification, Identity Verification, etc.)
+                rowHtml += `<td style="border: 1px solid #E1EDF2; padding: 12px; text-align: center; background: #F5F7FA; font-weight: 500; color: #2C3E50; font-size: 12px;">${value || '-'}</td>`;
+            } else if (row.type === 'features') {
+                // Trading/Wallet Account Features
+                const features = value && value.length > 0 ? value.join(',<br>') : '-';
+                rowHtml += `<td style="border: 1px solid #E1EDF2; padding: 12px; font-size: 11px; color: #718096; vertical-align: top;">${features}</td>`;
+            } else if (row.type === 'link') {
+                // Deposit/Withdrawal Channel
+                if (level) {
+                    rowHtml += `<td style="border: 1px solid #E1EDF2; padding: 12px; text-align: center; vertical-align: top;">
+                        <a href="#" style="color: #08B2A4; text-decoration: none; font-size: 11px;" onclick="return false;">
+                            <i class="fas fa-eye" style="margin-right: 4px;"></i> View
+                        </a>
+                    </td>`;
+                } else {
+                    rowHtml += `<td style="border: 1px solid #E1EDF2; padding: 12px; text-align: center; vertical-align: top; color: #CBD5E0;">-</td>`;
+                }
+            } else {
+                // Other text fields
+                rowHtml += `<td style="border: 1px solid #E1EDF2; padding: 12px; font-size: 11px; color: #718096; text-align: center; vertical-align: top;">${value || '-'}</td>`;
+            }
+        });
+
+        rowHtml += '</tr>';
+        tbody.append(rowHtml);
+    });
+}
+
+function openAddKycSystemModal() {
+    // Reset form
+    $('#kyc_system_name').val('');
+
+    // Initialize TagInputManager for countries
+    kycSystemCountryTagManager = new TagInputManager(
+        'kyc_system_countries_search',
+        'kyc_system_countries_tag_container',
+        'kyc_system_countries_dropdown',
+        'kyc_system_countries_hidden',
+        countries
+    );
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('addKycSystemModal'));
+    modal.show();
+}
+
+function saveKycSystem() {
+    const name = $('#kyc_system_name').val().trim();
+
+    if (!name) {
+        showToast('Please enter KYC System Name', 'error');
+        return;
+    }
+
+    const selectedCountries = kycSystemCountryTagManager ? kycSystemCountryTagManager.getCountries() : [];
+
+    if (selectedCountries.length === 0) {
+        showToast('Please select at least one country', 'error');
+        return;
+    }
+
+    // Create new KYC System
+    const newSystem = {
+        id: Date.now(), // Simple ID generation
+        type: 'Custom',
+        name: name,
+        countries: selectedCountries
+    };
+
+    kycSystemsData.push(newSystem);
+    renderKycSystemTable();
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'goldenFlowConfig', {
+        kycSystems: kycSystemsData
+    });
+
+    // Hide modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addKycSystemModal'));
+    modal.hide();
+
+    showToast('KYC System created successfully!', 'success');
+}
+
+function editKycSystem(id) {
+    showToast('Edit KYC System functionality coming soon', 'info');
+    // TODO: Implement edit functionality
+}
+
+function deleteKycSystem(id) {
+    if (!confirm('Are you sure you want to delete this KYC System?')) {
+        return;
+    }
+
+    kycSystemsData = kycSystemsData.filter(s => s.id !== id);
+    renderKycSystemTable();
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'goldenFlowConfig', {
+        kycSystems: kycSystemsData
+    });
+
+    showToast('KYC System deleted successfully!', 'success');
+}
+
+// Global variable to store current KYC system being configured
+// ========== KYC System Configuration Functions ==========
+
+let currentKycSystemId = null;
+let kycSystemConfigState = {
+    mainFlowLevels: [],
+    independentFlowLevels: []
+};
+
+// Feature options for account permissions
+const ACCOUNT_FEATURES = [
+    'Deposit',
+    'Withdrawal',
+    'Live Trading',
+    'Open Live Trading Account',
+    'Open Additional Account'
+];
+
+// KYC Level options for different flow types
+const MAIN_FLOW_LEVELS = [
+    'Personal Details Verification',
+    'Identity Verification',
+    'Residency Address Verification'
+];
+
+const INDEPENDENT_FLOW_LEVELS = [
+    'Bank Transfer Verification',
+    'Face Verification',
+    'Video Verification'
+];
+
+// Helper function to populate KYC Level dropdown
+function populateKycLevelOptions(flowType) {
+    const $select = $('#level_kyc_level');
+    $select.empty();
+    $select.append('<option value="">Please select</option>');
+
+    const levels = flowType === 'main' ? MAIN_FLOW_LEVELS : INDEPENDENT_FLOW_LEVELS;
+    levels.forEach(level => {
+        $select.append(`<option value="${level}">${level}</option>`);
+    });
+}
+
+function viewKycSystemConfig(id) {
+    // Find the KYC system by ID
+    const kycSystem = kycSystemsData.find(s => s.id === id);
+
+    if (!kycSystem) {
+        showToast('KYC System not found', 'error');
+        return;
+    }
+
+    // Set current KYC system ID
+    currentKycSystemId = id;
+
+    // Display KYC system info
+    $('#config_kyc_id').text(kycSystem.id);
+    $('#config_kyc_name').text(kycSystem.name);
+    const countriesDisplay = kycSystem.countries.includes('All') ? 'All Countries' :
+        kycSystem.countries.length > 3 ?
+        `${kycSystem.countries.slice(0, 3).join(', ')} +${kycSystem.countries.length - 3} more` :
+        kycSystem.countries.join(', ');
+    $('#config_kyc_countries').text(countriesDisplay);
+
+    // Load existing configuration if exists
+    if (kycSystem.config) {
+        kycSystemConfigState = JSON.parse(JSON.stringify(kycSystem.config));
+    } else {
+        // Default empty configuration
+        kycSystemConfigState = {
+            mainFlowLevels: [],
+            independentFlowLevels: []
+        };
+    }
+
+    // Render tables
+    renderMainFlowLevelsTable();
+    renderIndependentFlowLevelsTable();
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('kycSystemConfigModal'));
+    modal.show();
+}
+
+function renderMainFlowLevelsTable() {
+    const tbody = $('#mainFlowLevelsTable');
+    tbody.empty();
+
+    if (kycSystemConfigState.mainFlowLevels.length === 0) {
+        tbody.html(`
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 40px; color: #718096;">
+                    <i class="fas fa-inbox" style="font-size: 36px; opacity: 0.3; display: block; margin-bottom: 8px;"></i>
+                    No levels configured yet. Click "Add Level" to create one.
+                </td>
+            </tr>
+        `);
+        return;
+    }
+
+    kycSystemConfigState.mainFlowLevels.forEach((level, index) => {
+        const tradingFeatures = level.tradingAccountFeatures.join(', ') || '-';
+        const walletFeatures = level.walletAccountFeatures.join(', ') || '-';
+
+        tbody.append(`
+            <tr>
+                <td style="padding: 12px; vertical-align: top;">
+                    <strong style="font-size: 13px; color: #2C3E50;">${level.kycLevel}</strong>
+                </td>
+                <td style="padding: 12px; vertical-align: top;">
+                    <div style="font-size: 13px; color: #2C3E50; margin-bottom: 4px;">${level.levelDescription}</div>
+                    <div style="font-size: 12px; color: #718096;">${level.levelSubdescription}</div>
+                </td>
+                <td style="padding: 12px; vertical-align: top;">
+                    <div style="margin-bottom: 8px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #718096;">Trading Account:</span>
+                        <div style="font-size: 12px; color: #2C3E50; margin-top: 2px;">${tradingFeatures}</div>
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; font-weight: 600; color: #718096;">Wallet Account:</span>
+                        <div style="font-size: 12px; color: #2C3E50; margin-top: 2px;">${walletFeatures}</div>
+                    </div>
+                </td>
+                <td style="padding: 12px; text-align: center; vertical-align: top;">
+                    <button class="btn btn-sm" style="color: #0E64D2; padding: 4px 8px;" onclick="editMainFlowLevel(${index})" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm" style="color: #F6465D; padding: 4px 8px;" onclick="deleteMainFlowLevel(${index})" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `);
+    });
+}
+
+function renderIndependentFlowLevelsTable() {
+    const tbody = $('#independentFlowLevelsTable');
+    tbody.empty();
+
+    if (kycSystemConfigState.independentFlowLevels.length === 0) {
+        tbody.html(`
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 40px; color: #718096;">
+                    <i class="fas fa-inbox" style="font-size: 36px; opacity: 0.3; display: block; margin-bottom: 8px;"></i>
+                    No levels configured yet. Click "Add Level" to create one.
+                </td>
+            </tr>
+        `);
+        return;
+    }
+
+    kycSystemConfigState.independentFlowLevels.forEach((level, index) => {
+        const tradingFeatures = level.tradingAccountFeatures.join(', ') || '-';
+        const walletFeatures = level.walletAccountFeatures.join(', ') || '-';
+
+        tbody.append(`
+            <tr>
+                <td style="padding: 12px; vertical-align: top;">
+                    <strong style="font-size: 13px; color: #2C3E50;">${level.kycLevel}</strong>
+                </td>
+                <td style="padding: 12px; vertical-align: top;">
+                    <div style="font-size: 13px; color: #2C3E50; margin-bottom: 4px;">${level.levelDescription}</div>
+                    <div style="font-size: 12px; color: #718096;">${level.levelSubdescription}</div>
+                </td>
+                <td style="padding: 12px; vertical-align: top;">
+                    <div style="margin-bottom: 8px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #718096;">Trading Account:</span>
+                        <div style="font-size: 12px; color: #2C3E50; margin-top: 2px;">${tradingFeatures}</div>
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; font-weight: 600; color: #718096;">Wallet Account:</span>
+                        <div style="font-size: 12px; color: #2C3E50; margin-top: 2px;">${walletFeatures}</div>
+                    </div>
+                </td>
+                <td style="padding: 12px; text-align: center; vertical-align: top;">
+                    <button class="btn btn-sm" style="color: #0E64D2; padding: 4px 8px;" onclick="editIndependentFlowLevel(${index})" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm" style="color: #F6465D; padding: 4px 8px;" onclick="deleteIndependentFlowLevel(${index})" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `);
+    });
+}
+
+function addMainFlowLevelRow() {
+    // Populate KYC Level options for Main Flow
+    populateKycLevelOptions('main');
+
+    // Clear form
+    $('#level_kyc_level').val('');
+    $('#level_description').val('');
+    $('#level_subdescription').val('');
+
+    // Uncheck all features
+    $('#trading_deposit, #trading_withdrawal, #trading_live_trading, #trading_open_live_account, #trading_open_additional_account').prop('checked', false);
+    $('#wallet_deposit, #wallet_withdrawal, #wallet_live_trading, #wallet_open_live_account, #wallet_open_additional_account').prop('checked', false);
+
+    // Set edit index to -1 (new level)
+    $('#level_edit_index').val('-1');
+    $('#level_edit_flow_type').val('main');
+
+    // Update modal title
+    $('#levelConfigModalLabel').text('KYC Main Flow Level Config');
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('levelConfigModal'));
+    modal.show();
+}
+
+function addIndependentFlowLevelRow() {
+    // Populate KYC Level options for Independent Flow
+    populateKycLevelOptions('independent');
+
+    // Clear form
+    $('#level_kyc_level').val('');
+    $('#level_description').val('');
+    $('#level_subdescription').val('');
+
+    // Uncheck all features
+    $('#trading_deposit, #trading_withdrawal, #trading_live_trading, #trading_open_live_account, #trading_open_additional_account').prop('checked', false);
+    $('#wallet_deposit, #wallet_withdrawal, #wallet_live_trading, #wallet_open_live_account, #wallet_open_additional_account').prop('checked', false);
+
+    // Set edit index to -1 (new level)
+    $('#level_edit_index').val('-1');
+    $('#level_edit_flow_type').val('independent');
+
+    // Update modal title
+    $('#levelConfigModalLabel').text('Independent Verification Flow Level Config');
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('levelConfigModal'));
+    modal.show();
+}
+
+function editMainFlowLevel(index) {
+    const level = kycSystemConfigState.mainFlowLevels[index];
+
+    // Populate KYC Level options for Main Flow
+    populateKycLevelOptions('main');
+
+    // Populate form
+    $('#level_kyc_level').val(level.kycLevel);
+    $('#level_description').val(level.levelDescription);
+    $('#level_subdescription').val(level.levelSubdescription);
+
+    // Check trading features
+    $('#trading_deposit').prop('checked', level.tradingAccountFeatures.includes('Deposit'));
+    $('#trading_withdrawal').prop('checked', level.tradingAccountFeatures.includes('Withdrawal'));
+    $('#trading_live_trading').prop('checked', level.tradingAccountFeatures.includes('Live Trading'));
+    $('#trading_open_live_account').prop('checked', level.tradingAccountFeatures.includes('Open Live Trading Account'));
+    $('#trading_open_additional_account').prop('checked', level.tradingAccountFeatures.includes('Open Additional Account'));
+
+    // Check wallet features
+    $('#wallet_deposit').prop('checked', level.walletAccountFeatures.includes('Deposit'));
+    $('#wallet_withdrawal').prop('checked', level.walletAccountFeatures.includes('Withdrawal'));
+    $('#wallet_live_trading').prop('checked', level.walletAccountFeatures.includes('Live Trading'));
+    $('#wallet_open_live_account').prop('checked', level.walletAccountFeatures.includes('Open Live Trading Account'));
+    $('#wallet_open_additional_account').prop('checked', level.walletAccountFeatures.includes('Open Additional Account'));
+
+    // Set edit index
+    $('#level_edit_index').val(index);
+    $('#level_edit_flow_type').val('main');
+
+    // Update modal title
+    $('#levelConfigModalLabel').text('Edit KYC Main Flow Level');
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('levelConfigModal'));
+    modal.show();
+}
+
+function editIndependentFlowLevel(index) {
+    const level = kycSystemConfigState.independentFlowLevels[index];
+
+    // Populate KYC Level options for Independent Flow
+    populateKycLevelOptions('independent');
+
+    // Populate form
+    $('#level_kyc_level').val(level.kycLevel);
+    $('#level_description').val(level.levelDescription);
+    $('#level_subdescription').val(level.levelSubdescription);
+
+    // Check trading features
+    $('#trading_deposit').prop('checked', level.tradingAccountFeatures.includes('Deposit'));
+    $('#trading_withdrawal').prop('checked', level.tradingAccountFeatures.includes('Withdrawal'));
+    $('#trading_live_trading').prop('checked', level.tradingAccountFeatures.includes('Live Trading'));
+    $('#trading_open_live_account').prop('checked', level.tradingAccountFeatures.includes('Open Live Trading Account'));
+    $('#trading_open_additional_account').prop('checked', level.tradingAccountFeatures.includes('Open Additional Account'));
+
+    // Check wallet features
+    $('#wallet_deposit').prop('checked', level.walletAccountFeatures.includes('Deposit'));
+    $('#wallet_withdrawal').prop('checked', level.walletAccountFeatures.includes('Withdrawal'));
+    $('#wallet_live_trading').prop('checked', level.walletAccountFeatures.includes('Live Trading'));
+    $('#wallet_open_live_account').prop('checked', level.walletAccountFeatures.includes('Open Live Trading Account'));
+    $('#wallet_open_additional_account').prop('checked', level.walletAccountFeatures.includes('Open Additional Account'));
+
+    // Set edit index
+    $('#level_edit_index').val(index);
+    $('#level_edit_flow_type').val('independent');
+
+    // Update modal title
+    $('#levelConfigModalLabel').text('Edit Independent Flow Level');
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('levelConfigModal'));
+    modal.show();
+}
+
+function saveLevelConfig() {
+    // Validate required fields
+    const kycLevel = $('#level_kyc_level').val().trim();
+    const levelDescription = $('#level_description').val().trim();
+    const levelSubdescription = $('#level_subdescription').val().trim();
+
+    if (!kycLevel) {
+        showToast('Please select KYC Level', 'error');
+        return;
+    }
+
+    if (!levelDescription) {
+        showToast('Please enter Level Description', 'error');
+        return;
+    }
+
+    if (!levelSubdescription) {
+        showToast('Please enter Level Subdescription', 'error');
+        return;
+    }
+
+    // Collect trading features
+    const tradingFeatures = [];
+    if ($('#trading_deposit').prop('checked')) tradingFeatures.push('Deposit');
+    if ($('#trading_withdrawal').prop('checked')) tradingFeatures.push('Withdrawal');
+    if ($('#trading_live_trading').prop('checked')) tradingFeatures.push('Live Trading');
+    if ($('#trading_open_live_account').prop('checked')) tradingFeatures.push('Open Live Trading Account');
+    if ($('#trading_open_additional_account').prop('checked')) tradingFeatures.push('Open Additional Account');
+
+    // Collect wallet features
+    const walletFeatures = [];
+    if ($('#wallet_deposit').prop('checked')) walletFeatures.push('Deposit');
+    if ($('#wallet_withdrawal').prop('checked')) walletFeatures.push('Withdrawal');
+    if ($('#wallet_live_trading').prop('checked')) walletFeatures.push('Live Trading');
+    if ($('#wallet_open_live_account').prop('checked')) walletFeatures.push('Open Live Trading Account');
+    if ($('#wallet_open_additional_account').prop('checked')) walletFeatures.push('Open Additional Account');
+
+    // Create level object
+    const levelConfig = {
+        kycLevel,
+        levelDescription,
+        levelSubdescription,
+        tradingAccountFeatures: tradingFeatures,
+        walletAccountFeatures: walletFeatures
+    };
+
+    // Get edit index and flow type
+    const editIndex = parseInt($('#level_edit_index').val());
+    const flowType = $('#level_edit_flow_type').val();
+
+    // Add or update level
+    if (flowType === 'main') {
+        if (editIndex === -1) {
+            // Add new level
+            kycSystemConfigState.mainFlowLevels.push(levelConfig);
+        } else {
+            // Update existing level
+            kycSystemConfigState.mainFlowLevels[editIndex] = levelConfig;
+        }
+        renderMainFlowLevelsTable();
+    } else {
+        if (editIndex === -1) {
+            // Add new level
+            kycSystemConfigState.independentFlowLevels.push(levelConfig);
+        } else {
+            // Update existing level
+            kycSystemConfigState.independentFlowLevels[editIndex] = levelConfig;
+        }
+        renderIndependentFlowLevelsTable();
+    }
+
+    // Hide modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('levelConfigModal'));
+    modal.hide();
+
+    showToast('Level configuration added successfully!', 'success');
+}
+
+function deleteMainFlowLevel(index) {
+    if (!confirm('Are you sure you want to delete this level?')) {
+        return;
+    }
+
+    kycSystemConfigState.mainFlowLevels.splice(index, 1);
+    renderMainFlowLevelsTable();
+    showToast('Level deleted successfully!', 'success');
+}
+
+function deleteIndependentFlowLevel(index) {
+    if (!confirm('Are you sure you want to delete this level?')) {
+        return;
+    }
+
+    kycSystemConfigState.independentFlowLevels.splice(index, 1);
+    renderIndependentFlowLevelsTable();
+    showToast('Level deleted successfully!', 'success');
+}
+
+function saveKycSystemConfig() {
+    if (!currentKycSystemId) {
+        showToast('No KYC System selected', 'error');
+        return;
+    }
+
+    // Find and update the KYC system with configuration
+    const systemIndex = kycSystemsData.findIndex(s => s.id === currentKycSystemId);
+
+    if (systemIndex === -1) {
+        showToast('KYC System not found', 'error');
+        return;
+    }
+
+    // Save configuration to the KYC system
+    kycSystemsData[systemIndex].config = JSON.parse(JSON.stringify(kycSystemConfigState));
+
+    // Save to localStorage
+    onboardingService.saveSection(currentBrand, currentLicense, 'goldenFlowConfig', {
+        kycSystems: kycSystemsData
+    });
+
+    // Refresh Config Overview
+    loadConfigOverview();
+
+    // Hide modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('kycSystemConfigModal'));
+    modal.hide();
+
+    showToast('KYC System configuration saved successfully!', 'success');
+    console.log('💾 Saved KYC System Config:', kycSystemsData[systemIndex]);
+}
+// ========== Section 7: Server Routing Configuration ==========
+// Coming Soon - No functionality needed yet
+
+// ========== Section 8: Agreement Configuration ==========
+
+// Agreement configuration state
+let agreementConfigState = {
+    items: [],  // Array of {key: string, description: string}
+    generatePdf: false,
+    selectionMethod: 'one_time'
+};
+
+function loadAgreementConfig() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'agreementConfig');
+    const config = savedConfig || {
+        items: [],
+        generatePdf: false,
+        selectionMethod: 'one_time'
+    };
+
+    // Update UI
+    $('#agreement_generate_pdf').prop('checked', config.generatePdf);
+    $(`input[name="agreement_selection_method"][value="${config.selectionMethod}"]`).prop('checked', true);
+
+    // Clear input fields
+    $('#agreement_key_input').val('');
+    $('#agreement_description_input').val('');
+
+    // Update state
+    agreementConfigState = JSON.parse(JSON.stringify(config));
+
+    // Render agreement items table
+    renderAgreementItems();
+}
+
+function addAgreementItem() {
+    const key = $('#agreement_key_input').val().trim();
+    const description = $('#agreement_description_input').val().trim();
+
+    // Validate key is not empty
+    if (!key) {
+        showToast('Please enter a Key', 'error');
+        return;
+    }
+
+    // Check if key already exists
+    const keyExists = agreementConfigState.items.some(item => item.key === key);
+    if (keyExists) {
+        showToast('This Key already exists', 'error');
+        return;
+    }
+
+    // Add new item
+    agreementConfigState.items.push({
+        key: key,
+        description: description || ''
+    });
+
+    // Clear input fields
+    $('#agreement_key_input').val('');
+    $('#agreement_description_input').val('');
+
+    // Re-render table
+    renderAgreementItems();
+
+    showToast('Agreement item added', 'success');
+}
+
+function removeAgreementItem(index) {
+    agreementConfigState.items.splice(index, 1);
+    renderAgreementItems();
+    showToast('Agreement item removed', 'info');
+}
+
+function renderAgreementItems() {
+    const tbody = $('#agreement_items_tbody');
+    const listContainer = $('#agreement_items_list');
+
+    if (agreementConfigState.items.length === 0) {
+        listContainer.hide();
+        return;
+    }
+
+    listContainer.show();
+    tbody.empty();
+
+    agreementConfigState.items.forEach((item, index) => {
+        const row = $(`
+            <tr>
+                <td style="font-size: 13px; color: #2C3E50;">${item.key}</td>
+                <td style="font-size: 13px; color: #718096;">${item.description || '-'}</td>
+                <td style="text-align: center;">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removeAgreementItem(${index})" style="font-size: 12px; padding: 4px 8px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `);
+        tbody.append(row);
+    });
+}
+
+function saveAgreementConfig() {
+    // Collect data
+    const generatePdf = $('#agreement_generate_pdf').prop('checked');
+    const selectionMethod = $('input[name="agreement_selection_method"]:checked').val();
+
+    // Validate at least one item is configured
+    if (agreementConfigState.items.length === 0) {
+        showToast('Please add at least one agreement configuration', 'error');
+        return;
+    }
+
+    // Update state (items already in state from addAgreementItem)
+    agreementConfigState.generatePdf = generatePdf;
+    agreementConfigState.selectionMethod = selectionMethod;
+
+    console.log('💾 Saving Agreement configuration:', agreementConfigState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'agreementConfig', agreementConfigState);
+    showToast('Agreement configuration saved successfully!', 'success');
+}
+
+// ========== Section 9: Questionnaire Configuration ==========
+
+// Questionnaire configuration state
+let questionnaireConfigState = {
+    enabled: false,
+    daysToComplete: null,
+    mandatoryReminder: false,
+    reminderText: '',
+    questions: []  // Array of {question: string, type: string, options: string[]}
+};
+
+// Temporary state for question modal
+let currentQuestionOptions = [];
+
+function loadQuestionnaireConfig() {
+    // Load from localStorage if exists, otherwise use defaults
+    const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'questionnaireConfig');
+    const config = savedConfig || {
+        enabled: false,
+        daysToComplete: null,
+        mandatoryReminder: false,
+        reminderText: '',
+        questions: []
+    };
+
+    // Update UI
+    $('#questionnaire_enabled').prop('checked', config.enabled);
+    $('#questionnaire_days').val(config.daysToComplete || '');
+    $('#questionnaire_mandatory_reminder').prop('checked', config.mandatoryReminder);
+    $('#questionnaire_reminder_text').val(config.reminderText || '');
+
+    // Handle enabled/disabled state
+    handleQuestionnaireEnabledChange();
+
+    // Trigger days change to show/hide mandatory reminder section
+    handleQuestionnaireDaysChange();
+
+    // Update state
+    questionnaireConfigState = JSON.parse(JSON.stringify(config));
+
+    // Ensure questions array exists
+    if (!questionnaireConfigState.questions) {
+        questionnaireConfigState.questions = [];
+    }
+
+    // Render questions list
+    renderQuestionsList();
+}
+
+function handleQuestionnaireEnabledChange() {
+    const isEnabled = $('#questionnaire_enabled').prop('checked');
+
+    // Enable/disable all related fields
+    $('#questionnaire_days').prop('disabled', !isEnabled);
+    $('#add_question_btn').prop('disabled', !isEnabled);
+    $('#add_question_empty_btn').prop('disabled', !isEnabled);
+
+    // Show/hide questions section
+    if (isEnabled) {
+        $('#questionnaire_questions_list, #questionnaire_questions_empty').show();
+        renderQuestionsList();
+    } else {
+        $('#questionnaire_questions_list, #questionnaire_questions_empty').hide();
+    }
+
+    // If disabled, hide mandatory reminder section
+    if (!isEnabled) {
+        $('#questionnaire_mandatory_reminder_section').hide();
+    } else {
+        // Check if days has value to show/hide mandatory reminder section
+        handleQuestionnaireDaysChange();
+    }
+}
+
+function handleQuestionnaireDaysChange() {
+    const isEnabled = $('#questionnaire_enabled').prop('checked');
+    const daysValue = $('#questionnaire_days').val();
+    const hasDays = daysValue && parseInt(daysValue) > 0;
+
+    // Show/hide mandatory reminder section based on days value
+    if (isEnabled && hasDays) {
+        $('#questionnaire_mandatory_reminder_section').show();
+        $('#questionnaire_mandatory_reminder').prop('disabled', false);
+    } else {
+        $('#questionnaire_mandatory_reminder_section').hide();
+        $('#questionnaire_mandatory_reminder').prop('checked', false).prop('disabled', true);
+        $('#questionnaire_reminder_text').val('').prop('disabled', true);
+    }
+
+    // Handle reminder text enable/disable
+    handleQuestionnaireMandatoryReminderChange();
+}
+
+function handleQuestionnaireMandatoryReminderChange() {
+    const isMandatory = $('#questionnaire_mandatory_reminder').prop('checked');
+
+    // Enable reminder text only if mandatory reminder is checked
+    $('#questionnaire_reminder_text').prop('disabled', !isMandatory);
+}
+
+function saveQuestionnaireConfig() {
+    const enabled = $('#questionnaire_enabled').prop('checked');
+
+    // If not enabled, save minimal config
+    if (!enabled) {
+        questionnaireConfigState = {
+            enabled: false,
+            daysToComplete: null,
+            mandatoryReminder: false,
+            reminderText: '',
+            questions: []
+        };
+    } else {
+        const daysToComplete = parseInt($('#questionnaire_days').val()) || null;
+        const mandatoryReminder = $('#questionnaire_mandatory_reminder').prop('checked');
+        const reminderText = $('#questionnaire_reminder_text').val().trim();
+
+        // Validate days to complete
+        if (!daysToComplete || daysToComplete < 1) {
+            showToast('Please enter a valid number of days to complete', 'error');
+            return;
+        }
+
+        // Validate reminder text if mandatory reminder is enabled
+        if (mandatoryReminder && !reminderText) {
+            showToast('Please enter reminder text', 'error');
+            return;
+        }
+
+        // Update state (questions already in state from question management)
+        questionnaireConfigState.enabled = enabled;
+        questionnaireConfigState.daysToComplete = daysToComplete;
+        questionnaireConfigState.mandatoryReminder = mandatoryReminder;
+        questionnaireConfigState.reminderText = reminderText;
+    }
+
+    console.log('💾 Saving Questionnaire configuration:', questionnaireConfigState);
+
+    // Save to localStorage via OnboardingService
+    onboardingService.saveSection(currentBrand, currentLicense, 'questionnaireConfig', questionnaireConfigState);
+    showToast('Questionnaire configuration saved successfully!', 'success');
+}
+
+// ========== Question Management Functions ==========
+
+function renderQuestionsList() {
+    const tbody = $('#questionnaire_questions_tbody');
+    const listContainer = $('#questionnaire_questions_list');
+    const emptyState = $('#questionnaire_questions_empty');
+
+    // Ensure questions array exists
+    if (!questionnaireConfigState.questions) {
+        questionnaireConfigState.questions = [];
+    }
+
+    if (questionnaireConfigState.questions.length === 0) {
+        listContainer.hide();
+        emptyState.show();
+        return;
+    }
+
+    listContainer.show();
+    emptyState.hide();
+    tbody.empty();
+
+    questionnaireConfigState.questions.forEach((question, index) => {
+        const row = $(`
+            <tr>
+                <td style="text-align: center; font-size: 13px; color: #2C3E50;">${index + 1}</td>
+                <td style="font-size: 13px; color: #2C3E50;">
+                    <div style="font-weight: 500;">${question.question}</div>
+                    <div style="font-size: 11px; color: #718096; margin-top: 2px;">Key: ${question.key || 'N/A'}</div>
+                </td>
+                <td style="text-align: center; font-size: 13px;">
+                    <span class="badge ${question.type === 'single_choice' ? 'badge-primary' : 'badge-success'}" style="font-size: 11px;">
+                        ${question.type === 'single_choice' ? 'Single' : 'Multiple'}
+                    </span>
+                </td>
+                <td style="text-align: center; font-size: 13px; color: #718096;">${question.options.length} options</td>
+                <td style="text-align: center;">
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="editQuestion(${index})" style="font-size: 12px; padding: 4px 8px; margin-right: 4px;">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteQuestion(${index})" style="font-size: 12px; padding: 4px 8px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `);
+        tbody.append(row);
+    });
+}
+
+function addQuestionModal() {
+    // Reset form
+    $('#question_key').val('');
+    $('#question_text').val('');
+    $('#question_type_single').prop('checked', true);
+    $('#question_edit_index').val('-1');
+    $('#option_key_input').val('');
+    $('#option_text_input').val('');
+    currentQuestionOptions = [];
+    renderQuestionOptions();
+
+    // Update modal title
+    $('#question_modal_title').text('Add Question');
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('questionConfigModal'));
+    modal.show();
+}
+
+function editQuestion(index) {
+    const question = questionnaireConfigState.questions[index];
+
+    // Populate form
+    $('#question_key').val(question.key || '');
+    $('#question_text').val(question.question);
+    $(`input[name="question_type"][value="${question.type}"]`).prop('checked', true);
+    $('#question_edit_index').val(index);
+
+    // Clear option inputs
+    $('#option_key_input').val('');
+    $('#option_text_input').val('');
+
+    // Load options (deep copy to handle both old format and new format)
+    currentQuestionOptions = question.options.map(opt => {
+        // Handle both string format (old) and object format (new)
+        if (typeof opt === 'string') {
+            return { key: opt.toLowerCase().replace(/\s+/g, '_'), text: opt };
+        } else {
+            return { ...opt };
+        }
+    });
+    renderQuestionOptions();
+
+    // Update modal title
+    $('#question_modal_title').text('Edit Question');
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('questionConfigModal'));
+    modal.show();
+}
+
+function deleteQuestion(index) {
+    if (confirm('Are you sure you want to delete this question?')) {
+        questionnaireConfigState.questions.splice(index, 1);
+        renderQuestionsList();
+        showToast('Question deleted', 'info');
+    }
+}
+
+function addQuestionOption() {
+    const optionKey = $('#option_key_input').val().trim();
+    const optionText = $('#option_text_input').val().trim();
+
+    // Validate both key and text are provided
+    if (!optionKey) {
+        showToast('Please enter option key', 'error');
+        return;
+    }
+
+    if (!optionText) {
+        showToast('Please enter option text', 'error');
+        return;
+    }
+
+    // Check if key already exists
+    const keyExists = currentQuestionOptions.some(opt => opt.key === optionKey);
+    if (keyExists) {
+        showToast('This option key already exists', 'error');
+        return;
+    }
+
+    // Add option as object with key and text
+    currentQuestionOptions.push({
+        key: optionKey,
+        text: optionText
+    });
+
+    // Clear inputs
+    $('#option_key_input').val('');
+    $('#option_text_input').val('');
+    renderQuestionOptions();
+}
+
+function removeQuestionOption(index) {
+    currentQuestionOptions.splice(index, 1);
+    renderQuestionOptions();
+}
+
+function renderQuestionOptions() {
+    const listContainer = $('#question_options_list');
+    const emptyState = $('#question_options_empty');
+
+    if (currentQuestionOptions.length === 0) {
+        listContainer.empty();
+        emptyState.show();
+        return;
+    }
+
+    emptyState.hide();
+    listContainer.empty();
+
+    currentQuestionOptions.forEach((option, index) => {
+        const optionItem = $(`
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: white; border-radius: 4px; margin-bottom: 8px; border: 1px solid #E8EAED;">
+                <div style="flex: 1;">
+                    <div style="font-size: 13px; color: #2C3E50; font-weight: 500;">${index + 1}. ${option.text}</div>
+                    <div style="font-size: 11px; color: #718096; margin-top: 2px;">Key: ${option.key}</div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeQuestionOption(${index})" style="font-size: 11px; padding: 2px 8px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `);
+        listContainer.append(optionItem);
+    });
+}
+
+function saveQuestion() {
+    console.log('saveQuestion() function called');
+
+    const questionKey = $('#question_key').val().trim();
+    const questionText = $('#question_text').val().trim();
+    const questionType = $('input[name="question_type"]:checked').val();
+    const editIndex = parseInt($('#question_edit_index').val());
+
+    console.log('Question data:', { questionKey, questionText, questionType, editIndex });
+    console.log('Current options:', currentQuestionOptions);
+
+    // Validate question key
+    if (!questionKey) {
+        console.log('Validation failed: no question key');
+        showToast('Please enter question key', 'error');
+        return;
+    }
+
+    // Validate question text
+    if (!questionText) {
+        showToast('Please enter question text', 'error');
+        return;
+    }
+
+    // Ensure questions array exists
+    if (!questionnaireConfigState.questions) {
+        questionnaireConfigState.questions = [];
+    }
+
+    // Check if key already exists (excluding current question if editing)
+    const keyExists = questionnaireConfigState.questions.some((q, idx) =>
+        q.key === questionKey && idx !== editIndex
+    );
+    if (keyExists) {
+        showToast('This question key already exists', 'error');
+        return;
+    }
+
+    // Validate at least 2 options
+    if (currentQuestionOptions.length < 2) {
+        showToast('Please add at least 2 options', 'error');
+        return;
+    }
+
+    // Create question object
+    const questionObj = {
+        key: questionKey,
+        question: questionText,
+        type: questionType,
+        options: [...currentQuestionOptions]
+    };
+
+    // Add or update question
+    if (editIndex === -1) {
+        questionnaireConfigState.questions.push(questionObj);
+        showToast('Question added successfully!', 'success');
+    } else {
+        questionnaireConfigState.questions[editIndex] = questionObj;
+        showToast('Question updated successfully!', 'success');
+    }
+
+    // Re-render list
+    renderQuestionsList();
+
+    // Hide modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('questionConfigModal'));
+    if (modal) {
+        modal.hide();
+    }
+
+    console.log('Question saved successfully');
+}
+
+// Make functions globally accessible
+window.saveQuestion = saveQuestion;
+window.addQuestionModal = addQuestionModal;
+window.editQuestion = editQuestion;
+window.deleteQuestion = deleteQuestion;
+window.addQuestionOption = addQuestionOption;
+window.removeQuestionOption = removeQuestionOption;
+
+// ========== Tag Input Manager (reused from Regulation List) ==========
+
+class TagInputManager {
+    constructor(inputId, tagContainerId, dropdownId, hiddenInputId, allCountries) {
+        this.input = $(`#${inputId}`);
+        this.tagContainer = $(`#${tagContainerId}`);
+        this.dropdown = $(`#${dropdownId}`);
+        this.hiddenInput = $(`#${hiddenInputId}`);
+        this.allCountries = allCountries;
+        this.selectedCountries = [];
+        this.init();
+    }
+
+    init() {
+        // Input event
+        this.input.on('input', () => this.handleInput());
+        this.input.on('focus', () => this.showDropdown());
+
+        // Click on tag container to focus input
+        this.tagContainer.on('click', (e) => {
+            if (e.target === this.tagContainer[0]) {
+                this.input.focus();
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        $(document).on('click', (e) => {
+            if (!this.tagContainer.is(e.target) && !this.tagContainer.has(e.target).length &&
+                !this.dropdown.is(e.target) && !this.dropdown.has(e.target).length) {
+                this.hideDropdown();
+            }
+        });
+    }
+
+    handleInput() {
+        const query = this.input.val().toLowerCase();
+        const filtered = this.allCountries.filter(c =>
+            c.name.toLowerCase().includes(query) &&
+            !this.selectedCountries.some(sc => sc.code === c.code)
+        );
+
+        this.renderDropdown(filtered);
+    }
+
+    renderDropdown(countries) {
+        if (countries.length === 0) {
+            this.hideDropdown();
+            return;
+        }
+
+        // Add "All" option at the top if not all countries are selected
+        let html = '';
+        if (this.selectedCountries.length < this.allCountries.length) {
+            html += `
+                <div class="tag-dropdown-item tag-dropdown-all" style="padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #E1EDF2; background: #F5F7FA;">
+                    <strong>All</strong>
+                </div>
+            `;
+        }
+
+        html += countries.map(c => `
+            <div class="tag-dropdown-item" data-code="${c.code}" data-name="${c.name}" style="padding: 8px 14px; cursor: pointer; font-size: 13px; color: #2C3E50;">
+                ${c.name}
+            </div>
+        `).join('');
+
+        this.dropdown.html(html);
+        this.dropdown.show();
+
+        // Bind click events for "All"
+        this.dropdown.find('.tag-dropdown-all').on('click', (e) => {
+            this.selectAll();
+        });
+
+        // Bind click events for individual items
+        this.dropdown.find('.tag-dropdown-item:not(.tag-dropdown-all)').on('click', (e) => {
+            const code = $(e.currentTarget).data('code');
+            const name = $(e.currentTarget).data('name');
+            this.addTag(code, name);
+        });
+
+        // Hover effect
+        this.dropdown.find('.tag-dropdown-item:not(.tag-dropdown-all)').on('mouseenter', function() {
+            $(this).css('background-color', '#F5F7FA');
+        }).on('mouseleave', function() {
+            $(this).css('background-color', '');
+        });
+    }
+
+    showDropdown() {
+        // Always show dropdown on focus, even if input is empty
+        const query = this.input.val().toLowerCase();
+        const filtered = this.allCountries.filter(c =>
+            (!query || c.name.toLowerCase().includes(query)) &&
+            !this.selectedCountries.some(sc => sc.code === c.code)
+        );
+        this.renderDropdown(filtered);
+    }
+
+    selectAll() {
+        // Clear existing selections first
+        this.selectedCountries = [];
+
+        // Add all countries
+        this.allCountries.forEach(c => {
+            this.selectedCountries.push({ code: c.code, name: c.name });
+        });
+
+        this.renderTags();
+        this.input.val('');
+        this.hideDropdown();
+        this.updateHiddenInput();
+    }
+
+    hideDropdown() {
+        this.dropdown.hide();
+    }
+
+    addTag(code, name) {
+        if (this.selectedCountries.some(c => c.code === code)) return;
+
+        this.selectedCountries.push({ code, name });
+        this.renderTags();
+        this.input.val('');
+        this.showDropdown(); // Re-show dropdown with updated list
+        this.updateHiddenInput();
+    }
+
+    removeTag(code) {
+        this.selectedCountries = this.selectedCountries.filter(c => c.code !== code);
+        this.renderTags();
+        this.updateHiddenInput();
+    }
+
+    renderTags() {
+        const tags = this.selectedCountries.map(c => `
+            <span class="tag-item" style="display: inline-flex; align-items: center; background: #08B2A4; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                ${c.name}
+                <span class="tag-remove" data-code="${c.code}" style="margin-left: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">&times;</span>
+            </span>
+        `).join('');
+
+        this.tagContainer.find('.tag-item').remove();
+        this.tagContainer.prepend(tags);
+
+        // Bind remove events
+        this.tagContainer.find('.tag-remove').on('click', (e) => {
+            e.stopPropagation();
+            const code = $(e.currentTarget).data('code');
+            this.removeTag(code);
+        });
+    }
+
+    updateHiddenInput() {
+        const codes = this.selectedCountries.map(c => c.code);
+        this.hiddenInput.val(codes.join(','));
+    }
+
+    setCountries(codes) {
+        this.selectedCountries = [];
+        codes.forEach(code => {
+            const country = this.allCountries.find(c => c.code === code);
+            if (country) {
+                this.selectedCountries.push(country);
+            }
+        });
+        this.renderTags();
+        this.updateHiddenInput();
+    }
+
+    getCountries() {
+        return this.selectedCountries.map(c => c.code);
+    }
+
+    clear() {
+        this.selectedCountries = [];
+        this.renderTags();
+        this.updateHiddenInput();
+    }
+}
+
+// ========== Simple Tag Input (for free-text tags like Agreement Keys) ==========
+
+class SimpleTagInput {
+    constructor(inputId, tagContainerId) {
+        this.input = $(`#${inputId}`);
+        this.tagContainer = $(`#${tagContainerId}`);
+        this.tags = [];
+        this.init();
+    }
+
+    init() {
+        // Handle Enter key to add tag
+        this.input.on('keypress', (e) => {
+            if (e.which === 13) {
+                e.preventDefault();
+                this.addTag();
+            }
+        });
+
+        // Click on tag container to focus input
+        this.tagContainer.on('click', (e) => {
+            if (e.target === this.tagContainer[0]) {
+                this.input.focus();
+            }
+        });
+    }
+
+    addTag() {
+        const value = this.input.val().trim();
+        if (value && !this.tags.includes(value)) {
+            this.tags.push(value);
+            this.input.val('');
+            this.renderTags();
+        }
+    }
+
+    removeTag(tag) {
+        this.tags = this.tags.filter(t => t !== tag);
+        this.renderTags();
+    }
+
+    renderTags() {
+        // Remove existing tag elements
+        this.tagContainer.find('.tag-item').remove();
+
+        // Create tag elements
+        const tagElements = this.tags.map(tag => `
+            <span class="tag-item" style="display: inline-flex; align-items: center; gap: 6px; background: #E6F7FF; color: #0050B3; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                ${tag}
+                <button type="button" class="tag-remove" data-tag="${tag}" style="background: none; border: none; color: #0050B3; cursor: pointer; font-size: 14px; padding: 0; margin: 0; line-height: 1; opacity: 0.7; transition: opacity 0.2s;">
+                    ×
+                </button>
+            </span>
+        `).join('');
+
+        this.tagContainer.prepend(tagElements);
+
+        // Bind remove events
+        this.tagContainer.find('.tag-remove').on('click', (e) => {
+            e.stopPropagation();
+            const tag = $(e.currentTarget).data('tag');
+            this.removeTag(tag);
+        });
+    }
+
+    setTags(tags) {
+        this.tags = [...tags];
+        this.renderTags();
+    }
+
+    getTags() {
+        return [...this.tags];
+    }
+
+    clear() {
+        this.tags = [];
+        this.renderTags();
+    }
+}
+</script>
+
+<style>
+/* Custom Radio Buttons - More Rounded Style */
+.kyc-radio-group .form-check-input[type="radio"] {
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid #D5E0E2 !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.kyc-radio-group .form-check-input[type="radio"]:checked {
+    background-color: #08B2A4 !important;
+    border-color: #08B2A4 !important;
+    box-shadow: 0 0 0 4px rgba(8, 178, 164, 0.15) !important;
+}
+
+.kyc-radio-group .form-check-input[type="radio"]:hover:not(:checked) {
+    border-color: #08B2A4 !important;
+}
+
+.kyc-radio-group .form-check {
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.kyc-radio-group .form-check:hover {
+    background-color: #F5F7FA !important;
+}
+
+.kyc-radio-group .form-check-label {
+    margin-left: 8px !important;
+    cursor: pointer !important;
+}
+
+/* Agreement Selection Method Radio Buttons - Rounded Style */
+input[name="agreement_selection_method"] {
+    width: 18px !important;
+    height: 18px !important;
+    border: 2px solid #D5E0E2 !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    margin-top: 2px !important;
+}
+
+input[name="agreement_selection_method"]:checked {
+    background-color: #0E64D2 !important;
+    border-color: #0E64D2 !important;
+    box-shadow: 0 0 0 3px rgba(14, 100, 210, 0.15) !important;
+}
+
+input[name="agreement_selection_method"]:hover:not(:checked) {
+    border-color: #0E64D2 !important;
+}
+
+input[name="agreement_selection_method"]:focus {
+    box-shadow: 0 0 0 3px rgba(14, 100, 210, 0.15) !important;
+    border-color: #0E64D2 !important;
+}
+
+/* Question Type Radio Buttons - Rounded Style */
+input[name="question_type"] {
+    width: 18px !important;
+    height: 18px !important;
+    border: 2px solid #D5E0E2 !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    margin-top: 2px !important;
+}
+
+input[name="question_type"]:checked {
+    background-color: #08B2A4 !important;
+    border-color: #08B2A4 !important;
+    box-shadow: 0 0 0 3px rgba(8, 178, 164, 0.15) !important;
+}
+
+input[name="question_type"]:hover:not(:checked) {
+    border-color: #08B2A4 !important;
+}
+
+input[name="question_type"]:focus {
+    box-shadow: 0 0 0 3px rgba(8, 178, 164, 0.15) !important;
+    border-color: #08B2A4 !important;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+</style>

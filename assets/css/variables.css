@@ -1,0 +1,137 @@
+/* CSS Variables - OWS Design System */
+:root {
+  /* Brand Colors - OWS品牌色 */
+  --brand-primary: #0E64D2;          /* ows / 品牌色1 - HSB(188, 88, 45, 100%) */
+  --brand-secondary: #08B2A4;        /* ows / 品牌色2 - HSB(175, 96, 70, 100%) */
+
+  /* Primary Colors - 主色系 */
+  --primary-color: #08B2A4;          /* ows / 辅助色1 - 青色主色 - HSB(175, 96, 70, 75%) */
+  --primary-hover: #08B2A4;          /* ows / 辅助色1 */
+  --primary-light: #08B2A4;          /* ows / 辅助色2 - HSB(175, 96, 70, 25%) */
+  --primary-active: #08B2A4;         /* ows / 辅助色3 - HSB(175, 96, 70, 15%) */
+  --primary-disabled: #08B2A4;       /* ows / 辅助色4 - HSB(175, 96, 70, 5%) */
+  --secondary-color: #0E64D2;        /* 品牌色1 */
+
+  /* Functional Colors - 功能色 */
+  --success-color: #15D977;          /* 上升、成功！ - HSB(14, 203, 129, 1) */
+  --danger-color: #F6465D;           /* 下降、错误！ - HSB(246, 70, 93, 1) */
+  --warning-color: #F79E2B;          /* 警戒！ - HSB(247, 158, 43, 1) */
+  --info-color: #1776E5;             /* 信息色 - HSB(23, 118, 229, 1) */
+
+  /* Neutral Colors - 中性色 */
+  --gray-50: #F5F7FA;                /* 表头色 - HSB(246, 249, 249, 1) */
+  --gray-100: #E1EDF2;               /* 二级边框 - HSB(227, 234, 250, 1) */
+  --gray-200: #D5E0E2;               /* 一级边框 - HSB(213, 224, 226, 1) */
+  --gray-300: #B5C2CA;               /* 一级按钮充色（Rate、Skeleton等） - HSB(181, 194, 202, 0.30) */
+  --gray-400: #B5C2CA;               /* 二级按钮充色（Slider、Segmented等） - HSB(181, 194, 202, 0.14) */
+  --gray-500: #B5C2CA;               /* 三级按钮充色（弱互动、区分边界背景、自适应Hover色等） - HSB(181, 194, 202, 0.08) */
+  --gray-600: #08B2A4;               /* 下拉控件导航条悬色 - HSB(8, 178, 164, 0.15) */
+  --gray-700: #010F2C;               /* 一级文本（主要、默认文字） - HSB(0, 15, 44, 1) */
+  --gray-800: #010F2C;               /* 二级文本（次要文字：Label文本、Menu的文本中态） - HSB(0, 15, 44, 0.80) */
+  --gray-900: #010F2C;               /* 三级文本（辅助性文本：补充说明、别条的提示性文本） - HSB(0, 15, 44, 0.60) */
+
+  /* Text Colors - 文字颜色 */
+  --text-primary: rgba(0, 15, 44, 1);      /* 一级文本 */
+  --text-secondary: rgba(0, 15, 44, 0.80); /* 二级文本 */
+  --text-tertiary: rgba(0, 15, 44, 0.60);  /* 三级文本 */
+  --text-disabled: rgba(0, 15, 44, 0.40);  /* 四级文本（禁入提示文字、禁用） */
+  --text-inverse: #FFFFFF;                  /* 白色 - HSB(255, 255, 255, 1) */
+  --text-black: #000000;                    /* 黑色 - HSB(0, 0, 0, 1) */
+
+  /* Background Colors - 背景色 */
+  --bg-primary: #FFFFFF;                   /* 白色 */
+  --bg-secondary: #F5F7FA;                 /* 布局背景色 - HSB(246, 249, 249, 1) */
+  --bg-hover: rgba(181, 194, 202, 0.08);   /* 三级按钮充色 - Hover态 */
+  --bg-active: rgba(8, 178, 164, 0.15);    /* 下拉控件导航条悬色 */
+  --bg-disabled: #F5F7FA;                  /* 禁用背景色 - HSB(245, 247, 250, 1) */
+
+  /* Border - 边框色 */
+  --border-color: #D5E0E2;                 /* 一级边框 - HSB(213, 224, 226, 1) */
+  --border-color-secondary: #E1EDF2;       /* 二级边框 - HSB(227, 234, 250, 1) */
+  --border-color-hover: rgba(181, 194, 202, 0.30);
+  --border-radius: 4px;
+  --border-radius-sm: 2px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+
+  /* Spacing System (8px base) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+  --topbar-height: 64px;
+  --content-max-width: 1440px;
+
+  /* Sidebar Specific - 侧边栏 */
+  --sidebar-bg: rgba(0, 15, 44, 1);              /* 一级文本色作为侧边栏背景 */
+  --sidebar-text: rgba(0, 15, 44, 0.60);         /* 三级文本色 */
+  --sidebar-text-hover: #FFFFFF;                  /* 白色 */
+  --sidebar-active: #08B2A4;                      /* 辅助色1 - 青色 */
+  --sidebar-active-bg: rgba(8, 178, 164, 0.15);  /* 下拉控件导航条悬色 */
+
+  /* Z-index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* Dark Mode Variables (Optional) */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --bg-primary: #1A202C;
+    --bg-secondary: #2D3748;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0AEC0;
+    --border-color: #4A5568;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #1A202C;
+  --bg-secondary: #2D3748;
+  --bg-hover: #4A5568;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0AEC0;
+  --border-color: #4A5568;
+  --border-color-hover: #718096;
+}

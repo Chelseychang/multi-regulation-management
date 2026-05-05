@@ -1,0 +1,214 @@
+[
+  {
+    "id": 1777898622106,
+    "brand": "VAU",
+    "regulation": "ASIC",
+    "description": "ASIC强監管",
+    "license": "",
+    "code": "ASIC",
+    "registrationTypes": ["域名", "国籍"],
+    "registrationValues": {
+      "域名": "vantagemarkets.com.au",
+      "国籍": "australian"
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": false,
+        "countries": []
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "secure.vantagemarkets.com",
+      "backup": ""
+    },
+    "createdAt": "2026-05-04T13:56:32.340Z",
+    "updatedAt": "2026-05-04T13:56:32.340Z"
+  },
+  {
+    "id": 1777899475305,
+    "brand": "VAU",
+    "regulation": "V1",
+    "description": "vig",
+    "license": "vig",
+    "code": "V1VIG",
+    "registrationTypes": ["域名"],
+    "registrationValues": {
+      "域名": "vantagemarkets.co.id"
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": true,
+        "countries": ["IN"]
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "vantagemarkets.co.id",
+      "backup": ""
+    },
+    "createdAt": "2026-05-04T13:57:35.305Z",
+    "updatedAt": "2026-05-04T13:59:59.115Z"
+  },
+  {
+    "id": 1777899812503,
+    "brand": "VAU",
+    "regulation": "V2",
+    "description": "SCA5号",
+    "license": "MAU",
+    "code": "V2MAU",
+    "registrationTypes": ["国家"],
+    "registrationValues": {
+      "国家": "AE"
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": false,
+        "countries": []
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "secure.vantagemarkets.com",
+      "backup": ""
+    },
+    "createdAt": "2026-05-04T13:58:12.503Z",
+    "updatedAt": "2026-05-04T13:59:16.083Z"
+  },
+  {
+    "id": 1777941424770,
+    "brand": "VAU",
+    "regulation": "FCA",
+    "description": "FCA",
+    "license": "",
+    "code": "FCA",
+    "registrationTypes": ["域名"],
+    "registrationValues": {
+      "域名": "vantagemarkets.co.uk"
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": true,
+        "countries": ["GB", "FI", "GE"]
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "vantagemarkets.co.uk",
+      "backup": ""
+    },
+    "createdAt": "2026-05-05T00:37:04.770Z",
+    "updatedAt": "2026-05-05T00:37:04.770Z"
+  },
+  {
+    "id": 1777944076171,
+    "brand": "VAU",
+    "regulation": "V2",
+    "description": "SCA1号",
+    "license": "SCA",
+    "code": "V2SCA",
+    "registrationTypes": [
+      "域名",
+      "国籍"
+    ],
+    "registrationValues": {
+      "域名": "vantagemarkets.ae",
+      "国籍": "emirati"
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": false,
+        "countries": []
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "vantagemarkets.ae",
+      "backup": ""
+    },
+    "createdAt": "2026-05-05T01:21:16.171Z",
+    "updatedAt": "2026-05-05T01:21:16.171Z"
+  },
+  {
+    "id": 1777958497805,
+    "brand": "VAU",
+    "regulation": "V1",
+    "description": "v1",
+    "license": "svg",
+    "code": "V1SVG",
+    "registrationTypes": [
+      "国家"
+    ],
+    "registrationValues": {
+      "国家": [
+        "HK",
+        "BY"
+      ]
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": false,
+        "countries": []
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "secure.vantagemarkets.com",
+      "backup": ""
+    },
+    "createdAt": "2026-05-05T05:21:37.805Z",
+    "updatedAt": "2026-05-05T05:21:37.805Z"
+  },
+  {
+    "id": 1777958525710,
+    "brand": "VAU",
+    "regulation": "V2",
+    "description": "v2",
+    "license": "svg",
+    "code": "V2SVG",
+    "registrationTypes": [
+      "国家"
+    ],
+    "registrationValues": {
+      "国家": [
+        "AR",
+        "DE",
+        "AT"
+      ]
+    },
+    "restrictionCountry": {
+      "whitelist": {
+        "enabled": false,
+        "countries": []
+      },
+      "blacklist": {
+        "enabled": false,
+        "countries": []
+      }
+    },
+    "cpibpDomain": {
+      "default": "secure.vantagemarkets.com",
+      "backup": ""
+    },
+    "createdAt": "2026-05-05T05:22:05.710Z",
+    "updatedAt": "2026-05-05T05:22:05.710Z"
+  }
+]

@@ -1,0 +1,1608 @@
+<!-- Regulation List Page - Optimized UI -->
+<style>
+    /* Page specific styles */
+    .filter-section {
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid #E8EAED;
+    }
+
+    .filter-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #E8EAED;
+    }
+
+    .filter-section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #00B4B4;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filter-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+    }
+
+    .table-card {
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        border: 1px solid #E8EAED;
+        overflow: hidden;
+    }
+
+    .table-card-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #E8EAED;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .table-card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2C3E50;
+        margin: 0;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    #regulationTable {
+        margin: 0 !important;
+    }
+
+    #regulationTable thead th {
+        background-color: #F5F6FA;
+        color: #4A5568;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-bottom: 2px solid #E8EAED;
+        white-space: nowrap;
+    }
+
+    #regulationTable tbody td {
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #2C3E50;
+        border-bottom: 1px solid #F5F6FA;
+    }
+
+    #regulationTable tbody tr:hover {
+        background-color: #F5F6FA;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+    }
+
+    .btn-icon.btn-view {
+        background-color: #E6F7FF;
+        color: #1890FF;
+    }
+
+    .btn-icon.btn-view:hover {
+        background-color: #BAE7FF;
+    }
+
+    .btn-icon.btn-edit {
+        background-color: #E6F7F7;
+        color: #00B4B4;
+    }
+
+    .btn-icon.btn-edit:hover {
+        background-color: #B3E5E5;
+    }
+
+    .btn-icon.btn-delete {
+        background-color: #FFF1F0;
+        color: #FF4D4F;
+    }
+
+    .btn-icon.btn-delete:hover {
+        background-color: #FFCCC7;
+    }
+
+    /* Tag Input Styles */
+    .tag-input-wrapper {
+        position: relative;
+    }
+
+    .tag-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        background-color: #FFFFFF;
+        min-height: 42px;
+        cursor: text;
+        transition: border-color 0.15s ease;
+    }
+
+    .tag-input:focus-within {
+        border-color: #00B4B4;
+        box-shadow: 0 0 0 3px rgba(0, 180, 180, 0.1);
+    }
+
+    .tag-input-field {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 13px;
+        color: #2C3E50;
+        min-width: 120px;
+        padding: 0;
+    }
+
+    .tag-input-field::placeholder {
+        color: #A0AEC0;
+    }
+
+    .tag-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        background-color: #E6F7F7;
+        color: #00B4B4;
+        border-radius: 4px;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .tag-remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: transparent;
+        color: #00B4B4;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        font-size: 10px;
+    }
+
+    .tag-remove:hover {
+        background-color: #00B4B4;
+        color: #FFFFFF;
+    }
+
+    .tag-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: #FFFFFF;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        margin-top: 4px;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .tag-dropdown-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 13px;
+        color: #2C3E50;
+        transition: background-color 0.15s ease;
+    }
+
+    .tag-dropdown-item:hover {
+        background-color: #F5F6FA;
+    }
+
+    .tag-dropdown-item.selected {
+        background-color: #E6F7F7;
+        color: #00B4B4;
+    }
+
+    .tag-dropdown-all {
+        background-color: #F0F9FF;
+        border-bottom: 1px solid #E8EAED;
+        color: #0E64D2;
+    }
+
+    .tag-dropdown-all:hover {
+        background-color: #E0F2FE !important;
+    }
+
+    .tag-dropdown::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .tag-dropdown::-webkit-scrollbar-thumb {
+        background-color: #CBD5E0;
+        border-radius: 3px;
+    }
+
+    /* DataTables custom styling */
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        padding: 12px 20px;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        padding: 6px 32px 6px 12px;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        margin: 0 8px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234A5568' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        min-width: 70px;
+    }
+
+    .dataTables_wrapper .dataTables_length label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        padding: 6px 12px;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        margin-left: 8px;
+    }
+
+    /* Bottom controls container */
+    .dataTables_wrapper .bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-top: 1px solid #E8EAED;
+    }
+
+    .dataTables_wrapper .pagination-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .dataTables_wrapper .pagination-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_info {
+        padding: 0;
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_paginate {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_length {
+        padding: 0;
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_length label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+    }
+
+    /* Pagination Styling - Simple number buttons */
+    .dataTables_wrapper .dataTables_paginate {
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 1px solid transparent !important;
+        border-radius: 4px !important;
+        background: transparent !important;
+        color: #4A5568 !important;
+        font-size: 12px !important;
+        transition: all 0.15s ease !important;
+        line-height: 1 !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        cursor: pointer !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: #F5F6FA !important;
+        border-color: #E8EAED !important;
+        color: #00B4B4 !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #00B4B4 !important;
+        border-color: #00B4B4 !important;
+        color: #FFFFFF !important;
+        font-weight: 500 !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+        opacity: 0.4 !important;
+        cursor: not-allowed !important;
+        background: transparent !important;
+        border-color: transparent !important;
+        color: #A0AEC0 !important;
+    }
+
+
+    .dataTables_wrapper .dataTables_info {
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    /* Page length selector */
+    .dataTables_wrapper .dataTables_length {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        padding: 3px 20px 3px 6px;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #4A5568;
+        background-color: #FFFFFF;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%234A5568' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 4px center;
+        height: 26px;
+        line-height: 1;
+    }
+
+    .page-content-fullheight {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 64px - 48px); /* viewport - topbar - padding */
+    }
+
+    .page-content-fullheight .table-card {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-content-fullheight .table-wrapper {
+        flex: 1;
+        overflow: auto;
+    }
+</style>
+
+<div class="page-content-fullheight">
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-section-header">
+            <h5 class="filter-section-title">
+                <i class="fas fa-list"></i> Regulation List
+            </h5>
+        </div>
+
+        <div class="filter-row">
+            <div class="form-group">
+                <label class="form-label">Brand</label>
+                <select id="filterBrand" class="form-select form-control">
+                    <option value="">All Brands</option>
+                    <option value="VAU">VAU</option>
+                    <option value="VT">VT</option>
+                    <option value="PU">PU</option>
+                    <option value="ST">ST</option>
+                    <option value="MM">MM</option>
+                    <option value="UM">UM</option>
+                    <option value="VTJ">VTJ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Regulation Type</label>
+                <select id="filterRegulation" class="form-select form-control">
+                    <option value="">All Types</option>
+                    <option value="V1">V1</option>
+                    <option value="V2">V2</option>
+                    <option value="ASIC">ASIC</option>
+                    <option value="FCA">FCA</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">License</label>
+                <input type="text" id="filterCode" class="form-control" placeholder="Search by license">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <input type="text" id="filterDescription" class="form-control" placeholder="Search by description">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Created Date</label>
+                <input type="date" id="filterDate" class="form-control">
+            </div>
+        </div>
+
+        <div class="filter-actions">
+            <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <button type="button" class="btn btn-primary" onclick="applyFilters()">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <button type="button" class="btn btn-success" onclick="openCreateDrawer()">
+                <i class="fas fa-plus"></i> Add
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="regulationTable" class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Brand</th>
+                        <th>Regulation</th>
+                        <th>License</th>
+                        <th>Description</th>
+                        <th>Registration Type</th>
+                        <th>Created Date</th>
+                        <th>Updated Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data populated by DataTables -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Right Drawer for Create/Edit -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="regulationDrawer">
+    <div class="drawer-header">
+        <h3 class="drawer-title" id="drawerTitle">
+            <i class="fas fa-plus-circle"></i> Create New Regulation
+        </h3>
+        <button class="drawer-close" onclick="closeDrawer()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="drawer-body">
+        <form id="regulationForm">
+            <!-- Form content will be added in Phase 3 -->
+            <div class="form-section">
+                <h6 class="form-section-title">Basic Information</h6>
+
+                <div class="form-group">
+                    <label class="form-label">Brand <span class="required">*</span></label>
+                    <select id="brand" class="form-select form-control" required>
+                        <option value="">Select Brand</option>
+                        <option value="VAU">VAU</option>
+                        <option value="VT">VT</option>
+                        <option value="PU">PU</option>
+                        <option value="ST">ST</option>
+                        <option value="MM">MM</option>
+                        <option value="UM">UM</option>
+                        <option value="VTJ">VTJ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Regulation Type <span class="required">*</span></label>
+                    <select id="regulation" class="form-select form-control" required>
+                        <option value="">Select Regulation</option>
+                        <option value="V1">V1</option>
+                        <option value="V2">V2</option>
+                        <option value="ASIC">ASIC</option>
+                        <option value="FCA">FCA</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description <span class="required">*</span></label>
+                    <input type="text" id="description" class="form-control" maxlength="30" required>
+                    <div class="char-counter">
+                        <span id="descCharCount">0</span> / 30 characters
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field" id="licenseField">
+                    <label class="form-label">Code <span class="required">*</span></label>
+                    <input type="text" id="license" class="form-control" maxlength="5">
+                    <div class="char-counter">
+                        <span id="licenseCharCount">0</span> / 5 characters
+                    </div>
+                    <small class="form-text">Required for V1 and V2 regulations</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">License (Auto-generated)</label>
+                    <input type="text" id="code" class="form-control" readonly>
+                    <small class="form-text">Auto-generated based on Regulation and Code</small>
+                </div>
+            </div>
+
+            <!-- Registration Type Section -->
+            <div class="form-section">
+                <h6 class="form-section-title">Registration Classification</h6>
+
+                <div class="form-group">
+                    <label class="form-label">Registration Type <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="regTypeDomain" name="registrationType" value="域名">
+                            <label for="regTypeDomain">Domain</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="regTypeNationality" name="registrationType" value="国籍">
+                            <label for="regTypeNationality">Nationality</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="regTypeCountry" name="registrationType" value="国家">
+                            <label for="regTypeCountry">Country</label>
+                        </div>
+                    </div>
+                    <small class="form-text">Select one or more. Users must satisfy ALL selected conditions (AND logic)</small>
+                </div>
+
+                <!-- Conditional: Domain Field -->
+                <div class="form-group conditional-field" id="domainField">
+                    <label class="form-label">Domain <span class="required">*</span></label>
+                    <input type="text" id="domainValue" class="form-control" placeholder="e.g., vantagemarkets.com">
+                    <small class="form-text">Enter the registration domain</small>
+                </div>
+
+                <!-- Conditional: Nationality Field -->
+                <div class="form-group conditional-field" id="nationalityField">
+                    <label class="form-label">Nationality <span class="required">*</span></label>
+                    <div class="tag-input-wrapper">
+                        <div class="tag-input" id="nationalityTagInput">
+                            <input type="text" id="nationalityInput" class="tag-input-field" placeholder="Type to search nationalities..." autocomplete="off">
+                        </div>
+                        <div class="tag-dropdown" id="nationalityDropdown" style="display: none;"></div>
+                    </div>
+                    <input type="hidden" id="nationalityValue" value="">
+                </div>
+
+                <!-- Conditional: Country Field -->
+                <div class="form-group conditional-field" id="countryField">
+                    <label class="form-label">Country <span class="required">*</span></label>
+                    <div class="tag-input-wrapper">
+                        <div class="tag-input" id="countryTagInput">
+                            <input type="text" id="countryInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                        </div>
+                        <div class="tag-dropdown" id="countryDropdown" style="display: none;"></div>
+                    </div>
+                    <input type="hidden" id="countryValue" value="">
+                </div>
+            </div>
+
+            <!-- Restriction Country Section -->
+            <div class="form-section conditional-field" id="restrictionSection">
+                <h6 class="form-section-title">Restriction Country</h6>
+
+                <div class="form-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="enableWhitelist" name="restrictionList">
+                        <label for="enableWhitelist">Whitelist (Allow only selected countries)</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field" id="whitelistField">
+                    <label class="form-label">Whitelist Countries</label>
+                    <div class="tag-input-wrapper">
+                        <div class="tag-input" id="whitelistTagInput">
+                            <input type="text" id="whitelistInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                        </div>
+                        <div class="tag-dropdown" id="whitelistDropdown" style="display: none;"></div>
+                    </div>
+                    <input type="hidden" id="whitelistCountries" value="">
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="enableBlacklist" name="restrictionList">
+                        <label for="enableBlacklist">Blacklist (Block selected countries)</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field" id="blacklistField">
+                    <label class="form-label">Blacklist Countries</label>
+                    <div class="tag-input-wrapper">
+                        <div class="tag-input" id="blacklistTagInput">
+                            <input type="text" id="blacklistInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                        </div>
+                        <div class="tag-dropdown" id="blacklistDropdown" style="display: none;"></div>
+                    </div>
+                    <input type="hidden" id="blacklistCountries" value="">
+                </div>
+            </div>
+
+            <!-- CP/IBP Domain Section -->
+            <div class="form-section">
+                <h6 class="form-section-title">CP/IBP Domain Configuration</h6>
+
+                <div class="form-group">
+                    <label class="form-label">Default Domain <span class="required">*</span></label>
+                    <input type="text" id="cpibpDefault" class="form-control" placeholder="e.g., cp.vantagemarkets.com" required>
+                    <small class="form-text">Primary CP/IBP domain (required)</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Backup Domain</label>
+                    <input type="text" id="cpibpBackup" class="form-control" placeholder="e.g., ibp.vantagemarkets.com">
+                    <small class="form-text">Secondary CP/IBP domain (optional)</small>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="drawer-footer">
+        <button type="button" class="btn btn-outline-secondary" onclick="closeDrawer()">
+            <i class="fas fa-times"></i> Cancel
+        </button>
+        <button type="submit" form="regulationForm" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Regulation
+        </button>
+    </div>
+</div>
+
+<script>
+let regulationTable = null;
+let currentRegulationId = null;
+
+// Helper function to get DataService instance
+function getDataService() {
+    return window.appInstance && window.appInstance.dataService
+        ? window.appInstance.dataService
+        : new DataService();
+}
+
+// Tag Input Manager
+class TagInputManager {
+    constructor(inputId, tagContainerId, dropdownId, hiddenInputId, allCountries) {
+        this.input = $(`#${inputId}`);
+        this.tagContainer = $(`#${tagContainerId}`);
+        this.dropdown = $(`#${dropdownId}`);
+        this.hiddenInput = $(`#${hiddenInputId}`);
+        this.allCountries = allCountries;
+        this.selectedCountries = [];
+        this.init();
+    }
+
+    init() {
+        // Input event
+        this.input.on('input', () => this.handleInput());
+        this.input.on('focus', () => this.showDropdown());
+
+        // Click on tag container to focus input
+        this.tagContainer.on('click', (e) => {
+            if (e.target === this.tagContainer[0]) {
+                this.input.focus();
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        $(document).on('click', (e) => {
+            if (!this.tagContainer.is(e.target) && !this.tagContainer.has(e.target).length &&
+                !this.dropdown.is(e.target) && !this.dropdown.has(e.target).length) {
+                this.hideDropdown();
+            }
+        });
+    }
+
+    handleInput() {
+        const query = this.input.val().toLowerCase();
+        const filtered = this.allCountries.filter(c =>
+            c.name.toLowerCase().includes(query) &&
+            !this.selectedCountries.some(sc => sc.code === c.code)
+        );
+
+        this.renderDropdown(filtered);
+    }
+
+    renderDropdown(countries) {
+        if (countries.length === 0) {
+            this.hideDropdown();
+            return;
+        }
+
+        // Add "All" option at the top if not all countries are selected
+        let html = '';
+        if (this.selectedCountries.length < this.allCountries.length) {
+            html += `
+                <div class="tag-dropdown-item tag-dropdown-all" data-all="true">
+                    <strong>All</strong>
+                </div>
+            `;
+        }
+
+        html += countries.map(c => `
+            <div class="tag-dropdown-item" data-code="${c.code}" data-name="${c.name}">
+                ${c.name}
+            </div>
+        `).join('');
+
+        this.dropdown.html(html);
+        this.dropdown.show();
+
+        // Bind click events for "All"
+        this.dropdown.find('.tag-dropdown-all').on('click', (e) => {
+            this.selectAll();
+        });
+
+        // Bind click events for individual items
+        this.dropdown.find('.tag-dropdown-item:not(.tag-dropdown-all)').on('click', (e) => {
+            const code = $(e.currentTarget).data('code');
+            const name = $(e.currentTarget).data('name');
+            this.addTag(code, name);
+        });
+    }
+
+    showDropdown() {
+        // Always show dropdown on focus, even if input is empty
+        const query = this.input.val().toLowerCase();
+        const filtered = this.allCountries.filter(c =>
+            (!query || c.name.toLowerCase().includes(query)) &&
+            !this.selectedCountries.some(sc => sc.code === c.code)
+        );
+        this.renderDropdown(filtered);
+    }
+
+    selectAll() {
+        // Clear existing selections first
+        this.selectedCountries = [];
+
+        // Add all countries
+        this.allCountries.forEach(c => {
+            this.selectedCountries.push({ code: c.code, name: c.name });
+        });
+
+        this.renderTags();
+        this.input.val('');
+        this.hideDropdown();
+        this.updateHiddenInput();
+    }
+
+    hideDropdown() {
+        this.dropdown.hide();
+    }
+
+    addTag(code, name) {
+        if (this.selectedCountries.some(c => c.code === code)) return;
+
+        this.selectedCountries.push({ code, name });
+        this.renderTags();
+        this.input.val('');
+        this.hideDropdown();
+        this.updateHiddenInput();
+    }
+
+    removeTag(code) {
+        this.selectedCountries = this.selectedCountries.filter(c => c.code !== code);
+        this.renderTags();
+        this.updateHiddenInput();
+    }
+
+    renderTags() {
+        const tags = this.selectedCountries.map(c => `
+            <span class="tag-item">
+                ${c.name}
+                <span class="tag-remove" data-code="${c.code}">×</span>
+            </span>
+        `).join('');
+
+        this.tagContainer.find('.tag-item').remove();
+        this.tagContainer.prepend(tags);
+
+        // Bind remove events
+        this.tagContainer.find('.tag-remove').on('click', (e) => {
+            const code = $(e.currentTarget).data('code');
+            this.removeTag(code);
+        });
+    }
+
+    updateHiddenInput() {
+        const codes = this.selectedCountries.map(c => c.code);
+        this.hiddenInput.val(codes.join(','));
+    }
+
+    setCountries(codes) {
+        this.selectedCountries = [];
+        codes.forEach(code => {
+            const country = this.allCountries.find(c => c.code === code);
+            if (country) {
+                this.selectedCountries.push(country);
+            }
+        });
+        this.renderTags();
+        this.updateHiddenInput();
+    }
+
+    getCountries() {
+        return this.selectedCountries.map(c => c.code);
+    }
+
+    clear() {
+        this.selectedCountries = [];
+        this.renderTags();
+        this.updateHiddenInput();
+    }
+}
+
+let whitelistManager = null;
+let blacklistManager = null;
+let nationalityManager = null;
+let countryManager = null;
+
+// Initialize when page loads
+$(document).one('pageLoaded', function(event, data) {
+    if (data.route === '#/regulation/list') {
+        initRegulationListPage();
+    }
+});
+
+function initRegulationListPage() {
+    const dataService = getDataService();
+    const regulations = dataService.getAllRegulations();
+
+    // Initialize DataTable
+    regulationTable = $('#regulationTable').DataTable({
+        data: regulations,
+        columns: [
+            {
+                data: 'brand',
+                render: function(data) {
+                    return data ? `<span class="badge badge-secondary">${data}</span>` : '-';
+                }
+            },
+            {
+                data: 'regulation',
+                render: function(data) {
+                    const badges = {
+                        'V1': 'badge-primary',
+                        'V2': 'badge-info',
+                        'ASIC': 'badge-success',
+                        'FCA': 'badge-warning'
+                    };
+                    const badgeClass = badges[data] || 'badge-secondary';
+                    return `<span class="badge ${badgeClass}">${data}</span>`;
+                }
+            },
+            {
+                data: 'code',
+                render: function(data) {
+                    return `<strong>${data}</strong>`;
+                }
+            },
+            {
+                data: 'description'
+            },
+            {
+                data: 'registrationTypes',
+                render: function(data) {
+                    if (!Array.isArray(data)) return '';
+
+                    // Translation map: Chinese to English
+                    const translationMap = {
+                        '域名': 'Domain',
+                        '国籍': 'Nationality',
+                        '国家': 'Country'
+                    };
+
+                    // Convert Chinese to English
+                    const translated = data.map(item => translationMap[item] || item);
+
+                    return translated.join(', ');
+                }
+            },
+            {
+                data: 'createdAt',
+                render: function(data) {
+                    return data ? new Date(data).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) : '-';
+                }
+            },
+            {
+                data: 'updatedAt',
+                render: function(data) {
+                    return data ? new Date(data).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) : '-';
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                render: function(data, type, row) {
+                    return `
+                        <div class="action-buttons">
+                            <button class="btn-icon btn-view" onclick="openViewDrawer(${row.id})" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon btn-edit" onclick="openEditDrawer(${row.id})" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-delete" onclick="deleteRegulation(${row.id})" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        ],
+        order: [[5, 'desc']],  // Sort by Updated Date (column index 5) descending
+        pageLength: 20,
+        lengthMenu: [[20, 50, 100], [20, 50, 100]],
+        responsive: false,
+        pagingType: 'simple_numbers',
+        language: {
+            search: 'Search:',
+            lengthMenu: '_MENU_ / page',
+            info: 'Total _TOTAL_ items',
+            infoEmpty: 'No regulations found',
+            infoFiltered: '(filtered from _MAX_ total entries)',
+            zeroRecords: 'No matching regulations found',
+            emptyTable: 'No regulations available. Click "Add" to get started.',
+            paginate: {
+                previous: '<',
+                next: '>'
+            }
+        },
+        dom: '<"top">t<"bottom"<"pagination-left"i><"pagination-right"pl>><"clear">'
+    });
+
+    // Initialize form
+    initDrawerForm();
+
+    console.log('✅ Regulation list page initialized');
+}
+
+function initDrawerForm() {
+    const dataService = getDataService();
+
+    // Load countries and nationalities into dropdowns
+    const countries = dataService.getCountries();
+    const nationalities = dataService.getNationalities();
+
+    console.log(`✅ Loaded ${countries.length} countries and ${nationalities.length} nationalities`);
+
+    // Initialize Tag Input Managers for Nationality
+    nationalityManager = new TagInputManager(
+        'nationalityInput',
+        'nationalityTagInput',
+        'nationalityDropdown',
+        'nationalityValue',
+        nationalities
+    );
+
+    // Initialize Tag Input Managers for Country
+    countryManager = new TagInputManager(
+        'countryInput',
+        'countryTagInput',
+        'countryDropdown',
+        'countryValue',
+        countries
+    );
+
+    // Initialize Tag Input Managers for Whitelist/Blacklist
+    whitelistManager = new TagInputManager(
+        'whitelistInput',
+        'whitelistTagInput',
+        'whitelistDropdown',
+        'whitelistCountries',
+        countries
+    );
+
+    blacklistManager = new TagInputManager(
+        'blacklistInput',
+        'blacklistTagInput',
+        'blacklistDropdown',
+        'blacklistCountries',
+        countries
+    );
+
+    // Handle whitelist/blacklist checkbox changes
+    $('#enableWhitelist').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#whitelistField').addClass('show');
+        } else {
+            $('#whitelistField').removeClass('show');
+            whitelistManager.clear();
+        }
+    });
+
+    $('#enableBlacklist').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#blacklistField').addClass('show');
+        } else {
+            $('#blacklistField').removeClass('show');
+            blacklistManager.clear();
+        }
+    });
+
+    // Character counters
+    $('#description').on('input', function() {
+        const count = $(this).val().length;
+        $('#descCharCount').text(count);
+
+        const $counter = $('#descCharCount').parent();
+        $counter.removeClass('warning danger');
+        if (count > 25) $counter.addClass('warning');
+        if (count >= 30) $counter.addClass('danger');
+    });
+
+    $('#license').on('input', function() {
+        const count = $(this).val().length;
+        $('#licenseCharCount').text(count);
+
+        const $counter = $('#licenseCharCount').parent();
+        $counter.removeClass('warning danger');
+        if (count > 3) $counter.addClass('warning');
+        if (count >= 5) $counter.addClass('danger');
+
+        generateCode();
+    });
+
+    // Regulation change
+    $('#regulation').on('change', function() {
+        const value = $(this).val();
+        if (value === 'V1' || value === 'V2') {
+            $('#licenseField').addClass('show');
+            $('#license').prop('required', true);
+        } else {
+            $('#licenseField').removeClass('show');
+            $('#license').prop('required', false).val('');
+            $('#licenseCharCount').text('0');
+        }
+        generateCode();
+    });
+
+    // Registration Type change - show/hide conditional fields
+    $('input[name="registrationType"]').on('change', function() {
+        handleRegistrationTypeChange();
+    });
+
+    // Form submit
+    $('#regulationForm').on('submit', function(e) {
+        e.preventDefault();
+
+        // Validate at least one registration type is selected
+        const selectedTypes = $('input[name="registrationType"]:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (selectedTypes.length === 0) {
+            if (window.showToast) {
+                window.showToast('Please select at least one Registration Type', 'error');
+            } else {
+                alert('Please select at least one Registration Type');
+            }
+            return;
+        }
+
+        // Build registration values
+        const registrationValues = {};
+        selectedTypes.forEach(type => {
+            if (type === '域名') {
+                registrationValues['域名'] = $('#domainValue').val();
+            } else if (type === '国籍') {
+                // Get selected nationalities from TagInputManager
+                registrationValues['国籍'] = nationalityManager.getCountries();
+            } else if (type === '国家') {
+                // Get selected countries from TagInputManager
+                registrationValues['国家'] = countryManager.getCountries();
+            }
+        });
+
+        // Build restriction country data
+        const hasNationalityOrCountry = selectedTypes.includes('国籍') || selectedTypes.includes('国家');
+        const restrictionCountry = {
+            whitelist: {
+                enabled: $('#enableWhitelist').is(':checked'),
+                countries: $('#enableWhitelist').is(':checked') ? whitelistManager.getCountries() : []
+            },
+            blacklist: {
+                enabled: $('#enableBlacklist').is(':checked'),
+                countries: $('#enableBlacklist').is(':checked') ? blacklistManager.getCountries() : []
+            }
+        };
+
+        // Build CP/IBP domain data
+        const cpibpDomain = {
+            default: $('#cpibpDefault').val(),
+            backup: $('#cpibpBackup').val() || ''
+        };
+
+        const formData = {
+            id: currentRegulationId,
+            brand: $('#brand').val(),
+            regulation: $('#regulation').val(),
+            description: $('#description').val(),
+            license: $('#license').val() || '',
+            code: $('#code').val(),
+            registrationTypes: selectedTypes,
+            registrationValues: registrationValues,
+            restrictionCountry: restrictionCountry,
+            cpibpDomain: cpibpDomain
+        };
+
+        try {
+            dataService.saveRegulation(formData);
+
+            if (window.showToast) {
+                window.showToast(
+                    `Regulation ${formData.id ? 'updated' : 'created'} successfully`,
+                    'success'
+                );
+            }
+
+            closeDrawer();
+            refreshTable();
+        } catch (error) {
+            if (window.showToast) {
+                window.showToast(error.message, 'error');
+            } else {
+                alert('Error: ' + error.message);
+            }
+        }
+    });
+}
+
+function handleRegistrationTypeChange() {
+    // Get selected registration types
+    const selectedTypes = $('input[name="registrationType"]:checked').map(function() {
+        return $(this).val();
+    }).get();
+
+    // Hide all conditional fields first
+    $('#domainField, #nationalityField, #countryField').removeClass('show');
+    $('#domainValue, #nationalityValue, #countryValue').prop('required', false);
+
+    // Show fields based on selection
+    selectedTypes.forEach(type => {
+        if (type === '域名') {
+            $('#domainField').addClass('show');
+            $('#domainValue').prop('required', true);
+        } else if (type === '国籍') {
+            $('#nationalityField').addClass('show');
+            $('#nationalityValue').prop('required', true);
+        } else if (type === '国家') {
+            $('#countryField').addClass('show');
+            $('#countryValue').prop('required', true);
+        }
+    });
+
+    // Show/hide Restriction Country section
+    const hasNationalityOrCountry = selectedTypes.includes('国籍') || selectedTypes.includes('国家');
+    if (!hasNationalityOrCountry && selectedTypes.length > 0) {
+        $('#restrictionSection').addClass('show');
+        $('#restrictionCountries').prop('required', true);
+    } else {
+        $('#restrictionSection').removeClass('show');
+        $('#restrictionCountries').prop('required', false);
+    }
+}
+
+function generateCode() {
+    const regulation = $('#regulation').val();
+    const license = $('#license').val();
+    let code = '';
+
+    if (!regulation) {
+        $('#code').val('');
+        return;
+    }
+
+    if (regulation === 'ASIC') {
+        code = 'ASIC';
+    } else if (regulation === 'FCA') {
+        code = 'FCA';
+    } else if ((regulation === 'V1' || regulation === 'V2') && license) {
+        code = regulation + license.toUpperCase();
+    }
+
+    $('#code').val(code);
+}
+
+function openCreateDrawer() {
+    currentRegulationId = null;
+    $('#drawerTitle').html('<i class="fas fa-plus-circle"></i> Create New Regulation');
+    $('#regulationForm')[0].reset();
+
+    // Reset all conditional fields
+    $('#licenseField').removeClass('show');
+    $('#domainField, #nationalityField, #countryField, #restrictionSection').removeClass('show');
+
+    // Reset character counters
+    $('#descCharCount').text('0');
+    $('#licenseCharCount').text('0');
+
+    // Uncheck all registration types
+    $('input[name="registrationType"]').prop('checked', false);
+
+    // Reset restriction country
+    $('#enableWhitelist').prop('checked', false);
+    $('#enableBlacklist').prop('checked', false);
+    $('#whitelistField, #blacklistField').removeClass('show');
+    if (whitelistManager) whitelistManager.clear();
+    if (blacklistManager) blacklistManager.clear();
+
+    // Clear nationality and country managers
+    if (nationalityManager) nationalityManager.clear();
+    if (countryManager) countryManager.clear();
+
+    // Enable form controls for creating
+    $('#regulationForm input, #regulationForm select, #regulationForm textarea').prop('disabled', false);
+    $('#regulationForm .btn-primary').show();
+
+    $('#drawerOverlay').addClass('active');
+    $('#regulationDrawer').addClass('active');
+}
+
+function openEditDrawer(id) {
+    currentRegulationId = id;
+    const dataService = getDataService();
+    const regulation = dataService.getRegulation(id);
+
+    if (!regulation) {
+        alert('Regulation not found');
+        return;
+    }
+
+    $('#drawerTitle').html('<i class="fas fa-edit"></i> Edit Regulation');
+
+    // Load basic fields
+    $('#brand').val(regulation.brand || '');
+    $('#regulation').val(regulation.regulation).trigger('change');
+    $('#description').val(regulation.description).trigger('input');
+    $('#license').val(regulation.license || '').trigger('input');
+    $('#code').val(regulation.code);
+
+    // Load registration types
+    $('input[name="registrationType"]').prop('checked', false);
+    if (regulation.registrationTypes) {
+        regulation.registrationTypes.forEach(type => {
+            if (type === '域名') $('#regTypeDomain').prop('checked', true);
+            if (type === '国籍') $('#regTypeNationality').prop('checked', true);
+            if (type === '国家') $('#regTypeCountry').prop('checked', true);
+        });
+        handleRegistrationTypeChange();
+    }
+
+    // Load registration values
+    if (regulation.registrationValues) {
+        $('#domainValue').val(regulation.registrationValues['域名'] || '');
+
+        // Handle nationality - support both string (old format) and array (new format)
+        const nationalityVal = regulation.registrationValues['国籍'];
+        if (nationalityVal) {
+            const nationalityCodes = Array.isArray(nationalityVal) ? nationalityVal : [nationalityVal];
+            nationalityManager.setCountries(nationalityCodes);
+        }
+
+        // Handle country - support both string (old format) and array (new format)
+        const countryVal = regulation.registrationValues['国家'];
+        if (countryVal) {
+            const countryCodes = Array.isArray(countryVal) ? countryVal : [countryVal];
+            countryManager.setCountries(countryCodes);
+        }
+    }
+
+    // Load restriction country (new format)
+    if (regulation.restrictionCountry) {
+        // Handle new format
+        if (regulation.restrictionCountry.whitelist) {
+            $('#enableWhitelist').prop('checked', regulation.restrictionCountry.whitelist.enabled);
+            if (regulation.restrictionCountry.whitelist.enabled) {
+                $('#whitelistField').addClass('show');
+                whitelistManager.setCountries(regulation.restrictionCountry.whitelist.countries || []);
+            }
+        }
+        if (regulation.restrictionCountry.blacklist) {
+            $('#enableBlacklist').prop('checked', regulation.restrictionCountry.blacklist.enabled);
+            if (regulation.restrictionCountry.blacklist.enabled) {
+                $('#blacklistField').addClass('show');
+                blacklistManager.setCountries(regulation.restrictionCountry.blacklist.countries || []);
+            }
+        }
+        // Handle old format (backwards compatibility)
+        if (regulation.restrictionCountry.type && regulation.restrictionCountry.countries) {
+            if (regulation.restrictionCountry.type === 'whitelist') {
+                $('#enableWhitelist').prop('checked', true);
+                $('#whitelistField').addClass('show');
+                whitelistManager.setCountries(regulation.restrictionCountry.countries);
+            } else if (regulation.restrictionCountry.type === 'blacklist') {
+                $('#enableBlacklist').prop('checked', true);
+                $('#blacklistField').addClass('show');
+                blacklistManager.setCountries(regulation.restrictionCountry.countries);
+            }
+        }
+    }
+
+    // Load CP/IBP domain
+    if (regulation.cpibpDomain) {
+        $('#cpibpDefault').val(regulation.cpibpDomain.default || '');
+        $('#cpibpBackup').val(regulation.cpibpDomain.backup || '');
+    }
+
+    // Enable form controls for editing
+    $('#regulationForm input, #regulationForm select, #regulationForm textarea').prop('disabled', false);
+    $('#regulationForm .btn-primary').show();
+
+    $('#drawerOverlay').addClass('active');
+    $('#regulationDrawer').addClass('active');
+}
+
+function openViewDrawer(id) {
+    currentRegulationId = id;
+    const dataService = getDataService();
+    const regulation = dataService.getRegulation(id);
+
+    if (!regulation) {
+        alert('Regulation not found');
+        return;
+    }
+
+    $('#drawerTitle').html('<i class="fas fa-eye"></i> View Regulation');
+
+    // Load basic fields
+    $('#brand').val(regulation.brand || '');
+    $('#regulation').val(regulation.regulation).trigger('change');
+    $('#description').val(regulation.description).trigger('input');
+    $('#license').val(regulation.license || '').trigger('input');
+    $('#code').val(regulation.code);
+
+    // Load registration types
+    $('input[name="registrationType"]').prop('checked', false);
+    if (regulation.registrationTypes) {
+        regulation.registrationTypes.forEach(type => {
+            if (type === '域名') $('#regTypeDomain').prop('checked', true);
+            if (type === '国籍') $('#regTypeNationality').prop('checked', true);
+            if (type === '国家') $('#regTypeCountry').prop('checked', true);
+        });
+        handleRegistrationTypeChange();
+    }
+
+    // Load registration values
+    if (regulation.registrationValues) {
+        $('#domainValue').val(regulation.registrationValues['域名'] || '');
+
+        // Handle nationality - support both string (old format) and array (new format)
+        const nationalityVal = regulation.registrationValues['国籍'];
+        if (nationalityVal) {
+            const nationalityCodes = Array.isArray(nationalityVal) ? nationalityVal : [nationalityVal];
+            nationalityManager.setCountries(nationalityCodes);
+        }
+
+        // Handle country - support both string (old format) and array (new format)
+        const countryVal = regulation.registrationValues['国家'];
+        if (countryVal) {
+            const countryCodes = Array.isArray(countryVal) ? countryVal : [countryVal];
+            countryManager.setCountries(countryCodes);
+        }
+    }
+
+    // Load restriction country (new format)
+    if (regulation.restrictionCountry) {
+        // Handle new format
+        if (regulation.restrictionCountry.whitelist) {
+            $('#enableWhitelist').prop('checked', regulation.restrictionCountry.whitelist.enabled);
+            if (regulation.restrictionCountry.whitelist.enabled) {
+                $('#whitelistField').addClass('show');
+                whitelistManager.setCountries(regulation.restrictionCountry.whitelist.countries || []);
+            }
+        }
+        if (regulation.restrictionCountry.blacklist) {
+            $('#enableBlacklist').prop('checked', regulation.restrictionCountry.blacklist.enabled);
+            if (regulation.restrictionCountry.blacklist.enabled) {
+                $('#blacklistField').addClass('show');
+                blacklistManager.setCountries(regulation.restrictionCountry.blacklist.countries || []);
+            }
+        }
+        // Handle old format (backwards compatibility)
+        if (regulation.restrictionCountry.type && regulation.restrictionCountry.countries) {
+            if (regulation.restrictionCountry.type === 'whitelist') {
+                $('#enableWhitelist').prop('checked', true);
+                $('#whitelistField').addClass('show');
+                whitelistManager.setCountries(regulation.restrictionCountry.countries);
+            } else if (regulation.restrictionCountry.type === 'blacklist') {
+                $('#enableBlacklist').prop('checked', true);
+                $('#blacklistField').addClass('show');
+                blacklistManager.setCountries(regulation.restrictionCountry.countries);
+            }
+        }
+    }
+
+    // Load CP/IBP domain
+    if (regulation.cpibpDomain) {
+        $('#cpibpDefault').val(regulation.cpibpDomain.default || '');
+        $('#cpibpBackup').val(regulation.cpibpDomain.backup || '');
+    }
+
+    // Disable all form controls for view mode
+    $('#regulationForm input, #regulationForm select, #regulationForm textarea').prop('disabled', true);
+    $('#regulationForm .btn-primary').hide();
+
+    $('#drawerOverlay').addClass('active');
+    $('#regulationDrawer').addClass('active');
+}
+
+function closeDrawer() {
+    $('#drawerOverlay').removeClass('active');
+    $('#regulationDrawer').removeClass('active');
+
+    // Re-enable form controls when closing
+    $('#regulationForm input, #regulationForm select, #regulationForm textarea').prop('disabled', false);
+    $('#regulationForm .btn-primary').show();
+}
+
+function refreshTable() {
+    const dataService = getDataService();
+    const regulations = dataService.getAllRegulations();
+
+    $('#totalCount').text(regulations.length);
+
+    if (regulationTable) {
+        regulationTable.clear().rows.add(regulations).draw();
+    }
+}
+
+function deleteRegulation(id) {
+    if (confirm('Are you sure you want to delete this regulation? This action cannot be undone.')) {
+        const dataService = getDataService();
+        dataService.deleteRegulation(id);
+
+        if (window.showToast) {
+            window.showToast('Regulation deleted successfully', 'success');
+        }
+
+        refreshTable();
+    }
+}
+
+function resetFilters() {
+    $('#filterRegulation').val('');
+    $('#filterCode').val('');
+    $('#filterDescription').val('');
+    $('#filterDate').val('');
+}
+
+function applyFilters() {
+    const brand = $('#filterBrand').val();
+    const regulation = $('#filterRegulation').val();
+    const code = $('#filterCode').val();
+    const description = $('#filterDescription').val();
+    const date = $('#filterDate').val();
+
+    regulationTable.columns().every(function() {
+        this.search('');
+    });
+
+    // Apply filters
+    if (brand) {
+        regulationTable.column(0).search(brand);
+    }
+    if (regulation) {
+        regulationTable.column(1).search(regulation);
+    }
+    if (code) {
+        regulationTable.column(2).search(code);
+    }
+    if (description) {
+        regulationTable.column(3).search(description);
+    }
+    if (date) {
+        regulationTable.column(5).search(date);
+    }
+
+    regulationTable.draw();
+
+    if (window.showToast) {
+        window.showToast('Filters applied', 'success');
+    }
+}
+
+function resetFilters() {
+    $('#filterBrand').val('');
+    $('#filterRegulation').val('');
+    $('#filterCode').val('');
+    $('#filterDescription').val('');
+    $('#filterDate').val('');
+
+    regulationTable.columns().every(function() {
+        this.search('');
+    });
+    regulationTable.draw();
+
+    if (window.showToast) {
+        window.showToast('Filters reset', 'info');
+    }
+}
+
+// Close drawer with Escape key
+$(document).on('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDrawer();
+    }
+});
+</script>

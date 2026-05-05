@@ -1,0 +1,240 @@
+/* Typography System - Unified Font Styles */
+
+/* Global Font Settings */
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #2C3E50;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: #2C3E50;
+  margin-top: 0;
+}
+
+h1, .h1 { font-size: 28px; }
+h2, .h2 { font-size: 24px; }
+h3, .h3 { font-size: 20px; }
+h4, .h4 { font-size: 18px; }
+h5, .h5 { font-size: 16px; }
+h6, .h6 { font-size: 14px; }
+
+/* Paragraphs */
+p {
+  margin-top: 0;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  color: #00B4B4;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: #009999;
+  text-decoration: underline;
+}
+
+/* Text Utilities */
+.text-xs { font-size: 11px; }
+.text-sm { font-size: 12px; }
+.text-base { font-size: 14px; }
+.text-lg { font-size: 16px; }
+.text-xl { font-size: 18px; }
+.text-2xl { font-size: 20px; }
+.text-3xl { font-size: 24px; }
+
+/* Font Weights */
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Line Heights */
+.leading-none { line-height: 1; }
+.leading-tight { line-height: 1.25; }
+.leading-normal { line-height: 1.5; }
+.leading-relaxed { line-height: 1.75; }
+
+/* Text Colors */
+.text-primary { color: #2C3E50; }
+.text-secondary { color: #718096; }
+.text-muted { color: #A0AEC0; }
+.text-success { color: #52C41A; }
+.text-danger { color: #FF4D4F; }
+.text-warning { color: #FAAD14; }
+.text-info { color: #1890FF; }
+.text-brand { color: #00B4B4; }
+
+/* Text Alignment */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+/* Text Transform */
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+
+/* Text Decoration */
+.no-underline { text-decoration: none; }
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+
+/* Truncate Text */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Code */
+code, kbd, pre, samp {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 13px;
+}
+
+code {
+  padding: 2px 6px;
+  background-color: #F5F6FA;
+  border-radius: 3px;
+  color: #E83E8C;
+}
+
+pre {
+  display: block;
+  padding: 12px;
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #2C3E50;
+  background-color: #F5F6FA;
+  border: 1px solid #E8EAED;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+  color: inherit;
+}
+
+/* Lists */
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+
+ul ul, ol ul, ul ol, ol ol {
+  margin-bottom: 0;
+}
+
+li {
+  line-height: 1.6;
+}
+
+/* Description Lists */
+dl {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+dt {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+dd {
+  margin-bottom: 16px;
+  margin-left: 0;
+  color: #718096;
+}
+
+/* Blockquote */
+blockquote {
+  margin: 0 0 16px;
+  padding: 12px 20px;
+  border-left: 4px solid #00B4B4;
+  background-color: #E6F7F7;
+  color: #2C3E50;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Small */
+small, .small {
+  font-size: 12px;
+  color: #718096;
+}
+
+/* Mark */
+mark, .mark {
+  padding: 2px 4px;
+  background-color: #FFF4D6;
+  color: #2C3E50;
+}
+
+/* Label */
+label {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4A5568;
+}
+
+/* Input & Textarea Font */
+input, textarea, select, button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Table Typography */
+table {
+  font-size: 14px;
+}
+
+th {
+  font-weight: 600;
+  color: #4A5568;
+}
+
+td {
+  color: #2C3E50;
+}
+
+/* Placeholder */
+::placeholder {
+  color: #A0AEC0;
+  opacity: 1;
+}
+
+/* Selection */
+::selection {
+  background-color: #E6F7F7;
+  color: #2C3E50;
+}
+
+::-moz-selection {
+  background-color: #E6F7F7;
+  color: #2C3E50;
+}
