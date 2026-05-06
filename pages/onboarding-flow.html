@@ -1562,8 +1562,12 @@ class OnboardingService {
 // Initialize OnboardingService
 const onboardingService = new OnboardingService();
 
+// Track if page has been initialized to prevent duplicate event binding
+let onboardingPageInitialized = false;
+
 // Initialize when page loads
-$(document).one('pageLoaded', function(event, data) {
+// Use .on() instead of .one() to handle multiple page visits
+$(document).on('pageLoaded', function(event, data) {
     if (data.route === '#/regulation/onboarding') {
         console.log('✅ Onboarding Flow Configuration page loaded');
         initOnboardingFlowPage();
@@ -1571,34 +1575,40 @@ $(document).one('pageLoaded', function(event, data) {
 });
 
 function initOnboardingFlowPage() {
-    // Bind filter events
-    $('#filterBrand').on('change', handleBrandChange);
-    $('#filterLicense').on('change', handleLicenseChange);
-    $('#searchBtn').on('click', handleSearch);
-    $('#resetBtn').on('click', handleReset);
+    // Only bind events once to prevent duplicate handlers
+    if (!onboardingPageInitialized) {
+        // Bind filter events
+        $('#filterBrand').on('change', handleBrandChange);
+        $('#filterLicense').on('change', handleLicenseChange);
+        $('#searchBtn').on('click', handleSearch);
+        $('#resetBtn').on('click', handleReset);
 
-    // Bind questionnaire toggle events
-    $('#questionnaire_enabled').on('change', handleQuestionnaireEnabledChange);
-    $('#questionnaire_days').on('input', handleQuestionnaireDaysChange);
-    $('#questionnaire_mandatory_reminder').on('change', handleQuestionnaireMandatoryReminderChange);
+        // Bind questionnaire toggle events
+        $('#questionnaire_enabled').on('change', handleQuestionnaireEnabledChange);
+        $('#questionnaire_days').on('input', handleQuestionnaireDaysChange);
+        $('#questionnaire_mandatory_reminder').on('change', handleQuestionnaireMandatoryReminderChange);
 
-    // Bind save question button event
-    $(document).on('click', '#saveQuestionBtn', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        // Bind save question button event
+        $(document).on('click', '#saveQuestionBtn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
         console.log('Save Question button clicked');
         saveQuestion();
     });
 
-    // Initialize Bootstrap tabs
-    const triggerTabList = [].slice.call(document.querySelectorAll('#configTabs button'));
-    triggerTabList.forEach(function (triggerEl) {
-        const tabTrigger = new bootstrap.Tab(triggerEl);
-        triggerEl.addEventListener('click', function (event) {
-            event.preventDefault();
-            tabTrigger.show();
+        // Initialize Bootstrap tabs
+        const triggerTabList = [].slice.call(document.querySelectorAll('#configTabs button'));
+        triggerTabList.forEach(function (triggerEl) {
+            const tabTrigger = new bootstrap.Tab(triggerEl);
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault();
+                tabTrigger.show();
+            });
         });
-    });
+
+        // Mark as initialized
+        onboardingPageInitialized = true;
+    }
 }
 
 function handleBrandChange() {

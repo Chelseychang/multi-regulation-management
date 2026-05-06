@@ -906,7 +906,7 @@ let nationalityManager = null;
 let countryManager = null;
 
 // Initialize when page loads
-$(document).one('pageLoaded', function(event, data) {
+$(document).on('pageLoaded', function(event, data) {
     if (data.route === '#/regulation/list') {
         initRegulationListPage();
     }
@@ -915,6 +915,13 @@ $(document).one('pageLoaded', function(event, data) {
 function initRegulationListPage() {
     const dataService = getDataService();
     const regulations = dataService.getAllRegulations();
+
+    // Check if DataTable is already initialized
+    if (regulationTable && $.fn.DataTable.isDataTable('#regulationTable')) {
+        // If already initialized, just reload the data
+        regulationTable.clear().rows.add(regulations).draw();
+        return;
+    }
 
     // Initialize DataTable
     regulationTable = $('#regulationTable').DataTable({
