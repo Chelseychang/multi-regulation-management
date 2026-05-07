@@ -908,7 +908,25 @@ let countryManager = null;
 // Initialize when page loads
 $(document).on('pageLoaded', function(event, data) {
     if (data.route === '#/regulation/list') {
+        console.log('🔄 Initializing Regulation List page');
         initRegulationListPage();
+    }
+});
+
+// Cleanup when page unloads
+$(document).on('pageUnload', function(event, data) {
+    if (data.route === '#/regulation/list') {
+        console.log('🧹 Cleaning up Regulation List page');
+        // Destroy DataTable if it exists
+        if (regulationTable && $.fn.DataTable.isDataTable('#regulationTable')) {
+            regulationTable.destroy();
+            regulationTable = null;
+        }
+        // Clear tag managers
+        whitelistManager = null;
+        blacklistManager = null;
+        nationalityManager = null;
+        countryManager = null;
     }
 });
 

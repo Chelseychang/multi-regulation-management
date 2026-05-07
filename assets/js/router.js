@@ -96,6 +96,11 @@ class Router {
       return;
     }
 
+    // Trigger page unload event to cleanup previous page
+    $(document).trigger('pageUnload', {
+      route: this.currentRoute
+    });
+
     // Show loading spinner
     $content.html(`
       <div class="loading-spinner">
@@ -112,6 +117,9 @@ class Router {
       // Store current route and params
       this.currentRoute = hash;
       this.currentParams = route.params;
+
+      // Small delay to ensure DOM is ready
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // Trigger page loaded event
       $(document).trigger('pageLoaded', {

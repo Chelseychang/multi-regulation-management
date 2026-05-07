@@ -1569,8 +1569,31 @@ let onboardingPageInitialized = false;
 // Use .on() instead of .one() to handle multiple page visits
 $(document).on('pageLoaded', function(event, data) {
     if (data.route === '#/regulation/onboarding') {
-        console.log('✅ Onboarding Flow Configuration page loaded');
+        console.log('🔄 Initializing Onboarding Flow Configuration page');
         initOnboardingFlowPage();
+    }
+});
+
+// Cleanup when page unloads
+$(document).on('pageUnload', function(event, data) {
+    if (data.route === '#/regulation/onboarding') {
+        console.log('🧹 Cleaning up Onboarding Flow Configuration page');
+        // Reset initialization flag so it can be initialized again next time
+        onboardingPageInitialized = false;
+
+        // Clear current brand and license
+        currentBrand = null;
+        currentLicense = null;
+
+        // Clear all state objects
+        registrationFieldsState = [];
+        personalInfoFieldsState = [];
+        otpConfigState = { phone: { enabled: false, countries: [] } };
+        tradingAccountConfigState = { primary: { enabled: false, defaultType: 'MT5' }, secondary: { enabled: false, supportedTypes: [] } };
+        kycConfigState = { provider: 'Sumsub', poiDocuments: [], poaDocuments: [] };
+        agreementConfigState = { items: [], generatePdf: false, selectionMethod: 'all' };
+        questionnaireConfigState = { enabled: false, daysToComplete: null, mandatoryReminder: false, reminderText: '', questions: [] };
+        currentQuestionOptions = [];
     }
 });
 
