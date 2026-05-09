@@ -569,122 +569,115 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">License Code <span class="required">*</span></label>
+                    <input type="text" id="license" class="form-control" maxlength="50" required>
+                    <div class="char-counter">
+                        <span id="licenseCharCount">0</span> / 50 characters
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">Description <span class="required">*</span></label>
                     <input type="text" id="description" class="form-control" maxlength="30" required>
                     <div class="char-counter">
                         <span id="descCharCount">0</span> / 30 characters
                     </div>
                 </div>
-
-                <div class="form-group conditional-field" id="licenseField">
-                    <label class="form-label">Code <span class="required">*</span></label>
-                    <input type="text" id="license" class="form-control" maxlength="5">
-                    <div class="char-counter">
-                        <span id="licenseCharCount">0</span> / 5 characters
-                    </div>
-                    <small class="form-text">Required for V1 and V2 regulations</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">License (Auto-generated)</label>
-                    <input type="text" id="code" class="form-control" readonly>
-                    <small class="form-text">Auto-generated based on Regulation and Code</small>
-                </div>
             </div>
 
-            <!-- Registration Type Section -->
+            <!-- Registration Classification Section -->
             <div class="form-section">
                 <h6 class="form-section-title">Registration Classification</h6>
 
+                <!-- 1. Domain Field (Always visible) -->
                 <div class="form-group">
-                    <label class="form-label">Registration Type <span class="required">*</span></label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="regTypeDomain" name="registrationType" value="域名">
-                            <label for="regTypeDomain">Domain</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="regTypeNationality" name="registrationType" value="国籍">
-                            <label for="regTypeNationality">Nationality</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="regTypeCountry" name="registrationType" value="国家">
-                            <label for="regTypeCountry">Country</label>
-                        </div>
-                    </div>
-                    <small class="form-text">Select one or more. Users must satisfy ALL selected conditions (AND logic)</small>
+                    <label class="form-label">1. Domain</label>
+                    <input type="text" id="domainValue" class="form-control" placeholder="e.g., vantagemarkets.com, vantagemarkets.co.uk">
+                    <small class="form-text">Support multiple domains, separated by commas</small>
                 </div>
 
-                <!-- Conditional: Domain Field -->
-                <div class="form-group conditional-field" id="domainField">
-                    <label class="form-label">Domain <span class="required">*</span></label>
-                    <input type="text" id="domainValue" class="form-control" placeholder="e.g., vantagemarkets.com">
-                    <small class="form-text">Enter the registration domain</small>
-                </div>
-
-                <!-- Conditional: Nationality Field -->
-                <div class="form-group conditional-field" id="nationalityField">
-                    <label class="form-label">Nationality <span class="required">*</span></label>
-                    <div class="tag-input-wrapper">
-                        <div class="tag-input" id="nationalityTagInput">
-                            <input type="text" id="nationalityInput" class="tag-input-field" placeholder="Type to search nationalities..." autocomplete="off">
-                        </div>
-                        <div class="tag-dropdown" id="nationalityDropdown" style="display: none;"></div>
-                    </div>
-                    <input type="hidden" id="nationalityValue" value="">
-                </div>
-
-                <!-- Conditional: Country Field -->
-                <div class="form-group conditional-field" id="countryField">
-                    <label class="form-label">Country <span class="required">*</span></label>
-                    <div class="tag-input-wrapper">
-                        <div class="tag-input" id="countryTagInput">
-                            <input type="text" id="countryInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
-                        </div>
-                        <div class="tag-dropdown" id="countryDropdown" style="display: none;"></div>
-                    </div>
-                    <input type="hidden" id="countryValue" value="">
-                </div>
-            </div>
-
-            <!-- Restriction Country Section -->
-            <div class="form-section conditional-field" id="restrictionSection">
-                <h6 class="form-section-title">Restriction Country</h6>
-
+                <!-- 2. Nationality Field (Always visible with whitelist/blacklist) -->
                 <div class="form-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="enableWhitelist" name="restrictionList">
-                        <label for="enableWhitelist">Whitelist (Allow only selected countries)</label>
+                    <label class="form-label">2. Nationality</label>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Priority: Whitelist > Blacklist</strong>
                     </div>
-                </div>
 
-                <div class="form-group conditional-field" id="whitelistField">
-                    <label class="form-label">Whitelist Countries</label>
-                    <div class="tag-input-wrapper">
-                        <div class="tag-input" id="whitelistTagInput">
-                            <input type="text" id="whitelistInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                    <!-- Nationality Whitelist -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="nationalityWhitelistEnabled">
+                            <label class="form-check-label" for="nationalityWhitelistEnabled">Enable Whitelist</label>
                         </div>
-                        <div class="tag-dropdown" id="whitelistDropdown" style="display: none;"></div>
-                    </div>
-                    <input type="hidden" id="whitelistCountries" value="">
-                </div>
-
-                <div class="form-group" style="margin-top: 20px;">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="enableBlacklist" name="restrictionList">
-                        <label for="enableBlacklist">Blacklist (Block selected countries)</label>
-                    </div>
-                </div>
-
-                <div class="form-group conditional-field" id="blacklistField">
-                    <label class="form-label">Blacklist Countries</label>
-                    <div class="tag-input-wrapper">
-                        <div class="tag-input" id="blacklistTagInput">
-                            <input type="text" id="blacklistInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                        <div class="conditional-field" id="nationalityWhitelistField" style="margin-top: 12px;">
+                            <div class="tag-input-wrapper">
+                                <div class="tag-input" id="nationalityWhitelistTagInput">
+                                    <input type="text" id="nationalityWhitelistInput" class="tag-input-field" placeholder="Type to search nationalities..." autocomplete="off">
+                                </div>
+                                <div class="tag-dropdown" id="nationalityWhitelistDropdown" style="display: none;"></div>
+                            </div>
+                            <input type="hidden" id="nationalityWhitelistValue" value="">
                         </div>
-                        <div class="tag-dropdown" id="blacklistDropdown" style="display: none;"></div>
                     </div>
-                    <input type="hidden" id="blacklistCountries" value="">
+
+                    <!-- Nationality Blacklist -->
+                    <div class="form-group" style="margin-top: 16px;">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="nationalityBlacklistEnabled">
+                            <label class="form-check-label" for="nationalityBlacklistEnabled">Enable Blacklist</label>
+                        </div>
+                        <div class="conditional-field" id="nationalityBlacklistField" style="margin-top: 12px;">
+                            <div class="tag-input-wrapper">
+                                <div class="tag-input" id="nationalityBlacklistTagInput">
+                                    <input type="text" id="nationalityBlacklistInput" class="tag-input-field" placeholder="Type to search nationalities..." autocomplete="off">
+                                </div>
+                                <div class="tag-dropdown" id="nationalityBlacklistDropdown" style="display: none;"></div>
+                            </div>
+                            <input type="hidden" id="nationalityBlacklistValue" value="">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Country Field (Always visible with whitelist/blacklist) -->
+                <div class="form-group">
+                    <label class="form-label">3. Country</label>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Priority: Whitelist > Blacklist</strong>
+                    </div>
+
+                    <!-- Country Whitelist -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="countryWhitelistEnabled">
+                            <label class="form-check-label" for="countryWhitelistEnabled">Enable Whitelist</label>
+                        </div>
+                        <div class="conditional-field" id="countryWhitelistField" style="margin-top: 12px;">
+                            <div class="tag-input-wrapper">
+                                <div class="tag-input" id="countryWhitelistTagInput">
+                                    <input type="text" id="countryWhitelistInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                                </div>
+                                <div class="tag-dropdown" id="countryWhitelistDropdown" style="display: none;"></div>
+                            </div>
+                            <input type="hidden" id="countryWhitelistValue" value="">
+                        </div>
+                    </div>
+
+                    <!-- Country Blacklist -->
+                    <div class="form-group" style="margin-top: 16px;">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="countryBlacklistEnabled">
+                            <label class="form-check-label" for="countryBlacklistEnabled">Enable Blacklist</label>
+                        </div>
+                        <div class="conditional-field" id="countryBlacklistField" style="margin-top: 12px;">
+                            <div class="tag-input-wrapper">
+                                <div class="tag-input" id="countryBlacklistTagInput">
+                                    <input type="text" id="countryBlacklistInput" class="tag-input-field" placeholder="Type to search countries..." autocomplete="off">
+                                </div>
+                                <div class="tag-dropdown" id="countryBlacklistDropdown" style="display: none;"></div>
+                            </div>
+                            <input type="hidden" id="countryBlacklistValue" value="">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -900,10 +893,10 @@ class TagInputManager {
     }
 }
 
-let whitelistManager = null;
-let blacklistManager = null;
-let nationalityManager = null;
-let countryManager = null;
+let nationalityWhitelistManager = null;
+let nationalityBlacklistManager = null;
+let countryWhitelistManager = null;
+let countryBlacklistManager = null;
 
 // Initialize when page loads
 $(document).on('pageLoaded', function(event, data) {
@@ -923,10 +916,10 @@ $(document).on('pageUnload', function(event, data) {
             regulationTable = null;
         }
         // Clear tag managers
-        whitelistManager = null;
-        blacklistManager = null;
-        nationalityManager = null;
-        countryManager = null;
+        nationalityWhitelistManager = null;
+        nationalityBlacklistManager = null;
+        countryWhitelistManager = null;
+        countryBlacklistManager = null;
     }
 });
 
@@ -1071,57 +1064,77 @@ function initDrawerForm() {
 
     console.log(`✅ Loaded ${countries.length} countries and ${nationalities.length} nationalities`);
 
-    // Initialize Tag Input Managers for Nationality
-    nationalityManager = new TagInputManager(
-        'nationalityInput',
-        'nationalityTagInput',
-        'nationalityDropdown',
-        'nationalityValue',
+    // Initialize Tag Input Managers for Nationality Whitelist/Blacklist
+    nationalityWhitelistManager = new TagInputManager(
+        'nationalityWhitelistInput',
+        'nationalityWhitelistTagInput',
+        'nationalityWhitelistDropdown',
+        'nationalityWhitelistValue',
         nationalities
     );
 
-    // Initialize Tag Input Managers for Country
-    countryManager = new TagInputManager(
-        'countryInput',
-        'countryTagInput',
-        'countryDropdown',
-        'countryValue',
+    nationalityBlacklistManager = new TagInputManager(
+        'nationalityBlacklistInput',
+        'nationalityBlacklistTagInput',
+        'nationalityBlacklistDropdown',
+        'nationalityBlacklistValue',
+        nationalities
+    );
+
+    // Initialize Tag Input Managers for Country Whitelist/Blacklist
+    countryWhitelistManager = new TagInputManager(
+        'countryWhitelistInput',
+        'countryWhitelistTagInput',
+        'countryWhitelistDropdown',
+        'countryWhitelistValue',
         countries
     );
 
-    // Initialize Tag Input Managers for Whitelist/Blacklist
-    whitelistManager = new TagInputManager(
-        'whitelistInput',
-        'whitelistTagInput',
-        'whitelistDropdown',
-        'whitelistCountries',
+    countryBlacklistManager = new TagInputManager(
+        'countryBlacklistInput',
+        'countryBlacklistTagInput',
+        'countryBlacklistDropdown',
+        'countryBlacklistValue',
         countries
     );
 
-    blacklistManager = new TagInputManager(
-        'blacklistInput',
-        'blacklistTagInput',
-        'blacklistDropdown',
-        'blacklistCountries',
-        countries
-    );
-
-    // Handle whitelist/blacklist checkbox changes
-    $('#enableWhitelist').on('change', function() {
+    // Handle Nationality Whitelist checkbox
+    $('#nationalityWhitelistEnabled').on('change', function() {
         if ($(this).is(':checked')) {
-            $('#whitelistField').addClass('show');
+            $('#nationalityWhitelistField').addClass('show');
         } else {
-            $('#whitelistField').removeClass('show');
-            whitelistManager.clear();
+            $('#nationalityWhitelistField').removeClass('show');
+            nationalityWhitelistManager.clear();
         }
     });
 
-    $('#enableBlacklist').on('change', function() {
+    // Handle Nationality Blacklist checkbox
+    $('#nationalityBlacklistEnabled').on('change', function() {
         if ($(this).is(':checked')) {
-            $('#blacklistField').addClass('show');
+            $('#nationalityBlacklistField').addClass('show');
         } else {
-            $('#blacklistField').removeClass('show');
-            blacklistManager.clear();
+            $('#nationalityBlacklistField').removeClass('show');
+            nationalityBlacklistManager.clear();
+        }
+    });
+
+    // Handle Country Whitelist checkbox
+    $('#countryWhitelistEnabled').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#countryWhitelistField').addClass('show');
+        } else {
+            $('#countryWhitelistField').removeClass('show');
+            countryWhitelistManager.clear();
+        }
+    });
+
+    // Handle Country Blacklist checkbox
+    $('#countryBlacklistEnabled').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#countryBlacklistField').addClass('show');
+        } else {
+            $('#countryBlacklistField').removeClass('show');
+            countryBlacklistManager.clear();
         }
     });
 
@@ -1136,80 +1149,53 @@ function initDrawerForm() {
         if (count >= 30) $counter.addClass('danger');
     });
 
+    // License Code input with character counter
     $('#license').on('input', function() {
         const count = $(this).val().length;
         $('#licenseCharCount').text(count);
 
         const $counter = $('#licenseCharCount').parent();
         $counter.removeClass('warning danger');
-        if (count > 3) $counter.addClass('warning');
-        if (count >= 5) $counter.addClass('danger');
-
-        generateCode();
-    });
-
-    // Regulation change
-    $('#regulation').on('change', function() {
-        const value = $(this).val();
-        if (value === 'V1' || value === 'V2') {
-            $('#licenseField').addClass('show');
-            $('#license').prop('required', true);
-        } else {
-            $('#licenseField').removeClass('show');
-            $('#license').prop('required', false).val('');
-            $('#licenseCharCount').text('0');
-        }
-        generateCode();
-    });
-
-    // Registration Type change - show/hide conditional fields
-    $('input[name="registrationType"]').on('change', function() {
-        handleRegistrationTypeChange();
+        if (count > 40) $counter.addClass('warning');
+        if (count >= 50) $counter.addClass('danger');
     });
 
     // Form submit
     $('#regulationForm').on('submit', function(e) {
         e.preventDefault();
 
-        // Validate at least one registration type is selected
-        const selectedTypes = $('input[name="registrationType"]:checked').map(function() {
-            return $(this).val();
-        }).get();
-
-        if (selectedTypes.length === 0) {
-            if (window.showToast) {
-                window.showToast('Please select at least one Registration Type', 'error');
-            } else {
-                alert('Please select at least one Registration Type');
-            }
-            return;
-        }
-
-        // Build registration values
-        const registrationValues = {};
-        selectedTypes.forEach(type => {
-            if (type === '域名') {
-                registrationValues['域名'] = $('#domainValue').val();
-            } else if (type === '国籍') {
-                // Get selected nationalities from TagInputManager
-                registrationValues['国籍'] = nationalityManager.getCountries();
-            } else if (type === '国家') {
-                // Get selected countries from TagInputManager
-                registrationValues['国家'] = countryManager.getCountries();
-            }
-        });
-
-        // Build restriction country data
-        const hasNationalityOrCountry = selectedTypes.includes('国籍') || selectedTypes.includes('国家');
-        const restrictionCountry = {
-            whitelist: {
-                enabled: $('#enableWhitelist').is(':checked'),
-                countries: $('#enableWhitelist').is(':checked') ? whitelistManager.getCountries() : []
+        // Build registration values (all three fields are always present)
+        const registrationValues = {
+            '域名': $('#domainValue').val() || '',
+            '国籍': {
+                whitelist: {
+                    enabled: $('#nationalityWhitelistEnabled').is(':checked'),
+                    values: $('#nationalityWhitelistEnabled').is(':checked') ? nationalityWhitelistManager.getCountries() : []
+                },
+                blacklist: {
+                    enabled: $('#nationalityBlacklistEnabled').is(':checked'),
+                    values: $('#nationalityBlacklistEnabled').is(':checked') ? nationalityBlacklistManager.getCountries() : []
+                }
             },
-            blacklist: {
-                enabled: $('#enableBlacklist').is(':checked'),
-                countries: $('#enableBlacklist').is(':checked') ? blacklistManager.getCountries() : []
+            '国家': {
+                whitelist: {
+                    enabled: $('#countryWhitelistEnabled').is(':checked'),
+                    values: $('#countryWhitelistEnabled').is(':checked') ? countryWhitelistManager.getCountries() : []
+                },
+                blacklist: {
+                    enabled: $('#countryBlacklistEnabled').is(':checked'),
+                    values: $('#countryBlacklistEnabled').is(':checked') ? countryBlacklistManager.getCountries() : []
+                }
             }
+        };
+
+        // Registration types are now always all three
+        const registrationTypes = ['域名', '国籍', '国家'];
+
+        // No more separate restriction country section
+        const restrictionCountry = {
+            whitelist: { enabled: false, countries: [] },
+            blacklist: { enabled: false, countries: [] }
         };
 
         // Build CP/IBP domain data
@@ -1218,14 +1204,16 @@ function initDrawerForm() {
             backup: $('#cpibpBackup').val() || ''
         };
 
+        const licenseCode = $('#license').val() || '';
+
         const formData = {
             id: currentRegulationId,
             brand: $('#brand').val(),
             regulation: $('#regulation').val(),
             description: $('#description').val(),
-            license: $('#license').val() || '',
-            code: $('#code').val(),
-            registrationTypes: selectedTypes,
+            license: licenseCode,
+            code: licenseCode,  // Code is now the same as License Code
+            registrationTypes: registrationTypes,
             registrationValues: registrationValues,
             restrictionCountry: restrictionCountry,
             cpibpDomain: cpibpDomain
@@ -1253,88 +1241,26 @@ function initDrawerForm() {
     });
 }
 
-function handleRegistrationTypeChange() {
-    // Get selected registration types
-    const selectedTypes = $('input[name="registrationType"]:checked').map(function() {
-        return $(this).val();
-    }).get();
-
-    // Hide all conditional fields first
-    $('#domainField, #nationalityField, #countryField').removeClass('show');
-    $('#domainValue, #nationalityValue, #countryValue').prop('required', false);
-
-    // Show fields based on selection
-    selectedTypes.forEach(type => {
-        if (type === '域名') {
-            $('#domainField').addClass('show');
-            $('#domainValue').prop('required', true);
-        } else if (type === '国籍') {
-            $('#nationalityField').addClass('show');
-            $('#nationalityValue').prop('required', true);
-        } else if (type === '国家') {
-            $('#countryField').addClass('show');
-            $('#countryValue').prop('required', true);
-        }
-    });
-
-    // Show/hide Restriction Country section
-    const hasNationalityOrCountry = selectedTypes.includes('国籍') || selectedTypes.includes('国家');
-    if (!hasNationalityOrCountry && selectedTypes.length > 0) {
-        $('#restrictionSection').addClass('show');
-        $('#restrictionCountries').prop('required', true);
-    } else {
-        $('#restrictionSection').removeClass('show');
-        $('#restrictionCountries').prop('required', false);
-    }
-}
-
-function generateCode() {
-    const regulation = $('#regulation').val();
-    const license = $('#license').val();
-    let code = '';
-
-    if (!regulation) {
-        $('#code').val('');
-        return;
-    }
-
-    if (regulation === 'ASIC') {
-        code = 'ASIC';
-    } else if (regulation === 'FCA') {
-        code = 'FCA';
-    } else if ((regulation === 'V1' || regulation === 'V2') && license) {
-        code = regulation + license.toUpperCase();
-    }
-
-    $('#code').val(code);
-}
-
 function openCreateDrawer() {
     currentRegulationId = null;
     $('#drawerTitle').html('<i class="fas fa-plus-circle"></i> Create New Regulation');
     $('#regulationForm')[0].reset();
 
-    // Reset all conditional fields
-    $('#licenseField').removeClass('show');
-    $('#domainField, #nationalityField, #countryField, #restrictionSection').removeClass('show');
-
     // Reset character counters
     $('#descCharCount').text('0');
     $('#licenseCharCount').text('0');
 
-    // Uncheck all registration types
-    $('input[name="registrationType"]').prop('checked', false);
+    // Uncheck all nationality/country checkboxes and hide fields
+    $('#nationalityWhitelistEnabled, #nationalityBlacklistEnabled').prop('checked', false);
+    $('#countryWhitelistEnabled, #countryBlacklistEnabled').prop('checked', false);
+    $('#nationalityWhitelistField, #nationalityBlacklistField').removeClass('show');
+    $('#countryWhitelistField, #countryBlacklistField').removeClass('show');
 
-    // Reset restriction country
-    $('#enableWhitelist').prop('checked', false);
-    $('#enableBlacklist').prop('checked', false);
-    $('#whitelistField, #blacklistField').removeClass('show');
-    if (whitelistManager) whitelistManager.clear();
-    if (blacklistManager) blacklistManager.clear();
-
-    // Clear nationality and country managers
-    if (nationalityManager) nationalityManager.clear();
-    if (countryManager) countryManager.clear();
+    // Clear all tag managers
+    if (nationalityWhitelistManager) nationalityWhitelistManager.clear();
+    if (nationalityBlacklistManager) nationalityBlacklistManager.clear();
+    if (countryWhitelistManager) countryWhitelistManager.clear();
+    if (countryBlacklistManager) countryBlacklistManager.clear();
 
     // Enable form controls for creating
     $('#regulationForm input, #regulationForm select, #regulationForm textarea').prop('disabled', false);
@@ -1358,69 +1284,57 @@ function openEditDrawer(id) {
 
     // Load basic fields
     $('#brand').val(regulation.brand || '');
-    $('#regulation').val(regulation.regulation).trigger('change');
-    $('#description').val(regulation.description).trigger('input');
+    $('#regulation').val(regulation.regulation);
     $('#license').val(regulation.license || '').trigger('input');
-    $('#code').val(regulation.code);
+    $('#description').val(regulation.description).trigger('input');
 
-    // Load registration types
-    $('input[name="registrationType"]').prop('checked', false);
-    if (regulation.registrationTypes) {
-        regulation.registrationTypes.forEach(type => {
-            if (type === '域名') $('#regTypeDomain').prop('checked', true);
-            if (type === '国籍') $('#regTypeNationality').prop('checked', true);
-            if (type === '国家') $('#regTypeCountry').prop('checked', true);
-        });
-        handleRegistrationTypeChange();
-    }
-
-    // Load registration values
+    // Load registration values (new format with nested whitelist/blacklist)
     if (regulation.registrationValues) {
+        // Load domain
         $('#domainValue').val(regulation.registrationValues['域名'] || '');
 
-        // Handle nationality - support both string (old format) and array (new format)
-        const nationalityVal = regulation.registrationValues['国籍'];
-        if (nationalityVal) {
-            const nationalityCodes = Array.isArray(nationalityVal) ? nationalityVal : [nationalityVal];
-            nationalityManager.setCountries(nationalityCodes);
+        // Load nationality whitelist/blacklist
+        const nationalityData = regulation.registrationValues['国籍'];
+        if (nationalityData && typeof nationalityData === 'object' && !Array.isArray(nationalityData)) {
+            // New format with whitelist/blacklist
+            if (nationalityData.whitelist && nationalityData.whitelist.enabled) {
+                $('#nationalityWhitelistEnabled').prop('checked', true);
+                $('#nationalityWhitelistField').addClass('show');
+                nationalityWhitelistManager.setCountries(nationalityData.whitelist.values || []);
+            }
+            if (nationalityData.blacklist && nationalityData.blacklist.enabled) {
+                $('#nationalityBlacklistEnabled').prop('checked', true);
+                $('#nationalityBlacklistField').addClass('show');
+                nationalityBlacklistManager.setCountries(nationalityData.blacklist.values || []);
+            }
+        } else if (nationalityData) {
+            // Old format - array of codes, treat as whitelist
+            const nationalityCodes = Array.isArray(nationalityData) ? nationalityData : [nationalityData];
+            $('#nationalityWhitelistEnabled').prop('checked', true);
+            $('#nationalityWhitelistField').addClass('show');
+            nationalityWhitelistManager.setCountries(nationalityCodes);
         }
 
-        // Handle country - support both string (old format) and array (new format)
-        const countryVal = regulation.registrationValues['国家'];
-        if (countryVal) {
-            const countryCodes = Array.isArray(countryVal) ? countryVal : [countryVal];
-            countryManager.setCountries(countryCodes);
-        }
-    }
-
-    // Load restriction country (new format)
-    if (regulation.restrictionCountry) {
-        // Handle new format
-        if (regulation.restrictionCountry.whitelist) {
-            $('#enableWhitelist').prop('checked', regulation.restrictionCountry.whitelist.enabled);
-            if (regulation.restrictionCountry.whitelist.enabled) {
-                $('#whitelistField').addClass('show');
-                whitelistManager.setCountries(regulation.restrictionCountry.whitelist.countries || []);
+        // Load country whitelist/blacklist
+        const countryData = regulation.registrationValues['国家'];
+        if (countryData && typeof countryData === 'object' && !Array.isArray(countryData)) {
+            // New format with whitelist/blacklist
+            if (countryData.whitelist && countryData.whitelist.enabled) {
+                $('#countryWhitelistEnabled').prop('checked', true);
+                $('#countryWhitelistField').addClass('show');
+                countryWhitelistManager.setCountries(countryData.whitelist.values || []);
             }
-        }
-        if (regulation.restrictionCountry.blacklist) {
-            $('#enableBlacklist').prop('checked', regulation.restrictionCountry.blacklist.enabled);
-            if (regulation.restrictionCountry.blacklist.enabled) {
-                $('#blacklistField').addClass('show');
-                blacklistManager.setCountries(regulation.restrictionCountry.blacklist.countries || []);
+            if (countryData.blacklist && countryData.blacklist.enabled) {
+                $('#countryBlacklistEnabled').prop('checked', true);
+                $('#countryBlacklistField').addClass('show');
+                countryBlacklistManager.setCountries(countryData.blacklist.values || []);
             }
-        }
-        // Handle old format (backwards compatibility)
-        if (regulation.restrictionCountry.type && regulation.restrictionCountry.countries) {
-            if (regulation.restrictionCountry.type === 'whitelist') {
-                $('#enableWhitelist').prop('checked', true);
-                $('#whitelistField').addClass('show');
-                whitelistManager.setCountries(regulation.restrictionCountry.countries);
-            } else if (regulation.restrictionCountry.type === 'blacklist') {
-                $('#enableBlacklist').prop('checked', true);
-                $('#blacklistField').addClass('show');
-                blacklistManager.setCountries(regulation.restrictionCountry.countries);
-            }
+        } else if (countryData) {
+            // Old format - array of codes, treat as whitelist
+            const countryCodes = Array.isArray(countryData) ? countryData : [countryData];
+            $('#countryWhitelistEnabled').prop('checked', true);
+            $('#countryWhitelistField').addClass('show');
+            countryWhitelistManager.setCountries(countryCodes);
         }
     }
 
@@ -1452,69 +1366,57 @@ function openViewDrawer(id) {
 
     // Load basic fields
     $('#brand').val(regulation.brand || '');
-    $('#regulation').val(regulation.regulation).trigger('change');
-    $('#description').val(regulation.description).trigger('input');
+    $('#regulation').val(regulation.regulation);
     $('#license').val(regulation.license || '').trigger('input');
-    $('#code').val(regulation.code);
+    $('#description').val(regulation.description).trigger('input');
 
-    // Load registration types
-    $('input[name="registrationType"]').prop('checked', false);
-    if (regulation.registrationTypes) {
-        regulation.registrationTypes.forEach(type => {
-            if (type === '域名') $('#regTypeDomain').prop('checked', true);
-            if (type === '国籍') $('#regTypeNationality').prop('checked', true);
-            if (type === '国家') $('#regTypeCountry').prop('checked', true);
-        });
-        handleRegistrationTypeChange();
-    }
-
-    // Load registration values
+    // Load registration values (new format with nested whitelist/blacklist)
     if (regulation.registrationValues) {
+        // Load domain
         $('#domainValue').val(regulation.registrationValues['域名'] || '');
 
-        // Handle nationality - support both string (old format) and array (new format)
-        const nationalityVal = regulation.registrationValues['国籍'];
-        if (nationalityVal) {
-            const nationalityCodes = Array.isArray(nationalityVal) ? nationalityVal : [nationalityVal];
-            nationalityManager.setCountries(nationalityCodes);
+        // Load nationality whitelist/blacklist
+        const nationalityData = regulation.registrationValues['国籍'];
+        if (nationalityData && typeof nationalityData === 'object' && !Array.isArray(nationalityData)) {
+            // New format with whitelist/blacklist
+            if (nationalityData.whitelist && nationalityData.whitelist.enabled) {
+                $('#nationalityWhitelistEnabled').prop('checked', true);
+                $('#nationalityWhitelistField').addClass('show');
+                nationalityWhitelistManager.setCountries(nationalityData.whitelist.values || []);
+            }
+            if (nationalityData.blacklist && nationalityData.blacklist.enabled) {
+                $('#nationalityBlacklistEnabled').prop('checked', true);
+                $('#nationalityBlacklistField').addClass('show');
+                nationalityBlacklistManager.setCountries(nationalityData.blacklist.values || []);
+            }
+        } else if (nationalityData) {
+            // Old format - array of codes, treat as whitelist
+            const nationalityCodes = Array.isArray(nationalityData) ? nationalityData : [nationalityData];
+            $('#nationalityWhitelistEnabled').prop('checked', true);
+            $('#nationalityWhitelistField').addClass('show');
+            nationalityWhitelistManager.setCountries(nationalityCodes);
         }
 
-        // Handle country - support both string (old format) and array (new format)
-        const countryVal = regulation.registrationValues['国家'];
-        if (countryVal) {
-            const countryCodes = Array.isArray(countryVal) ? countryVal : [countryVal];
-            countryManager.setCountries(countryCodes);
-        }
-    }
-
-    // Load restriction country (new format)
-    if (regulation.restrictionCountry) {
-        // Handle new format
-        if (regulation.restrictionCountry.whitelist) {
-            $('#enableWhitelist').prop('checked', regulation.restrictionCountry.whitelist.enabled);
-            if (regulation.restrictionCountry.whitelist.enabled) {
-                $('#whitelistField').addClass('show');
-                whitelistManager.setCountries(regulation.restrictionCountry.whitelist.countries || []);
+        // Load country whitelist/blacklist
+        const countryData = regulation.registrationValues['国家'];
+        if (countryData && typeof countryData === 'object' && !Array.isArray(countryData)) {
+            // New format with whitelist/blacklist
+            if (countryData.whitelist && countryData.whitelist.enabled) {
+                $('#countryWhitelistEnabled').prop('checked', true);
+                $('#countryWhitelistField').addClass('show');
+                countryWhitelistManager.setCountries(countryData.whitelist.values || []);
             }
-        }
-        if (regulation.restrictionCountry.blacklist) {
-            $('#enableBlacklist').prop('checked', regulation.restrictionCountry.blacklist.enabled);
-            if (regulation.restrictionCountry.blacklist.enabled) {
-                $('#blacklistField').addClass('show');
-                blacklistManager.setCountries(regulation.restrictionCountry.blacklist.countries || []);
+            if (countryData.blacklist && countryData.blacklist.enabled) {
+                $('#countryBlacklistEnabled').prop('checked', true);
+                $('#countryBlacklistField').addClass('show');
+                countryBlacklistManager.setCountries(countryData.blacklist.values || []);
             }
-        }
-        // Handle old format (backwards compatibility)
-        if (regulation.restrictionCountry.type && regulation.restrictionCountry.countries) {
-            if (regulation.restrictionCountry.type === 'whitelist') {
-                $('#enableWhitelist').prop('checked', true);
-                $('#whitelistField').addClass('show');
-                whitelistManager.setCountries(regulation.restrictionCountry.countries);
-            } else if (regulation.restrictionCountry.type === 'blacklist') {
-                $('#enableBlacklist').prop('checked', true);
-                $('#blacklistField').addClass('show');
-                blacklistManager.setCountries(regulation.restrictionCountry.countries);
-            }
+        } else if (countryData) {
+            // Old format - array of codes, treat as whitelist
+            const countryCodes = Array.isArray(countryData) ? countryData : [countryData];
+            $('#countryWhitelistEnabled').prop('checked', true);
+            $('#countryWhitelistField').addClass('show');
+            countryWhitelistManager.setCountries(countryCodes);
         }
     }
 

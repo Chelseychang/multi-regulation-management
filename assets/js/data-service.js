@@ -131,9 +131,9 @@ class DataService {
   }
 
   saveRegulation(regulation) {
-    // Validate Code uniqueness
-    if (this.isCodeExists(regulation.code, regulation.id)) {
-      throw new Error('Code already exists. Please use a different code.');
+    // Validate Code uniqueness (Regulation Type + License Code combination)
+    if (this.isCodeExists(regulation.regulation, regulation.code, regulation.id)) {
+      throw new Error('This combination of Regulation Type and License Code already exists.');
     }
 
     const regulations = this.loadRegulations();
@@ -193,9 +193,13 @@ class DataService {
   // Validation Methods
   // ==========================
 
-  isCodeExists(code, excludeId = null) {
+  isCodeExists(regulationType, code, excludeId = null) {
     const regulations = this.loadRegulations();
-    return regulations.some(r => r.code === code && r.id !== excludeId);
+    return regulations.some(r =>
+      r.regulation === regulationType &&
+      r.code === code &&
+      r.id !== excludeId
+    );
   }
 
   validateRegulation(regulation) {
@@ -229,9 +233,9 @@ class DataService {
       errors.push('Code is required');
     }
 
-    // Code uniqueness
-    if (regulation.code && this.isCodeExists(regulation.code, regulation.id)) {
-      errors.push('Code already exists. Please use a different code.');
+    // Code uniqueness (Regulation Type + License Code combination)
+    if (regulation.code && this.isCodeExists(regulation.regulation, regulation.code, regulation.id)) {
+      errors.push('This combination of Regulation Type and License Code already exists.');
     }
 
     // Registration Type
