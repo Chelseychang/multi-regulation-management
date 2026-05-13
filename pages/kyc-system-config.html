@@ -1,0 +1,1419 @@
+<!-- KYC System Configuration Page - Full Version -->
+
+<style>
+    /* Tag Input Styles */
+    .tag-input-container {
+        min-height: 45px;
+        padding: 6px 10px;
+        border: 1px solid #D5E0E2;
+        border-radius: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        cursor: text;
+        background: white;
+    }
+
+    .tag-input-container input {
+        border: none;
+        outline: none;
+        flex: 1;
+        min-width: 200px;
+        padding: 4px;
+        font-size: 13px;
+    }
+
+    .tag-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        background-color: #E6F7F7;
+        border: 1px solid #B8E6E6;
+        border-radius: 4px;
+        font-size: 13px;
+        color: #2C3E50;
+        gap: 6px;
+    }
+
+    .tag-remove {
+        cursor: pointer;
+        font-weight: bold;
+        color: #00B4B4;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+    .tag-remove:hover {
+        color: #EF4444;
+    }
+
+    .tag-dropdown {
+        display: none;
+        position: absolute;
+        z-index: 1000;
+        background: white;
+        border: 1px solid #E1EDF2;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        width: calc(100% - 40px);
+        margin-top: 4px;
+    }
+
+    .tag-dropdown-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 13px;
+        color: #2C3E50;
+    }
+
+    .tag-dropdown-item:hover {
+        background-color: #F5F7FA;
+    }
+
+    .tag-dropdown-all {
+        background-color: #E6F7F7;
+        border-bottom: 1px solid #E1EDF2;
+    }
+
+    .tag-dropdown-all:hover {
+        background-color: #D0F0F0;
+    }
+
+    /* Level Drawer Modal Styles */
+    #levelConfigDrawer .modal-dialog {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        width: 500px;
+        max-width: 90vw;
+        height: 100vh;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+    }
+
+    #levelConfigDrawer.show .modal-dialog {
+        transform: translateX(0);
+    }
+
+    #levelConfigDrawer .modal-content {
+        height: 100%;
+        border-radius: 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #levelConfigDrawer .modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #E8EAED;
+        flex-shrink: 0;
+    }
+
+    #levelConfigDrawer .modal-header .modal-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2C3E50;
+    }
+
+    #levelConfigDrawer .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+    }
+
+    #levelConfigDrawer .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #E8EAED;
+        flex-shrink: 0;
+        background-color: #FAFBFC;
+    }
+</style>
+
+<style>
+    /* Page specific styles */
+    .kyc-filter-section {
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid #E8EAED;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .kyc-filter-row {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+    }
+
+    .kyc-filter-group {
+        flex: 1;
+        max-width: 300px;
+    }
+
+    .kyc-filter-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #2C3E50;
+        margin-bottom: 6px;
+    }
+
+    .kyc-filter-group select {
+        width: 100%;
+        height: 38px;
+        padding: 6px 12px;
+        font-size: 14px;
+        border: 1px solid #E8EAED;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+    .kyc-filter-group select:focus {
+        outline: none;
+        border-color: #00B4B4;
+        box-shadow: 0 0 0 3px rgba(0, 180, 180, 0.1);
+    }
+
+    .kyc-filter-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .kyc-table-card {
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        border: 1px solid #E8EAED;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .kyc-table-card-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #E8EAED;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #FAFBFC;
+    }
+
+    .kyc-table-card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2C3E50;
+        margin: 0;
+    }
+
+    .kyc-table-card-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    #kycSystemTable thead th {
+        background-color: #F5F6FA;
+        color: #4A5568;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 14px 16px;
+        border-bottom: 2px solid #E8EAED;
+        white-space: nowrap;
+        text-align: left;
+    }
+
+    #kycSystemTable tbody td {
+        padding: 14px 16px;
+        font-size: 14px;
+        color: #2C3E50;
+        border-bottom: 1px solid #F5F6FA;
+        vertical-align: middle;
+    }
+
+    #kycSystemTable tbody tr:hover {
+        background-color: #F9FAFB;
+    }
+
+    .kyc-badge-type {
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .kyc-badge-standard {
+        background-color: #DBEAFE;
+        color: #1E40AF;
+    }
+
+    .kyc-badge-custom {
+        background-color: #FCE7F3;
+        color: #BE185D;
+    }
+
+    .kyc-country-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .kyc-country-tag {
+        padding: 3px 8px;
+        background-color: #F3F4F6;
+        border: 1px solid #E5E7EB;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #6B7280;
+    }
+
+    .kyc-country-more {
+        padding: 3px 8px;
+        background-color: #00B4B4;
+        color: white;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .kyc-action-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .kyc-action-btn {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid #E8EAED;
+        background-color: white;
+        color: #6B7280;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+
+    .kyc-action-btn:hover {
+        background-color: #F5F6FA;
+        border-color: #6B7280;
+        color: #2C3E50;
+    }
+
+    .kyc-action-btn.view:hover {
+        background-color: #EFF6FF;
+        border-color: #3B82F6;
+        color: #3B82F6;
+    }
+
+    .kyc-action-btn.edit:hover {
+        background-color: #FEF3C7;
+        border-color: #F59E0B;
+        color: #F59E0B;
+    }
+
+    .kyc-action-btn.delete:hover {
+        background-color: #FEE2E2;
+        border-color: #EF4444;
+        color: #EF4444;
+    }
+
+    /* DataTables Pagination Styles */
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        padding: 12px 20px;
+    }
+
+    .dataTables_wrapper .dataTables_length label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        padding: 3px 20px 3px 6px;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #4A5568;
+        background-color: #FFFFFF;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%234A5568' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 6px center;
+        min-width: 70px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        padding: 6px 12px;
+        border: 1px solid #E8EAED;
+        border-radius: 4px;
+        margin-left: 8px;
+        font-size: 13px;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .bottom {
+        padding: 12px 20px;
+        border-top: 1px solid #E8EAED;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #FAFBFC;
+    }
+
+    .dataTables_wrapper .pagination-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .dataTables_wrapper .pagination-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_info {
+        padding: 0;
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_length {
+        padding: 0;
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_length label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+    }
+
+    .dataTables_wrapper .bottom .dataTables_paginate {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 1px solid transparent !important;
+        border-radius: 4px !important;
+        background: transparent !important;
+        color: #4A5568 !important;
+        font-size: 12px !important;
+        transition: all 0.15s ease !important;
+        line-height: 1 !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        cursor: pointer !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: #F5F6FA !important;
+        border-color: #E8EAED !important;
+        color: #00B4B4 !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #00B4B4 !important;
+        border-color: #00B4B4 !important;
+        color: #FFFFFF !important;
+        font-weight: 500 !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+        opacity: 0.4 !important;
+        cursor: not-allowed !important;
+        background: transparent !important;
+        border-color: transparent !important;
+        color: #A0AEC0 !important;
+    }
+
+    @media (max-width: 768px) {
+        .kyc-filter-row {
+            flex-direction: column;
+        }
+
+        .kyc-filter-group {
+            max-width: 100%;
+        }
+
+        .kyc-table-card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header" style="margin-bottom: 24px;">
+    <h1 class="page-title" style="font-size: 28px; font-weight: 700; color: #2C3E50; margin: 0 0 8px 0; display: flex; align-items: center; gap: 12px;">
+        <i class="fas fa-cog"></i>
+        KYC System Configuration
+    </h1>
+    <p class="page-subtitle" style="font-size: 14px; color: #6B7280; margin: 0;">
+        Manage KYC system types and configurations for different regions
+    </p>
+</div>
+
+<!-- Filter Section -->
+<div class="kyc-filter-section">
+    <div class="kyc-filter-row">
+        <div class="kyc-filter-group">
+            <label for="kycBrandFilter">Brand</label>
+            <select id="kycBrandFilter" class="form-select">
+                <option value="">VG</option>
+                <option value="VAU">VAU</option>
+                <option value="VEU">VEU</option>
+                <option value="VAS">VAS</option>
+            </select>
+        </div>
+        <div class="kyc-filter-actions">
+            <button class="btn btn-primary" onclick="searchKycSystems()" style="height: 38px;">
+                <i class="fas fa-search"></i>
+                Search
+            </button>
+            <button class="btn btn-outline-secondary" onclick="resetKycFilters()" style="height: 38px;">
+                <i class="fas fa-redo"></i>
+                Reset
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Table Section -->
+<div class="kyc-table-card">
+    <div class="kyc-table-card-header">
+        <h3 class="kyc-table-card-title">KYC System</h3>
+        <div class="kyc-table-card-actions">
+            <button class="btn btn-primary" onclick="openKycAddModal()">
+                <i class="fas fa-plus"></i>
+                Add
+            </button>
+            <button class="btn btn-success" onclick="publishKycChanges()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Publish
+            </button>
+        </div>
+    </div>
+    <div class="table-wrapper">
+        <table id="kycSystemTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>KYC ID</th>
+                    <th>KYC Type</th>
+                    <th>KYC System Name</th>
+                    <th>Countries</th>
+                    <th>Creator</th>
+                    <th>Creation Time</th>
+                    <th>Editor</th>
+                    <th>Edited Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="kycSystemTableBody">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit KYC System Modal -->
+<div class="modal fade" id="kycSystemModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="kycSystemModalTitle">Add KYC System</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="kycSystemForm">
+                    <input type="hidden" id="kycSystemId">
+                    <div class="mb-3">
+                        <label for="kycSystemName" class="form-label">
+                            <span class="text-danger">*</span> KYC System Name
+                        </label>
+                        <input type="text" class="form-control" id="kycSystemName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <span class="text-danger">*</span> Countries
+                        </label>
+                        <div class="tag-input-container" id="kycCountriesTagContainer">
+                            <input type="text" id="kycCountriesSearch" placeholder="Type to search countries...">
+                        </div>
+                        <input type="hidden" id="kycCountriesHidden">
+                        <div class="tag-dropdown" id="kycCountriesDropdown"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveKycSystem()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KYC System Configuration Modal -->
+<div class="modal fade" id="kycConfigModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">KYC System Configuration</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px; padding: 15px; background-color: #F8FAFB; border-radius: 8px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div>
+                            <strong style="color: #6B7280; font-size: 13px;">KYC ID:</strong>
+                            <span id="configKycId" style="color: #2C3E50; font-size: 14px; margin-left: 8px;"></span>
+                        </div>
+                        <div>
+                            <strong style="color: #6B7280; font-size: 13px;">KYC System Name:</strong>
+                            <span id="configKycName" style="color: #2C3E50; font-size: 14px; margin-left: 8px;"></span>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <strong style="color: #6B7280; font-size: 13px;">Countries:</strong>
+                            <div id="configKycCountries" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs" id="kycConfigTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="mainFlow-tab" data-bs-toggle="tab" data-bs-target="#mainFlowPane" type="button" role="tab">
+                            KYC Main Flow
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="independentFlow-tab" data-bs-toggle="tab" data-bs-target="#independentFlowPane" type="button" role="tab">
+                            Independent Verification Flow
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="kycConfigTabContent">
+                    <div class="tab-pane fade show active" id="mainFlowPane" role="tabpanel">
+                        <div style="padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h6 style="margin: 0; font-weight: 600;">Main Flow Levels</h6>
+                                <button class="btn btn-sm btn-primary" onclick="addMainFlowLevel()">
+                                    <i class="fas fa-plus"></i> Add Level
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="mainFlowLevelsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>KYC Level</th>
+                                            <th>Level Description</th>
+                                            <th>Level Subdescription</th>
+                                            <th>Trading Account Features</th>
+                                            <th>Wallet Account Features</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="independentFlowPane" role="tabpanel">
+                        <div style="padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h6 style="margin: 0; font-weight: 600;">Independent Verification Flow Levels</h6>
+                                <button class="btn btn-sm btn-primary" onclick="addIndependentFlowLevel()">
+                                    <i class="fas fa-plus"></i> Add Level
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="independentFlowLevelsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>KYC Level</th>
+                                            <th>Level Description</th>
+                                            <th>Level Subdescription</th>
+                                            <th>Trading Account Features</th>
+                                            <th>Wallet Account Features</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveKycSystemConfig()">Save Configuration</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Level Configuration Modal (Drawer Style) -->
+<div class="modal fade" id="levelConfigDrawer" tabindex="-1" data-bs-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="levelConfigModalTitle">Add Level</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="levelConfigForm">
+                    <div class="mb-3">
+                        <label for="levelKycLevel" class="form-label"><span class="text-danger">*</span> KYC Level</label>
+                        <select class="form-select" id="levelKycLevel" required>
+                            <option value="">Select KYC Level</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="levelDescription" class="form-label"><span class="text-danger">*</span> Level Description</label>
+                        <input type="text" class="form-control" id="levelDescription" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="levelSubdescription" class="form-label"><span class="text-danger">*</span> Level Subdescription</label>
+                        <textarea class="form-control" id="levelSubdescription" rows="2" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trading Account Features</label>
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Deposit" id="tradingDeposit">
+                                <label class="form-check-label" for="tradingDeposit">Deposit</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Withdrawal" id="tradingWithdrawal">
+                                <label class="form-check-label" for="tradingWithdrawal">Withdrawal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Live Trading" id="tradingLiveTrading">
+                                <label class="form-check-label" for="tradingLiveTrading">Live Trading</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Open Live Account" id="tradingOpenLiveAccount">
+                                <label class="form-check-label" for="tradingOpenLiveAccount">Open Live Account</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Open Additional Account" id="tradingOpenAdditionalAccount">
+                                <label class="form-check-label" for="tradingOpenAdditionalAccount">Open Additional Account</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Wallet Account Features</label>
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Deposit" id="walletDeposit">
+                                <label class="form-check-label" for="walletDeposit">Deposit</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Withdrawal" id="walletWithdrawal">
+                                <label class="form-check-label" for="walletWithdrawal">Withdrawal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Live Trading" id="walletLiveTrading">
+                                <label class="form-check-label" for="walletLiveTrading">Live Trading</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Open Live Account" id="walletOpenLiveAccount">
+                                <label class="form-check-label" for="walletOpenLiveAccount">Open Live Account</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Open Additional Account" id="walletOpenAdditionalAccount">
+                                <label class="form-check-label" for="walletOpenAdditionalAccount">Open Additional Account</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveLevelConfig()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    console.log('[INIT] KYC System Config page loading');
+
+    // Global state
+    let kycSystemTable = null;
+    let countriesTagInputManager = null;
+    let currentKycSystemId = null;
+    let kycSystemConfigState = {
+        mainFlowLevels: [],
+        independentFlowLevels: []
+    };
+    let currentLevelEditIndex = null;
+    let currentLevelEditFlow = null;
+
+    const KYC_LEVEL_OPTIONS_MAIN = [
+        'Personal Details Verification',
+        'Identity Verification',
+        'Residency Address Verification'
+    ];
+
+    const KYC_LEVEL_OPTIONS_INDEPENDENT = [
+        'Bank Transfer Verification',
+        'Face Verification',
+        'Video Verification',
+        'Questionnaire Verification'
+        
+    ];
+
+    // TagInputManager class
+    class TagInputManager {
+        constructor(containerId, searchInputId, hiddenInputId, dropdownId, options = []) {
+            this.$container = $('#' + containerId);
+            this.$searchInput = $('#' + searchInputId);
+            this.$hiddenInput = $('#' + hiddenInputId);
+            this.$dropdown = $('#' + dropdownId);
+            this.options = options;
+            this.selectedTags = [];
+            this.init();
+        }
+
+        init() {
+            this.$container.on('click', () => this.$searchInput.focus());
+
+            this.$searchInput.on('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                this.filterAndShowDropdown(searchTerm);
+            });
+
+            this.$searchInput.on('focus', () => {
+                if (this.options.length > 0) {
+                    this.filterAndShowDropdown(this.$searchInput.val().toLowerCase());
+                }
+            });
+
+            this.$searchInput.on('blur', () => {
+                setTimeout(() => this.$dropdown.hide(), 200);
+            });
+
+            $(document).on('click', (e) => {
+                if (!$(e.target).closest(this.$container).length && !$(e.target).closest(this.$dropdown).length) {
+                    this.$dropdown.hide();
+                }
+            });
+        }
+
+        filterAndShowDropdown(searchTerm) {
+            this.$dropdown.empty();
+
+            if (searchTerm === '' && this.selectedTags.length === 0) {
+                const allOption = $('<div class="tag-dropdown-item tag-dropdown-all">Select All</div>');
+                allOption.on('click', () => {
+                    this.selectAll();
+                    this.$dropdown.hide();
+                    this.$searchInput.val('');
+                });
+                this.$dropdown.append(allOption);
+            }
+
+            const filteredOptions = this.options.filter(opt => {
+                const isMatch = opt.toLowerCase().includes(searchTerm);
+                const isNotSelected = !this.selectedTags.includes(opt);
+                return isMatch && isNotSelected;
+            });
+
+            filteredOptions.forEach(option => {
+                const item = $('<div class="tag-dropdown-item"></div>').text(option);
+                item.on('click', () => {
+                    this.addTag(option);
+                    this.$dropdown.hide();
+                    this.$searchInput.val('');
+                });
+                this.$dropdown.append(item);
+            });
+
+            if (filteredOptions.length > 0 || (searchTerm === '' && this.selectedTags.length === 0)) {
+                this.$dropdown.show();
+            } else {
+                this.$dropdown.hide();
+            }
+        }
+
+        addTag(tag) {
+            if (!this.selectedTags.includes(tag)) {
+                this.selectedTags.push(tag);
+                this.renderTags();
+                this.updateHiddenInput();
+            }
+        }
+
+        removeTag(tag) {
+            const index = this.selectedTags.indexOf(tag);
+            if (index > -1) {
+                this.selectedTags.splice(index, 1);
+                this.renderTags();
+                this.updateHiddenInput();
+            }
+        }
+
+        selectAll() {
+            this.selectedTags = [...this.options];
+            this.renderTags();
+            this.updateHiddenInput();
+        }
+
+        renderTags() {
+            this.$container.find('.tag-item').remove();
+
+            this.selectedTags.forEach(tag => {
+                const tagElement = $('<span class="tag-item"></span>');
+                tagElement.append($('<span></span>').text(tag));
+                const removeBtn = $('<span class="tag-remove">&times;</span>');
+                removeBtn.on('click', (e) => {
+                    e.stopPropagation();
+                    this.removeTag(tag);
+                });
+                tagElement.append(removeBtn);
+                this.$searchInput.before(tagElement);
+            });
+        }
+
+        updateHiddenInput() {
+            this.$hiddenInput.val(this.selectedTags.join(','));
+        }
+
+        getSelectedTags() {
+            return this.selectedTags;
+        }
+
+        setTags(tags) {
+            this.selectedTags = Array.isArray(tags) ? [...tags] : [];
+            this.renderTags();
+            this.updateHiddenInput();
+        }
+
+        clearTags() {
+            this.selectedTags = [];
+            this.renderTags();
+            this.updateHiddenInput();
+        }
+
+        updateOptions(newOptions) {
+            this.options = newOptions;
+        }
+    }
+
+    // Initialize function
+    function initKycSystemConfig() {
+        if (typeof window.kycSystemService === 'undefined') {
+            console.log('[WARN] KycSystemService not loaded yet, retrying...');
+            setTimeout(initKycSystemConfig, 100);
+            return;
+        }
+
+        console.log('[OK] KycSystemService loaded, initializing page');
+
+        if ($.fn.DataTable.isDataTable('#kycSystemTable')) {
+            $('#kycSystemTable').DataTable().destroy();
+        }
+
+        kycSystemTable = $('#kycSystemTable').DataTable({
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            order: [[0, 'asc']],
+            dom: '<"top">t<"bottom"<"pagination-left"i><"pagination-right"pl>><"clear">',
+            language: {
+                search: "Search:",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                paginate: {
+                    first: "First",
+                    last: "Last",
+                    next: "Next",
+                    previous: "Previous"
+                }
+            }
+        });
+
+        loadKycSystems();
+        console.log('[OK] Page initialized successfully');
+    }
+
+    function loadKycSystems() {
+        console.log('[LOAD] Loading KYC systems');
+        const systems = window.kycSystemService.loadAll();
+        console.log('[OK] Loaded ' + systems.length + ' systems');
+
+        kycSystemTable.clear();
+
+        systems.forEach(system => {
+            const countriesHtml = renderCountriesCell(system.countries);
+            const typeHtml = '<span class="kyc-badge-type kyc-badge-' + system.type.toLowerCase() + '">' + system.type + '</span>';
+            const actionsHtml = '<div class="kyc-action-buttons">' +
+                '<button class="kyc-action-btn view" onclick="viewKycSystemConfig(' + system.id + ')" title="Settings/Config">' +
+                '<i class="fas fa-cog"></i></button>' +
+                '<button class="kyc-action-btn edit" onclick="editKycSystem(' + system.id + ')" title="Edit">' +
+                '<i class="fas fa-edit"></i></button>' +
+                '<button class="kyc-action-btn delete" onclick="deleteKycSystem(' + system.id + ')" title="Delete">' +
+                '<i class="fas fa-trash-alt"></i></button>' +
+                '</div>';
+
+            kycSystemTable.row.add([
+                system.kycConfigCode || system.id,
+                typeHtml,
+                system.name,
+                countriesHtml,
+                system.creator,
+                system.createdAt,
+                system.editor,
+                system.editedAt,
+                actionsHtml
+            ]);
+        });
+
+        kycSystemTable.draw();
+    }
+
+    function renderCountriesCell(countries) {
+        if (!countries || countries.length === 0) return '-';
+        if (countries[0] === 'All') return '<span class="kyc-country-tag">All</span>';
+
+        let html = '<div class="kyc-country-tags">';
+        const displayCount = 3;
+        const displayCountries = countries.slice(0, displayCount);
+
+        displayCountries.forEach(country => {
+            html += '<span class="kyc-country-tag">' + country + '</span>';
+        });
+
+        if (countries.length > displayCount) {
+            html += '<span class="kyc-country-more">+' + (countries.length - displayCount) + '</span>';
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    // Global functions
+    window.searchKycSystems = function() {
+        loadKycSystems();
+    };
+
+    window.resetKycFilters = function() {
+        $('#kycBrandFilter').val('');
+        loadKycSystems();
+    };
+
+    window.openKycAddModal = function() {
+        console.log('[DEBUG] Opening Add KYC Modal');
+
+        if (!window.dataService) {
+            console.error('[ERROR] DataService not loaded');
+            alert('Error: Data service not available. Please refresh the page.');
+            return;
+        }
+
+        $('#kycSystemModalTitle').text('Add KYC System');
+        $('#kycSystemId').val('');
+        $('#kycSystemName').val('');
+
+        try {
+            if (countriesTagInputManager) {
+                console.log('[DEBUG] Clearing existing tag manager');
+                countriesTagInputManager.clearTags();
+            } else {
+                console.log('[DEBUG] Creating new tag manager');
+                const countriesData = window.dataService.getCountries();
+                console.log('[DEBUG] Loaded countries data:', countriesData.length);
+
+                // Convert country objects to name strings
+                const countryNames = countriesData.map(c => c.name);
+                console.log('[DEBUG] Converted to country names:', countryNames.length);
+
+                countriesTagInputManager = new TagInputManager(
+                    'kycCountriesTagContainer',
+                    'kycCountriesSearch',
+                    'kycCountriesHidden',
+                    'kycCountriesDropdown',
+                    countryNames
+                );
+                console.log('[DEBUG] Tag manager created successfully');
+            }
+        } catch (error) {
+            console.error('[ERROR] Failed to initialize tag manager:', error);
+            alert('Error initializing country selector: ' + error.message);
+            return;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('kycSystemModal'));
+        modal.show();
+        console.log('[DEBUG] Modal shown');
+    };
+
+    window.editKycSystem = function(id) {
+        const system = window.kycSystemService.getById(id);
+        if (!system) return;
+
+        $('#kycSystemModalTitle').text('Edit KYC System');
+        $('#kycSystemId').val(system.id);
+        $('#kycSystemName').val(system.name);
+
+        if (!countriesTagInputManager) {
+            const countriesData = window.dataService.getCountries();
+            const countryNames = countriesData.map(c => c.name);
+            countriesTagInputManager = new TagInputManager(
+                'kycCountriesTagContainer',
+                'kycCountriesSearch',
+                'kycCountriesHidden',
+                'kycCountriesDropdown',
+                countryNames
+            );
+        }
+
+        countriesTagInputManager.setTags(system.countries || []);
+
+        const modal = new bootstrap.Modal(document.getElementById('kycSystemModal'));
+        modal.show();
+    };
+
+    window.saveKycSystem = function() {
+        const id = $('#kycSystemId').val();
+        const name = $('#kycSystemName').val().trim();
+        const countries = countriesTagInputManager ? countriesTagInputManager.getSelectedTags() : [];
+
+        if (!name) {
+            alert('Please enter KYC System Name');
+            return;
+        }
+
+        if (countries.length === 0) {
+            alert('Please select at least one country');
+            return;
+        }
+
+        const systemData = {
+            name: name,
+            countries: countries
+        };
+
+        if (id) {
+            window.kycSystemService.update(parseInt(id), systemData);
+        } else {
+            window.kycSystemService.create(systemData);
+        }
+
+        bootstrap.Modal.getInstance(document.getElementById('kycSystemModal')).hide();
+        loadKycSystems();
+    };
+
+    window.deleteKycSystem = function(id) {
+        if (!confirm('Are you sure you want to delete this KYC System?')) {
+            return;
+        }
+
+        window.kycSystemService.delete(id);
+        loadKycSystems();
+    };
+
+    window.publishKycChanges = function() {
+        alert('Publish functionality - This would sync data to server');
+    };
+
+    window.viewKycSystemConfig = function(id) {
+        currentKycSystemId = id;
+        const system = window.kycSystemService.getById(id);
+        if (!system) return;
+
+        $('#configKycId').text(system.kycConfigCode || system.id);
+        $('#configKycName').text(system.name);
+        $('#configKycCountries').html(renderCountriesCell(system.countries));
+
+        const config = window.kycSystemService.getConfig(id);
+        kycSystemConfigState = JSON.parse(JSON.stringify(config));
+
+        renderMainFlowLevelsTable();
+        renderIndependentFlowLevelsTable();
+
+        const modal = new bootstrap.Modal(document.getElementById('kycConfigModal'));
+        modal.show();
+    };
+
+    function renderMainFlowLevelsTable() {
+        const $tbody = $('#mainFlowLevelsTable tbody');
+        $tbody.empty();
+
+        if (kycSystemConfigState.mainFlowLevels.length === 0) {
+            $tbody.append('<tr><td colspan="6" style="text-align: center; color: #999;">No levels configured</td></tr>');
+            return;
+        }
+
+        kycSystemConfigState.mainFlowLevels.forEach((level, index) => {
+            const row = '<tr>' +
+                '<td>' + level.kycLevel + '</td>' +
+                '<td>' + level.levelDescription + '</td>' +
+                '<td>' + (level.levelSubdescription || '-') + '</td>' +
+                '<td>' + (level.tradingAccountFeatures || []).join(', ') + '</td>' +
+                '<td>' + (level.walletAccountFeatures || []).join(', ') + '</td>' +
+                '<td>' +
+                '<button class="btn btn-sm btn-warning" onclick="editMainFlowLevel(' + index + ')">Edit</button> ' +
+                '<button class="btn btn-sm btn-danger" onclick="deleteMainFlowLevel(' + index + ')">Delete</button>' +
+                '</td>' +
+                '</tr>';
+            $tbody.append(row);
+        });
+    }
+
+    function renderIndependentFlowLevelsTable() {
+        const $tbody = $('#independentFlowLevelsTable tbody');
+        $tbody.empty();
+
+        if (kycSystemConfigState.independentFlowLevels.length === 0) {
+            $tbody.append('<tr><td colspan="6" style="text-align: center; color: #999;">No levels configured</td></tr>');
+            return;
+        }
+
+        kycSystemConfigState.independentFlowLevels.forEach((level, index) => {
+            const row = '<tr>' +
+                '<td>' + level.kycLevel + '</td>' +
+                '<td>' + level.levelDescription + '</td>' +
+                '<td>' + (level.levelSubdescription || '-') + '</td>' +
+                '<td>' + (level.tradingAccountFeatures || []).join(', ') + '</td>' +
+                '<td>' + (level.walletAccountFeatures || []).join(', ') + '</td>' +
+                '<td>' +
+                '<button class="btn btn-sm btn-warning" onclick="editIndependentFlowLevel(' + index + ')">Edit</button> ' +
+                '<button class="btn btn-sm btn-danger" onclick="deleteIndependentFlowLevel(' + index + ')">Delete</button>' +
+                '</td>' +
+                '</tr>';
+            $tbody.append(row);
+        });
+    }
+
+    // Open/Close Level Drawer
+    function openLevelDrawer() {
+        const drawerModal = new bootstrap.Modal(document.getElementById('levelConfigDrawer'));
+        drawerModal.show();
+    }
+
+    window.closeLevelDrawer = function() {
+        const drawerElement = document.getElementById('levelConfigDrawer');
+        const drawerModal = bootstrap.Modal.getInstance(drawerElement);
+        if (drawerModal) {
+            drawerModal.hide();
+        }
+    };
+
+    window.addMainFlowLevel = function() {
+        currentLevelEditIndex = null;
+        currentLevelEditFlow = 'main';
+        populateKycLevelOptions('main');
+        $('#levelConfigModalTitle').text('Add Main Flow Level');
+        $('#levelKycLevel').val('');
+        $('#levelDescription').val('');
+        $('#levelSubdescription').val('');
+        $('input[type="checkbox"][id^="trading"]').prop('checked', false);
+        $('input[type="checkbox"][id^="wallet"]').prop('checked', false);
+        openLevelDrawer();
+    };
+
+    window.editMainFlowLevel = function(index) {
+        currentLevelEditIndex = index;
+        currentLevelEditFlow = 'main';
+        const level = kycSystemConfigState.mainFlowLevels[index];
+        populateKycLevelOptions('main');
+        $('#levelConfigModalTitle').text('Edit Main Flow Level');
+        $('#levelKycLevel').val(level.kycLevel);
+        $('#levelDescription').val(level.levelDescription);
+        $('#levelSubdescription').val(level.levelSubdescription || '');
+
+        $('input[type="checkbox"][id^="trading"]').prop('checked', false);
+        (level.tradingAccountFeatures || []).forEach(feature => {
+            const id = 'trading' + feature.replace(/\s+/g, '');
+            $('#' + id).prop('checked', true);
+        });
+
+        $('input[type="checkbox"][id^="wallet"]').prop('checked', false);
+        (level.walletAccountFeatures || []).forEach(feature => {
+            const id = 'wallet' + feature.replace(/\s+/g, '');
+            $('#' + id).prop('checked', true);
+        });
+
+        openLevelDrawer();
+    };
+
+    window.deleteMainFlowLevel = function(index) {
+        if (!confirm('Are you sure you want to delete this level?')) return;
+        kycSystemConfigState.mainFlowLevels.splice(index, 1);
+        renderMainFlowLevelsTable();
+    };
+
+    window.addIndependentFlowLevel = function() {
+        currentLevelEditIndex = null;
+        currentLevelEditFlow = 'independent';
+        populateKycLevelOptions('independent');
+        $('#levelConfigModalTitle').text('Add Independent Flow Level');
+        $('#levelKycLevel').val('');
+        $('#levelDescription').val('');
+        $('#levelSubdescription').val('');
+        $('input[type="checkbox"][id^="trading"]').prop('checked', false);
+        $('input[type="checkbox"][id^="wallet"]').prop('checked', false);
+        openLevelDrawer();
+    };
+
+    window.editIndependentFlowLevel = function(index) {
+        currentLevelEditIndex = index;
+        currentLevelEditFlow = 'independent';
+        const level = kycSystemConfigState.independentFlowLevels[index];
+        populateKycLevelOptions('independent');
+        $('#levelConfigModalTitle').text('Edit Independent Flow Level');
+        $('#levelKycLevel').val(level.kycLevel);
+        $('#levelDescription').val(level.levelDescription);
+        $('#levelSubdescription').val(level.levelSubdescription || '');
+
+        $('input[type="checkbox"][id^="trading"]').prop('checked', false);
+        (level.tradingAccountFeatures || []).forEach(feature => {
+            const id = 'trading' + feature.replace(/\s+/g, '');
+            $('#' + id).prop('checked', true);
+        });
+
+        $('input[type="checkbox"][id^="wallet"]').prop('checked', false);
+        (level.walletAccountFeatures || []).forEach(feature => {
+            const id = 'wallet' + feature.replace(/\s+/g, '');
+            $('#' + id).prop('checked', true);
+        });
+
+        openLevelDrawer();
+    };
+
+    window.deleteIndependentFlowLevel = function(index) {
+        if (!confirm('Are you sure you want to delete this level?')) return;
+        kycSystemConfigState.independentFlowLevels.splice(index, 1);
+        renderIndependentFlowLevelsTable();
+    };
+
+    function populateKycLevelOptions(flowType) {
+        const options = flowType === 'main' ? KYC_LEVEL_OPTIONS_MAIN : KYC_LEVEL_OPTIONS_INDEPENDENT;
+        const $select = $('#levelKycLevel');
+        $select.empty();
+        $select.append('<option value="">Select KYC Level</option>');
+        options.forEach(opt => {
+            $select.append('<option value="' + opt + '">' + opt + '</option>');
+        });
+    }
+
+    window.saveLevelConfig = function() {
+        const kycLevel = $('#levelKycLevel').val();
+        const levelDescription = $('#levelDescription').val().trim();
+        const levelSubdescription = $('#levelSubdescription').val().trim();
+
+        if (!kycLevel) {
+            alert('Please select KYC Level');
+            return;
+        }
+        if (!levelDescription) {
+            alert('Please enter Level Description');
+            return;
+        }
+        if (!levelSubdescription) {
+            alert('Please enter Level Subdescription');
+            return;
+        }
+
+        const tradingFeatures = [];
+        $('input[type="checkbox"][id^="trading"]:checked').each(function() {
+            tradingFeatures.push($(this).val());
+        });
+
+        const walletFeatures = [];
+        $('input[type="checkbox"][id^="wallet"]:checked').each(function() {
+            walletFeatures.push($(this).val());
+        });
+
+        const levelData = {
+            kycLevel: kycLevel,
+            levelDescription: levelDescription,
+            levelSubdescription: levelSubdescription,
+            tradingAccountFeatures: tradingFeatures,
+            walletAccountFeatures: walletFeatures
+        };
+
+        if (currentLevelEditIndex !== null) {
+            if (currentLevelEditFlow === 'main') {
+                kycSystemConfigState.mainFlowLevels[currentLevelEditIndex] = levelData;
+            } else {
+                kycSystemConfigState.independentFlowLevels[currentLevelEditIndex] = levelData;
+            }
+        } else {
+            if (currentLevelEditFlow === 'main') {
+                kycSystemConfigState.mainFlowLevels.push(levelData);
+            } else {
+                kycSystemConfigState.independentFlowLevels.push(levelData);
+            }
+        }
+
+        if (currentLevelEditFlow === 'main') {
+            renderMainFlowLevelsTable();
+        } else {
+            renderIndependentFlowLevelsTable();
+        }
+
+        // Close the drawer modal
+        const drawerElement = document.getElementById('levelConfigDrawer');
+        const drawerModal = bootstrap.Modal.getInstance(drawerElement);
+        if (drawerModal) {
+            drawerModal.hide();
+        }
+    };
+
+    window.saveKycSystemConfig = function() {
+        if (!currentKycSystemId) return;
+
+        window.kycSystemService.saveConfig(currentKycSystemId, kycSystemConfigState);
+        bootstrap.Modal.getInstance(document.getElementById('kycConfigModal')).hide();
+        loadKycSystems();
+        alert('Configuration saved successfully');
+    };
+
+    // Initialize on page load
+    $(document).on('pageLoaded', function(event, data) {
+        if (data.route === '#/kyc/system-config') {
+            initKycSystemConfig();
+        }
+    });
+
+    // Auto-initialize if already on the page
+    if (window.location.hash === '#/kyc/system-config') {
+        setTimeout(initKycSystemConfig, 100);
+    }
+})();
+</script>

@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "kycConfigCode": "1",
+        "type": "Standard",
+        "name": "通用KYC体系",
+        "countries": ["All"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-06 09:54:52",
+        "editor": "-",
+        "editedAt": "-"
+    },
+    {
+        "id": 1001,
+        "kycConfigCode": "1001",
+        "type": "Custom",
+        "name": "严格体系",
+        "countries": ["Afghanistan"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-06 09:54:52",
+        "editor": "-",
+        "editedAt": "-"
+    },
+    {
+        "id": 1002,
+        "kycConfigCode": "1002",
+        "type": "Custom",
+        "name": "宽松体系（GS）",
+        "countries": ["Antigua and Barbuda", "Argentina"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-06 09:54:52",
+        "editor": "-",
+        "editedAt": "-"
+    },
+    {
+        "id": 1003,
+        "kycConfigCode": "1003",
+        "type": "Custom",
+        "name": "宽松体系（APAC）OWS无POF",
+        "countries": ["Nigeria", "Benin", "India"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-06 09:54:52",
+        "editor": "-",
+        "editedAt": "-"
+    },
+    {
+        "id": 1004,
+        "kycConfigCode": "1004",
+        "type": "Custom",
+        "name": "通用体系（MENA）OWS无POF",
+        "countries": ["Algeria", "Bahrain", "Iran"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-06 09:54:52",
+        "editor": "-",
+        "editedAt": "-"
+    },
+    {
+        "id": 1005,
+        "kycConfigCode": "1005",
+        "type": "Custom",
+        "name": "严格体系（GS APAC）OWS无POF",
+        "countries": ["Hong Kong", "Macao"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-06 09:54:52",
+        "editor": "-",
+        "editedAt": "-"
+    },
+    {
+        "id": 1006,
+        "kycConfigCode": "1006",
+        "type": "Custom",
+        "name": "UAE体系",
+        "countries": ["United Arab Emirates"],
+        "creator": "chelsey",
+        "createdAt": "2026-02-10 11:32:44",
+        "editor": "-",
+        "editedAt": "-"
+    }
+]

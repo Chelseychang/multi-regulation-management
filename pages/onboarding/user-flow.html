@@ -1,0 +1,817 @@
+<!-- Onboarding Flow - Client-Side User Journey -->
+
+<!-- Progress Stepper -->
+<div class="onboarding-stepper" id="onboardingStepper">
+    <!-- Steps will be dynamically rendered -->
+</div>
+
+<!-- Stage Container -->
+<div class="onboarding-stage-container" id="onboardingStageContainer">
+    <!-- Stage content will be dynamically loaded here -->
+    <div class="onboarding-loading" id="loadingIndicator">
+        <div class="onboarding-spinner"></div>
+        <div style="color: #718096; font-size: 15px;">Loading...</div>
+    </div>
+</div>
+
+<!-- Navigation Buttons -->
+<div class="onboarding-navigation" id="onboardingNavigation" style="display: none;">
+    <div>
+        <button type="button" class="btn-onboarding-secondary" id="btnPrevious" style="display: none;">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </div>
+    <div style="display: flex; gap: 12px;">
+        <button type="button" class="btn-skip" id="btnSkip" style="display: none;">
+            Skip for now
+        </button>
+        <button type="button" class="btn-onboarding-primary" id="btnNext">
+            Continue <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Stage Templates -->
+<script type="text/template" id="template-stage-registration">
+    <div class="onboarding-welcome">
+        <div class="onboarding-welcome-logo">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h1 class="onboarding-welcome-title">Welcome to OWS Trading</h1>
+        <p class="onboarding-welcome-subtitle">
+            Let's get started with your account. This will only take a few minutes.
+        </p>
+    </div>
+
+    <div class="stage-content" style="max-width: 500px; margin: 0 auto;">
+        <form id="registrationForm">
+            <!-- Domain Selection -->
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Website Domain <span class="required">*</span>
+                </label>
+                <select class="onboarding-form-input" id="reg_domain" required>
+                    <option value="">Select domain...</option>
+                    <option value="ows-trading.com">ows-trading.com</option>
+                    <option value="ows-markets.com">ows-markets.com</option>
+                    <option value="ows-global.com">ows-global.com</option>
+                </select>
+            </div>
+
+            <!-- Country of Residence -->
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Country of Residence <span class="required">*</span>
+                </label>
+                <select class="onboarding-form-input" id="reg_country" required>
+                    <option value="">Select country...</option>
+                </select>
+            </div>
+
+            <!-- Nationality -->
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Nationality <span class="required">*</span>
+                </label>
+                <select class="onboarding-form-input" id="reg_nationality" required>
+                    <option value="">Select nationality...</option>
+                </select>
+            </div>
+
+            <!-- Email -->
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Email Address <span class="required">*</span>
+                </label>
+                <input type="email" class="onboarding-form-input" id="reg_email"
+                       placeholder="your.email@example.com" required>
+            </div>
+
+            <!-- Password -->
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Password <span class="required">*</span>
+                </label>
+                <input type="password" class="onboarding-form-input" id="reg_password"
+                       placeholder="Create a strong password" required>
+                <div class="onboarding-form-hint">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Minimum 8 characters, include numbers and symbols</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-personalDetails">
+    <div class="stage-header">
+        <h2 class="stage-title">Personal Details Verification</h2>
+        <p class="stage-subtitle">Complete your profile to unlock trading features</p>
+    </div>
+
+    <div class="stage-content" id="personalDetailsContent">
+        <!-- OTP Verification Section -->
+        <div id="otpSection" style="display: none;">
+            <div class="onboarding-card">
+                <div class="onboarding-card-title">
+                    <i class="fas fa-envelope" style="color: #08B2A4; margin-right: 8px;"></i>
+                    Email Verification Required
+                </div>
+                <div class="onboarding-card-description" style="margin-top: 12px;">
+                    We need to verify your email address before proceeding.
+                </div>
+                <button type="button" class="btn-onboarding-primary" id="btnOpenOTPModal"
+                        style="margin-top: 16px;">
+                    Verify Email
+                </button>
+            </div>
+        </div>
+
+        <!-- Personal Info Form -->
+        <div id="personalInfoSection" style="display: none;">
+            <form id="personalInfoForm">
+                <!-- Dynamic fields will be rendered here -->
+            </form>
+
+            <!-- Individual Web Setting -->
+            <div id="h5VerificationSection" style="display: none; margin-top: 24px;">
+                <div class="onboarding-card">
+                    <div class="onboarding-card-title">
+                        <i class="fas fa-external-link-alt" style="color: #08B2A4; margin-right: 8px;"></i>
+                        Additional Verification Required
+                    </div>
+                    <div class="onboarding-card-description" style="margin-top: 12px;">
+                        Complete additional verification on our secure page.
+                    </div>
+                    <button type="button" class="btn-onboarding-secondary" id="btnH5Verification"
+                            style="margin-top: 16px;">
+                        <i class="fas fa-arrow-right"></i> Go to Verification Page
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-identityVerification">
+    <div class="stage-header">
+        <h2 class="stage-title">Identity Verification</h2>
+        <p class="stage-subtitle">Upload your documents to increase your account limits</p>
+    </div>
+
+    <div class="stage-content">
+        <div class="onboarding-card">
+            <div class="onboarding-card-title">
+                <i class="fas fa-id-card" style="color: #08B2A4; margin-right: 8px;"></i>
+                Proof of Identity (POI)
+            </div>
+            <div class="onboarding-card-description" style="margin: 12px 0 16px;">
+                Upload a government-issued ID (Passport, National ID, or Driver's License)
+            </div>
+            <div id="poiUploadArea">
+                <input type="file" id="poiFileInput" style="display: none;" accept="image/*,.pdf">
+                <button type="button" class="btn-onboarding-secondary" onclick="$('#poiFileInput').click()">
+                    <i class="fas fa-upload"></i> Choose File
+                </button>
+                <div id="poiPreview" style="margin-top: 16px; display: none;"></div>
+            </div>
+        </div>
+
+        <div class="onboarding-card">
+            <div class="onboarding-card-title">
+                <i class="fas fa-file-alt" style="color: #08B2A4; margin-right: 8px;"></i>
+                Proof of Address (POA)
+            </div>
+            <div class="onboarding-card-description" style="margin: 12px 0 16px;">
+                Upload a recent utility bill, bank statement, or government document
+            </div>
+            <div id="poaUploadArea">
+                <input type="file" id="poaFileInput" style="display: none;" accept="image/*,.pdf">
+                <button type="button" class="btn-onboarding-secondary" onclick="$('#poaFileInput').click()">
+                    <i class="fas fa-upload"></i> Choose File
+                </button>
+                <div id="poaPreview" style="margin-top: 16px; display: none;"></div>
+            </div>
+        </div>
+
+        <div class="onboarding-form-hint" style="margin-top: 24px;">
+            <i class="fas fa-info-circle"></i>
+            <span>Documents should be clear, in color, and all corners must be visible. Maximum file size: 10MB</span>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-kycProgress">
+    <div class="stage-header">
+        <h2 class="stage-title">You're Almost All Set To Trade</h2>
+        <p class="stage-subtitle">See what you've unlocked and what's next</p>
+    </div>
+
+    <div class="stage-content">
+        <div class="kyc-progress-card">
+            <div class="kyc-level-badge">
+                <i class="fas fa-star"></i> Level <span id="currentKYCLevel">1</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                Live Trading Account Limit
+            </h3>
+            <p style="font-size: 14px; color: #718096; margin-bottom: 24px;">
+                Your current deposit and withdrawal limits
+            </p>
+            <div class="kyc-limit-display">
+                <div class="kyc-limit-item">
+                    <div class="kyc-limit-label">Deposit</div>
+                    <div class="kyc-limit-value" id="depositLimit">$2,000</div>
+                </div>
+                <div class="kyc-limit-item">
+                    <div class="kyc-limit-label">Withdrawal</div>
+                    <div class="kyc-limit-value" id="withdrawalLimit">$2,000</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="onboarding-card selectable" id="nextLevelCard">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                    <div class="onboarding-card-title">
+                        <i class="fas fa-shield-alt" style="color: #6366F1; margin-right: 8px;"></i>
+                        Complete Identity Verification
+                    </div>
+                    <div class="onboarding-card-description" style="margin-top: 8px;">
+                        Unlock $50,000 limit/day by verifying your identity
+                    </div>
+                </div>
+                <div style="background: #6366F1; color: white; padding: 8px 16px; border-radius: 20px;
+                            font-size: 13px; font-weight: 600; white-space: nowrap;">
+                    Not Started
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 32px;">
+            <button type="button" class="btn-onboarding-primary" id="btnOpenLiveAccount"
+                    style="padding: 16px 48px; font-size: 16px;">
+                Open Live Account
+            </button>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-tradingAccount">
+    <div class="stage-header">
+        <h2 class="stage-title">Select Your Trading Account</h2>
+        <p class="stage-subtitle">Choose the platform that best suits your trading style</p>
+    </div>
+
+    <div class="stage-content" id="tradingAccountOptions">
+        <!-- Dynamic account type cards will be rendered here -->
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-agreements">
+    <div class="stage-header">
+        <h2 class="stage-title">Terms and Agreements</h2>
+        <p class="stage-subtitle">Please review and accept the following terms to continue</p>
+    </div>
+
+    <div class="stage-content">
+        <div class="onboarding-card">
+            <form id="agreementForm">
+                <div id="agreementsList">
+                    <!-- Dynamic checkboxes will be rendered here -->
+                </div>
+            </form>
+        </div>
+
+        <div class="onboarding-form-hint" style="margin-top: 16px;">
+            <i class="fas fa-info-circle"></i>
+            <span>By continuing, you confirm that you have read and understood all terms and conditions</span>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-questionnaire">
+    <div class="stage-header">
+        <h2 class="stage-title">Client Suitability Questionnaire</h2>
+        <p class="stage-subtitle">Help us understand your trading experience and goals</p>
+    </div>
+
+    <div class="stage-content" id="questionnaireContent">
+        <!-- Dynamic question cards will be rendered here -->
+    </div>
+
+    <div id="questionnaireScore" style="display: none; text-align: center; margin-top: 24px;">
+        <div style="font-size: 14px; color: #718096; margin-bottom: 8px;">Your Score</div>
+        <div style="font-size: 32px; font-weight: 700; color: #08B2A4;">
+            <span id="currentScore">0</span> / <span id="totalScore">100</span>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="template-stage-complete">
+    <div class="onboarding-success">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h1 class="onboarding-welcome-title">Congratulations!</h1>
+        <p class="onboarding-welcome-subtitle">
+            Your account has been successfully created. You're ready to start trading.
+        </p>
+
+        <div style="max-width: 500px; margin: 32px auto;">
+            <div class="onboarding-card">
+                <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
+                    Account Summary
+                </h3>
+                <div id="completionSummary">
+                    <!-- Summary details will be rendered here -->
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px; justify-content: center;">
+                <button type="button" class="btn-onboarding-primary" id="btnStartTrading">
+                    <i class="fas fa-chart-line"></i> Start Trading
+                </button>
+                <button type="button" class="btn-onboarding-secondary" id="btnDownloadReport" style="display: none;">
+                    <i class="fas fa-download"></i> Download Report
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- OTP Verification Modal -->
+<div id="otpModal" class="onboarding-modal-overlay" style="display: none;">
+    <div class="onboarding-modal-content">
+        <button class="onboarding-modal-close" onclick="closeOTPModal()">×</button>
+
+        <div class="onboarding-modal-header">
+            <h2 class="onboarding-modal-title">Verify Your Email Address</h2>
+            <p class="onboarding-modal-subtitle">
+                Code will be sent to: <strong id="maskedEmail">t***o@nqmo.com</strong>
+                <a href="javascript:void(0)" onclick="changeEmail()" style="margin-left: 8px; color: #08B2A4; text-decoration: underline;">
+                    Change
+                </a>
+            </p>
+        </div>
+
+        <div class="onboarding-modal-body">
+            <div class="otp-input-container">
+                <input type="text" class="otp-input-box" id="otp1" maxlength="1" pattern="[0-9]">
+                <input type="text" class="otp-input-box" id="otp2" maxlength="1" pattern="[0-9]">
+                <input type="text" class="otp-input-box" id="otp3" maxlength="1" pattern="[0-9]">
+                <input type="text" class="otp-input-box" id="otp4" maxlength="1" pattern="[0-9]">
+                <input type="text" class="otp-input-box" id="otp5" maxlength="1" pattern="[0-9]">
+                <input type="text" class="otp-input-box" id="otp6" maxlength="1" pattern="[0-9]">
+            </div>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <button type="button" class="btn-onboarding-secondary" id="btnSendOTP">
+                    Send OTP
+                </button>
+            </div>
+
+            <!-- Help Section -->
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #E8EAED;">
+                <div style="cursor: pointer; color: #718096; font-size: 14px; display: flex; justify-content: space-between; align-items: center;"
+                     onclick="$('#otpHelpSection').slideToggle()">
+                    <span>Did not receive the OTP?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div id="otpHelpSection" style="display: none; margin-top: 16px; font-size: 13px; color: #718096;">
+                    <p style="margin-bottom: 12px;"><strong>1. Double-check your email address</strong><br>
+                    Ensure you've entered it correctly.</p>
+                    <p style="margin-bottom: 12px;"><strong>2. Check your spam or junk folder</strong><br>
+                    Sometimes the email might end up there by mistake.</p>
+                    <p style="margin-bottom: 0;"><strong>3. Wait a few minutes</strong><br>
+                    Delays can happen occasionally.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="onboarding-modal-footer">
+            <button type="button" class="btn-onboarding-secondary" onclick="closeOTPModal()">
+                Cancel
+            </button>
+            <button type="button" class="btn-onboarding-primary" id="btnSubmitOTP">
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Onboarding Flow -->
+<script>
+// Initialize onboarding flow when page loads
+$(document).on('pageLoaded', function(event, data) {
+    if (data.route === '#/onboarding/start') {
+        console.log('🚀 Initializing Onboarding Flow');
+        initOnboardingFlow();
+    }
+});
+
+// Cleanup when page unloads
+$(document).on('pageUnload', function(event, data) {
+    if (data.route === '#/onboarding/start') {
+        console.log('🧹 Cleaning up Onboarding Flow');
+        // Don't clear session - user might come back
+    }
+});
+
+async function initOnboardingFlow() {
+    // Load existing session if any
+    const session = window.onboardingFlowClient.loadSession();
+
+    if (session) {
+        console.log('📥 Resuming from saved session');
+        // Resume from saved stage
+        renderStepper();
+        renderCurrentStage();
+    } else {
+        console.log('🆕 Starting new onboarding session');
+        // Start fresh
+        window.onboardingFlowClient.reset();
+        renderStepper();
+        renderCurrentStage();
+    }
+
+    // Bind navigation button events
+    $('#btnNext').on('click', handleNext);
+    $('#btnPrevious').on('click', handlePrevious);
+    $('#btnSkip').on('click', handleSkip);
+
+    // Listen for stage change events
+    $(document).on('stageChanged', function(event, data) {
+        console.log('📍 Stage changed:', data);
+        renderStepper();
+        renderCurrentStage();
+    });
+
+    // Hide loading indicator
+    $('#loadingIndicator').hide();
+    $('#onboardingNavigation').show();
+}
+
+function renderStepper() {
+    const client = window.onboardingFlowClient;
+    const $stepper = $('#onboardingStepper');
+    $stepper.empty();
+
+    client.stages.forEach((stage, index) => {
+        const stageNumber = index + 1;
+        const isCurrent = stageNumber === client.currentStage;
+        const isCompleted = stageNumber < client.currentStage;
+        const statusClass = isCompleted ? 'completed' : (isCurrent ? 'active' : '');
+
+        const $step = $(`
+            <div class="stepper-step ${statusClass}">
+                <div class="stepper-circle">${isCompleted ? '' : stageNumber}</div>
+                <div class="stepper-label">${stage.name}</div>
+            </div>
+        `);
+
+        $stepper.append($step);
+    });
+}
+
+async function renderCurrentStage() {
+    const client = window.onboardingFlowClient;
+    const stage = client.getCurrentStage();
+    const $container = $('#onboardingStageContainer');
+
+    console.log('🎨 Rendering stage:', stage.name);
+
+    // Get template
+    const templateId = `template-stage-${stage.key}`;
+    const template = $(`#${templateId}`).html();
+
+    if (!template) {
+        console.error('❌ Template not found:', templateId);
+        $container.html(`<div class="alert alert-danger">Template not found: ${templateId}</div>`);
+        return;
+    }
+
+    // Render template
+    $container.html(template);
+
+    // Load stage-specific data
+    await loadStageData(stage.key);
+
+    // Update navigation buttons
+    updateNavigationButtons();
+}
+
+async function loadStageData(stageKey) {
+    const client = window.onboardingFlowClient;
+
+    switch (stageKey) {
+        case 'registration':
+            await loadRegistrationData();
+            break;
+        case 'personalDetails':
+            await loadPersonalDetailsData();
+            break;
+        case 'identityVerification':
+            await loadIdentityVerificationData();
+            break;
+        case 'kycProgress':
+            await loadKYCProgressData();
+            break;
+        case 'tradingAccount':
+            await loadTradingAccountData();
+            break;
+        case 'agreements':
+            await loadAgreementsData();
+            break;
+        case 'questionnaire':
+            await loadQuestionnaireData();
+            break;
+        case 'complete':
+            await loadCompletionData();
+            break;
+    }
+}
+
+function updateNavigationButtons() {
+    const client = window.onboardingFlowClient;
+    const stage = client.getCurrentStage();
+
+    // Show/hide Previous button
+    if (client.currentStage > 1 && stage.key !== 'complete') {
+        $('#btnPrevious').show();
+    } else {
+        $('#btnPrevious').hide();
+    }
+
+    // Show/hide Skip button (for optional stages)
+    const optionalStages = ['identityVerification', 'kycProgress'];
+    if (optionalStages.includes(stage.key)) {
+        $('#btnSkip').show();
+    } else {
+        $('#btnSkip').hide();
+    }
+
+    // Update Next button text
+    if (client.currentStage === client.totalStages) {
+        $('#btnNext').html('<i class="fas fa-check"></i> Complete');
+    } else if (stage.key === 'complete') {
+        $('#btnNext').hide();
+    } else {
+        $('#btnNext').html('Continue <i class="fas fa-arrow-right"></i>');
+        $('#btnNext').show();
+    }
+}
+
+async function handleNext() {
+    const client = window.onboardingFlowClient;
+    const stage = client.getCurrentStage();
+
+    console.log('➡️ Next button clicked, current stage:', stage.name);
+
+    // Validate current stage
+    const validation = client.validateCurrentStage();
+
+    if (!validation.valid) {
+        showToast(validation.errors[0], 'error');
+        return;
+    }
+
+    // Stage-specific actions before moving forward
+    try {
+        const canProceed = await handleStageCompletion(stage.key);
+
+        if (!canProceed) {
+            return;
+        }
+
+        // Move to next stage
+        client.nextStage();
+    } catch (error) {
+        console.error('❌ Error completing stage:', error);
+        showToast('An error occurred. Please try again.', 'error');
+    }
+}
+
+function handlePrevious() {
+    window.onboardingFlowClient.previousStage();
+}
+
+function handleSkip() {
+    const client = window.onboardingFlowClient;
+    const stage = client.getCurrentStage();
+
+    console.log('⏭️ Skipping stage:', stage.name);
+
+    showToast(`Skipped ${stage.name}. You can complete this later.`, 'info');
+    client.nextStage();
+}
+
+// Stage completion handlers (will be implemented per stage)
+async function handleStageCompletion(stageKey) {
+    console.log('✅ Completing stage:', stageKey);
+
+    switch (stageKey) {
+        case 'registration':
+            return await completeRegistration();
+        case 'personalDetails':
+            return await completePersonalDetails();
+        case 'identityVerification':
+            return completeIdentityVerification();
+        case 'kycProgress':
+            return true; // Informational stage
+        case 'tradingAccount':
+            return completeTradingAccount();
+        case 'agreements':
+            return completeAgreements();
+        case 'questionnaire':
+            return await completeQuestionnaire();
+        default:
+            return true;
+    }
+}
+
+// Placeholder functions for stage-specific loading (will be implemented)
+async function loadRegistrationData() {
+    // Load countries and nationalities
+    const countries = window.dataService.getCountries();
+    const nationalities = window.dataService.getNationalities();
+
+    // Populate dropdowns
+    const $countrySelect = $('#reg_country');
+    const $nationalitySelect = $('#reg_nationality');
+
+    countries.forEach(country => {
+        $countrySelect.append(`<option value="${country}">${country}</option>`);
+    });
+
+    nationalities.forEach(nationality => {
+        $nationalitySelect.append(`<option value="${nationality}">${nationality}</option>`);
+    });
+
+    // Pre-fill from session if available
+    const userData = window.onboardingFlowClient.userData;
+    if (userData.email) $('#reg_email').val(userData.email);
+    if (userData.country) $('#reg_country').val(userData.country);
+    if (userData.nationality) $('#reg_nationality').val(userData.nationality);
+    if (userData.domain) $('#reg_domain').val(userData.domain);
+}
+
+async function loadPersonalDetailsData() {
+    console.log('Loading personal details data...');
+    // Implementation will be added
+}
+
+async function loadIdentityVerificationData() {
+    console.log('Loading identity verification data...');
+    // Implementation will be added
+}
+
+async function loadKYCProgressData() {
+    console.log('Loading KYC progress data...');
+    // Implementation will be added
+}
+
+async function loadTradingAccountData() {
+    console.log('Loading trading account data...');
+    // Implementation will be added
+}
+
+async function loadAgreementsData() {
+    console.log('Loading agreements data...');
+    // Implementation will be added
+}
+
+async function loadQuestionnaireData() {
+    console.log('Loading questionnaire data...');
+    // Implementation will be added
+}
+
+async function loadCompletionData() {
+    console.log('Loading completion data...');
+    // Implementation will be added
+}
+
+// Registration completion
+async function completeRegistration() {
+    const email = $('#reg_email').val().trim();
+    const password = $('#reg_password').val();
+    const country = $('#reg_country').val();
+    const nationality = $('#reg_nationality').val();
+    const domain = $('#reg_domain').val();
+
+    // Basic validation
+    if (!email || !password || !country || !nationality || !domain) {
+        showToast('Please fill in all required fields', 'error');
+        return false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return false;
+    }
+
+    // Password validation
+    if (password.length < 8) {
+        showToast('Password must be at least 8 characters long', 'error');
+        return false;
+    }
+
+    // Determine license
+    showToast('Determining your regulation...', 'info');
+
+    const result = await window.onboardingFlowClient.determineLicense(country, nationality, domain);
+
+    if (!result.matched) {
+        showToast(result.error, 'error');
+        return false;
+    }
+
+    // Save license and brand
+    window.onboardingFlowClient.brand = result.brand;
+    window.onboardingFlowClient.license = result.license;
+
+    // Load configuration
+    await window.onboardingFlowClient.loadConfig();
+
+    // Save user data
+    window.onboardingFlowClient.userData = {
+        email,
+        country,
+        nationality,
+        domain,
+        createdAt: new Date().toISOString()
+    };
+
+    window.onboardingFlowClient.saveSession();
+
+    showToast(`Matched to ${result.brand} - ${result.license}`, 'success');
+
+    return true;
+}
+
+async function completePersonalDetails() {
+    // Will be implemented
+    return true;
+}
+
+function completeIdentityVerification() {
+    // Will be implemented
+    return true;
+}
+
+function completeTradingAccount() {
+    // Will be implemented
+    return true;
+}
+
+function completeAgreements() {
+    // Will be implemented
+    return true;
+}
+
+async function completeQuestionnaire() {
+    // Will be implemented
+    return true;
+}
+
+// OTP Modal functions
+function closeOTPModal() {
+    $('#otpModal').fadeOut(200);
+}
+
+function changeEmail() {
+    // Go back to registration to change email
+    showToast('Returning to registration to update email', 'info');
+    window.onboardingFlowClient.goToStage(1);
+    closeOTPModal();
+}
+
+// Initialize OTP inputs with auto-focus
+$(document).on('input', '.otp-input-box', function() {
+    const $this = $(this);
+    const value = $this.val();
+
+    if (value.length === 1) {
+        $this.addClass('filled');
+        // Move to next box
+        const $next = $this.next('.otp-input-box');
+        if ($next.length) {
+            $next.focus();
+        }
+    } else if (value.length === 0) {
+        $this.removeClass('filled');
+    }
+});
+
+// Backspace navigation for OTP
+$(document).on('keydown', '.otp-input-box', function(e) {
+    if (e.key === 'Backspace' && $(this).val() === '') {
+        const $prev = $(this).prev('.otp-input-box');
+        if ($prev.length) {
+            $prev.focus();
+        }
+    }
+});
+</script>

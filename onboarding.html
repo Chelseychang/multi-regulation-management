@@ -1,0 +1,2551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to Onboard</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/onboarding-flow.css">
+
+    <style>
+        /* Vantage Markets inspired color scheme */
+        :root {
+            --vantage-primary: #F05742;
+            --vantage-primary-dark: #D94632;
+            --vantage-primary-light: #FF6B52;
+            --vantage-secondary: #1A3A52;
+            --vantage-accent: #FDB515;
+            --vantage-dark: #0F1419;
+            --vantage-gray: #4A5568;
+            --vantage-light-gray: #EDF2F7;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--vantage-secondary) 0%, #0F2537 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .onboarding-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .onboarding-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .progress-bar-wrapper {
+            background: #f5f7fa;
+            padding: 20px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .content-wrapper {
+            padding: 40px;
+        }
+
+        /* Toast styling */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-success { border-left: 4px solid #10B981; }
+        .toast-error { border-left: 4px solid var(--vantage-primary); }
+        .toast-warning { border-left: 4px solid var(--vantage-accent); }
+        .toast-info { border-left: 4px solid var(--vantage-secondary); }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast-success .toast-icon { color: #10B981; }
+        .toast-error .toast-icon { color: var(--vantage-primary); }
+        .toast-warning .toast-icon { color: var(--vantage-accent); }
+        .toast-info .toast-icon { color: var(--vantage-secondary); }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2C3E50;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #718096;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 18px;
+        }
+
+        .toast-close:hover {
+            color: #2C3E50;
+        }
+
+        .onboarding-welcome-logo-text {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--vantage-primary) 0%, var(--vantage-primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 32px;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-wrapper">
+        <div class="onboarding-container">
+            <!-- Progress Bar -->
+            <div class="progress-bar-wrapper">
+                <div class="onboarding-stepper" id="onboardingStepper">
+                    <!-- Steps will be dynamically rendered -->
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content-wrapper">
+                <div class="onboarding-stage-container" id="onboardingStageContainer">
+                    <!-- Stage content will be dynamically loaded here -->
+                    <div class="onboarding-loading" id="loadingIndicator">
+                        <div class="onboarding-spinner"></div>
+                        <div style="color: #718096; font-size: 15px;">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="onboarding-navigation" id="onboardingNavigation" style="display: none;">
+                    <div>
+                        <button type="button" class="btn-onboarding-secondary" id="btnPrevious" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button type="button" class="btn-skip" id="btnSkip" style="display: none;">
+                            Skip for now
+                        </button>
+                        <button type="button" class="btn-onboarding-primary" id="btnNext">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Stage Templates -->
+
+    <!-- Registration Template -->
+    <script type="text/template" id="template-stage-registration">
+        <div class="onboarding-welcome">
+            <h1 class="onboarding-welcome-title">Welcome to Onboard</h1>
+            <p class="onboarding-welcome-subtitle">
+                Let's get started with your account. This will only take a few minutes.
+            </p>
+        </div>
+
+        <div class="stage-content" style="max-width: 500px; margin: 0 auto;">
+            <form id="registrationForm">
+                <!-- Domain Input -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Website Domain <span class="required">*</span>
+                    </label>
+                    <input type="text" class="onboarding-form-input" id="reg_domain"
+                           placeholder="e.g., ows-trading.com" required>
+                    <div class="onboarding-form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Enter the website domain you're registering from</span>
+                    </div>
+                </div>
+
+                <!-- Country of Residence -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Country of Residence <span class="required">*</span>
+                    </label>
+                    <select class="onboarding-form-input" id="reg_country" required>
+                        <option value="">Select country...</option>
+                    </select>
+                </div>
+
+                <!-- Nationality -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Nationality <span class="required">*</span>
+                    </label>
+                    <select class="onboarding-form-input" id="reg_nationality" required>
+                        <option value="">Select nationality...</option>
+                    </select>
+                </div>
+
+                <!-- Email -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Email Address <span class="required">*</span>
+                    </label>
+                    <input type="email" class="onboarding-form-input" id="reg_email"
+                           placeholder="your.email@example.com" required>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Phone Number <span class="required">*</span>
+                    </label>
+                    <input type="tel" class="onboarding-form-input" id="reg_phoneNumber"
+                           placeholder="+1234567890" required>
+                </div>
+
+                <!-- Password -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Password <span class="required">*</span>
+                    </label>
+                    <input type="password" class="onboarding-form-input" id="reg_password"
+                           placeholder="Create a strong password" required>
+                    <div class="onboarding-form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Minimum 8 characters, include numbers and symbols</span>
+                    </div>
+                </div>
+
+                <!-- First Name (Optional) -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        First Name
+                    </label>
+                    <input type="text" class="onboarding-form-input" id="reg_firstName"
+                           placeholder="Your first name">
+                </div>
+
+                <!-- Last Name (Optional) -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Last Name
+                    </label>
+                    <input type="text" class="onboarding-form-input" id="reg_lastName"
+                           placeholder="Your last name">
+                </div>
+
+                <!-- Referred By (Optional) -->
+                <div class="onboarding-form-group">
+                    <label class="onboarding-form-label">
+                        Referred By
+                    </label>
+                    <input type="text" class="onboarding-form-input" id="reg_referredBy"
+                           placeholder="Referral code (optional)">
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <!-- Personal Details Template -->
+    <script type="text/template" id="template-stage-personalDetails">
+        <div class="stage-header">
+            <h2 class="stage-title">Personal Details Verification</h2>
+            <p class="stage-subtitle">Complete your profile to unlock trading features</p>
+        </div>
+
+        <div class="stage-content">
+            <form id="dynamicPersonalInfoForm">
+                <!-- Fields will be dynamically rendered here based on configuration -->
+            </form>
+        </div>
+    </script>
+
+    <!-- Identity Verification Template -->
+    <script type="text/template" id="template-stage-identityVerification">
+        <div class="stage-header">
+            <h2 class="stage-title">Identity Verification</h2>
+            <p class="stage-subtitle">Upload your documents to increase your account limits</p>
+        </div>
+
+        <div class="stage-content">
+            <div class="onboarding-card">
+                <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
+                    🆔 Step 3: Document Upload
+                </h3>
+                <p style="color: #718096; margin-bottom: 24px;">
+                    Upload proof of identity and address documents.
+                </p>
+                <div class="onboarding-card-description">
+                    <strong>Required documents:</strong>
+                    <ul style="margin-top: 12px; padding-left: 20px;">
+                        <li><strong>POI:</strong> Passport, National ID, or Driver's License</li>
+                        <li><strong>POA:</strong> Utility bill, Bank statement (within 3 months)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- KYC Progress Template -->
+    <script type="text/template" id="template-stage-kycProgress">
+        <div class="stage-header">
+            <h2 class="stage-title">You're Almost All Set To Trade</h2>
+            <p class="stage-subtitle">See what you've unlocked and what's next</p>
+        </div>
+
+        <div class="stage-content">
+            <div class="kyc-progress-card">
+                <div class="kyc-level-badge">
+                    <i class="fas fa-star"></i> Level 1
+                </div>
+                <h3 style="font-size: 20px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                    Live Trading Account Limit
+                </h3>
+                <p style="font-size: 14px; color: #718096; margin-bottom: 24px;">
+                    Your current deposit and withdrawal limits
+                </p>
+                <div class="kyc-limit-display">
+                    <div class="kyc-limit-item">
+                        <div class="kyc-limit-label">Deposit</div>
+                        <div class="kyc-limit-value">$2,000</div>
+                    </div>
+                    <div class="kyc-limit-item">
+                        <div class="kyc-limit-label">Withdrawal</div>
+                        <div class="kyc-limit-value">$2,000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Trading Account Template -->
+    <script type="text/template" id="template-stage-tradingAccount">
+        <div class="stage-header">
+            <h2 class="stage-title">Select Your Trading Account</h2>
+            <p class="stage-subtitle">Choose the platform that best suits your trading style</p>
+        </div>
+
+        <div class="stage-content">
+            <div class="onboarding-card selectable" onclick="selectTradingAccount('MT5')">
+                <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                    📊 MetaTrader 5
+                </h3>
+                <p style="color: #718096;">
+                    Advanced trading platform with powerful charting tools and automated trading capabilities.
+                </p>
+            </div>
+
+            <div class="onboarding-card selectable" onclick="selectTradingAccount('MT4')">
+                <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                    📈 MetaTrader 4
+                </h3>
+                <p style="color: #718096;">
+                    Popular forex trading platform trusted by millions of traders worldwide.
+                </p>
+            </div>
+
+            <div class="onboarding-card selectable" onclick="selectTradingAccount('CopyTrading')">
+                <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                    👥 Copy Trading
+                </h3>
+                <p style="color: #718096;">
+                    Automatically copy trades from experienced traders.
+                </p>
+            </div>
+        </div>
+    </script>
+
+    <!-- Agreements Template -->
+    <script type="text/template" id="template-stage-agreements">
+        <div class="stage-header">
+            <h2 class="stage-title">Terms and Agreements</h2>
+            <p class="stage-subtitle">Please review and accept the following terms to continue</p>
+        </div>
+
+        <div class="stage-content">
+            <div class="onboarding-card">
+                <form id="agreementForm">
+                    <div class="form-check" style="margin-bottom: 16px;">
+                        <input class="form-check-input" type="checkbox" id="terms1" required>
+                        <label class="form-check-label" for="terms1" style="font-size: 14px;">
+                            I confirm that I have read and agree to the <a href="#" target="_blank">Terms & Conditions</a>
+                        </label>
+                    </div>
+                    <div class="form-check" style="margin-bottom: 16px;">
+                        <input class="form-check-input" type="checkbox" id="terms2" required>
+                        <label class="form-check-label" for="terms2" style="font-size: 14px;">
+                            I confirm that I have read and agree to the <a href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="terms3" required>
+                        <label class="form-check-label" for="terms3" style="font-size: 14px;">
+                            I confirm that I have read the <a href="#" target="_blank">Risk Disclosure</a>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </script>
+
+    <!-- Questionnaire Template -->
+    <script type="text/template" id="template-stage-questionnaire">
+        <div class="stage-header">
+            <h2 class="stage-title">Client Suitability Questionnaire</h2>
+            <p class="stage-subtitle">Help us understand your trading experience and financial background</p>
+        </div>
+
+        <div id="stageContainer">
+            <!-- Questionnaire form will be dynamically rendered here -->
+            <div class="stage-content">
+                <div class="onboarding-card">
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: #3B82F6; margin-bottom: 20px;"></i>
+                        <p style="color: #718096; font-size: 14px;">Loading questionnaire...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/data-service.js"></script>
+    <script src="assets/js/kyc-system-service.js"></script>
+    <script src="assets/js/onboarding-flow-client.js"></script>
+
+    <script>
+        // Global toast function
+        window.showToast = function(message, type = 'info', title = '') {
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            const titles = {
+                success: 'Success',
+                error: 'Error',
+                warning: 'Warning',
+                info: 'Info'
+            };
+
+            const toastTitle = title || titles[type];
+            const toastIcon = icons[type] || icons.info;
+
+            const $toast = $(`
+                <div class="toast toast-${type}">
+                    <div class="toast-icon">
+                        <i class="fas ${toastIcon}"></i>
+                    </div>
+                    <div class="toast-content">
+                        <div class="toast-title">${toastTitle}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `);
+
+            $('#toastContainer').append($toast);
+
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                $toast.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }, 5000);
+
+            // Manual close
+            $toast.find('.toast-close').on('click', function() {
+                $toast.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            });
+        };
+
+        // Initialize data service
+        window.dataService = new DataService();
+
+        // Initialize application when DOM is ready
+        $(document).ready(async function() {
+            console.log('🚀 Initializing Onboarding Flow');
+
+            // Load master data
+            try {
+                await window.dataService.loadMasterData();
+                console.log('✅ Master data loaded successfully');
+            } catch (error) {
+                console.error('❌ Failed to load master data:', error);
+                showToast('Failed to load master data', 'error');
+            }
+
+            // Initialize onboarding service (same as embedded service in admin page)
+            window.onboardingService = {
+                storageKey: 'onboardingFlows',
+
+                getConfig(brand, license) {
+                    const allConfigs = this.loadAll();
+                    return allConfigs.find(c => c.brand === brand && c.license === license);
+                },
+
+                loadAll() {
+                    const data = localStorage.getItem(this.storageKey);
+                    return data ? JSON.parse(data) : [];
+                }
+            };
+
+            // Initialize onboarding flow
+            await initOnboardingFlow();
+        });
+
+        async function initOnboardingFlow() {
+            // Check if returning from external page
+            const urlParams = new URLSearchParams(window.location.search);
+            const completedStep = urlParams.get('completed');
+
+            if (completedStep === 'personalInfo') {
+                console.log('✅ Returned from external personal info page');
+                showToast('Personal information saved successfully!', 'success');
+
+                // Load session and move to next stage
+                window.onboardingFlowClient.loadSession();
+                if (window.onboardingFlowClient.currentStage === 2) {
+                    // Mark personal details as completed and move to next stage
+                    window.onboardingFlowClient.userData.personalInfoCompleted = true;
+                    window.onboardingFlowClient.nextStage();
+                    window.onboardingFlowClient.saveSession();
+                }
+
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // Continue normal initialization...
+            // Load existing session if any
+            const session = window.onboardingFlowClient.loadSession();
+
+            if (session) {
+                console.log('📥 Resuming from saved session');
+                renderStepper();
+                renderCurrentStage();
+            } else {
+                console.log('🆕 Starting new onboarding session');
+                window.onboardingFlowClient.reset();
+                renderStepper();
+                renderCurrentStage();
+            }
+
+            // Bind navigation button events
+            console.log('🔗 Binding button events...');
+            const $btnNext = $('#btnNext');
+            console.log('Next button found:', $btnNext.length, 'elements');
+
+            $btnNext.on('click', function(e) {
+                console.log('🔘 Click event triggered on Next button');
+                e.preventDefault();
+                handleNext();
+            });
+
+            $('#btnPrevious').on('click', handlePrevious);
+            $('#btnSkip').on('click', handleSkip);
+
+            // Hide loading indicator
+            $('#loadingIndicator').hide();
+            $('#onboardingNavigation').show();
+            console.log('✅ Onboarding flow initialized');
+        }
+
+        function renderStepper() {
+            const client = window.onboardingFlowClient;
+            const $stepper = $('#onboardingStepper');
+            $stepper.empty();
+
+            // Hide stepper if complete
+            if (client.currentStage === 'complete') {
+                $stepper.hide();
+                return;
+            } else {
+                $stepper.show();
+            }
+
+            client.stages.forEach((stage, index) => {
+                const stageNumber = index + 1;
+                const isCurrent = stageNumber === client.currentStage;
+                const isCompleted = stageNumber < client.currentStage;
+                const statusClass = isCompleted ? 'completed' : (isCurrent ? 'active' : '');
+
+                const $step = $(`
+                    <div class="stepper-step ${statusClass}">
+                        <div class="stepper-circle">${isCompleted ? '' : stageNumber}</div>
+                        <div class="stepper-label">${stage.name}</div>
+                    </div>
+                `);
+
+                $stepper.append($step);
+            });
+        }
+
+        async function renderCurrentStage() {
+            const client = window.onboardingFlowClient;
+            const $container = $('#onboardingStageContainer');
+
+            // Handle completion stage
+            if (client.currentStage === 'complete') {
+                console.log('🎉 Rendering completion stage');
+                $container.html(`
+                    <div class="stage-content" style="text-align: center; padding: 80px 20px;">
+                        <i class="fas fa-check-circle" style="font-size: 96px; color: #10B981; margin-bottom: 32px;"></i>
+                        <h2 style="font-size: 32px; font-weight: 700; color: #2C3E50; margin-bottom: 16px;">
+                            Onboarding Complete!
+                        </h2>
+                        <p style="font-size: 16px; color: #718096; margin-bottom: 40px;">
+                            Thank you for completing your account setup. You can now start trading.
+                        </p>
+                        <button type="button" class="btn-onboarding-primary" style="font-size: 18px; padding: 16px 40px;">
+                            <i class="fas fa-rocket"></i> Start Trading
+                        </button>
+                    </div>
+                `);
+                $('.onboarding-navigation').hide();
+                return;
+            }
+
+            const stage = client.getCurrentStage();
+
+            if (!stage) {
+                console.error('❌ No current stage found');
+                $container.html(`<div class="alert alert-danger">Invalid stage</div>`);
+                return;
+            }
+
+            console.log('🎨 Rendering stage:', stage.name);
+
+            // Get template
+            const templateId = `template-stage-${stage.key}`;
+            const template = $(`#${templateId}`).html();
+
+            if (!template) {
+                console.error('❌ Template not found:', templateId);
+                $container.html(`<div class="alert alert-danger">Stage template not found</div>`);
+                return;
+            }
+
+            // Render template
+            $container.html(template);
+
+            // Load stage-specific data
+            await loadStageData(stage.key);
+
+            // Update navigation buttons
+            updateNavigationButtons();
+        }
+
+        async function loadStageData(stageKey) {
+            switch (stageKey) {
+                case 'registration':
+                    await loadRegistrationData();
+                    break;
+                case 'personalDetails':
+                    await loadPersonalDetailsData();
+                    break;
+                case 'tradingAccount':
+                    await loadTradingAccountData();
+                    break;
+                case 'agreements':
+                    await loadAgreementsData();
+                    break;
+                case 'questionnaire':
+                    await loadQuestionnaireData();
+                    break;
+                default:
+                    // Other stages use placeholder templates
+                    break;
+            }
+        }
+
+        async function loadPersonalDetailsData() {
+            console.log('📝 Loading Personal Details configuration...');
+
+            const client = window.onboardingFlowClient;
+
+            // Check if OTP is already verified
+            if (!client.userData.otpVerified) {
+                console.log('📧 OTP not verified yet, showing OTP modal...');
+
+                // Hide navigation buttons during OTP verification
+                $('.onboarding-navigation').hide();
+
+                showOTPVerificationModal();
+                return;
+            }
+
+            // Show navigation buttons (in case they were hidden)
+            $('.onboarding-navigation').show();
+
+            console.log('✅ OTP already verified, loading personal details form...');
+
+            const config = client.config;
+            const personalInfoConfig = config?.personalInfoFields || {};
+
+            // Check if Individual Web Setting (H5 verification) is enabled
+            const h5Verification = personalInfoConfig.h5Verification;
+            if (h5Verification && h5Verification.enabled) {
+                console.log('🔗 Individual Web Setting enabled, loading external form...');
+                redirectToExternalPersonalInfo(h5Verification);
+                return;
+            }
+
+            // Extract fields array - handle both array and object formats
+            let personalInfoFields = [];
+            if (Array.isArray(personalInfoConfig)) {
+                personalInfoFields = personalInfoConfig;
+            } else if (personalInfoConfig.fields && Array.isArray(personalInfoConfig.fields)) {
+                personalInfoFields = personalInfoConfig.fields;
+            }
+
+            console.log('Personal Info Fields:', personalInfoFields);
+
+            if (personalInfoFields.length === 0) {
+                console.warn('⚠️ No personal info fields configured');
+                return;
+            }
+
+            // Find or create form container
+            let $form = $('#dynamicPersonalInfoForm');
+            if ($form.length === 0) {
+                // Create form if template doesn't have it
+                $('.stage-content').html(`
+                    <form id="dynamicPersonalInfoForm">
+                        <!-- Fields will be added here -->
+                    </form>
+                `);
+                $form = $('#dynamicPersonalInfoForm');
+            }
+
+            // Clear existing fields
+            $form.empty();
+
+            // Render each field
+            personalInfoFields.forEach((field, index) => {
+                console.log(`Field ${index}:`, field);
+
+                if (!field.enabled) {
+                    console.log(`  ↳ Skipped (not enabled)`);
+                    return;
+                }
+
+                const isRequired = field.required;
+                const fieldLabel = field.label || field.name || field.key || field.fieldName || 'Unknown Field';
+                const fieldKey = field.key || field.fieldName || field.name || `field_${index}`;
+
+                console.log(`  ↳ Label: "${fieldLabel}", Key: "${fieldKey}", Type: "${field.type}"`);
+
+                const $fieldGroup = $(`
+                    <div class="onboarding-form-group">
+                        <label class="onboarding-form-label">
+                            ${fieldLabel}
+                            ${isRequired ? '<span class="required">*</span>' : ''}
+                        </label>
+                        ${renderPersonalInfoField(field, fieldKey)}
+                    </div>
+                `);
+
+                $form.append($fieldGroup);
+            });
+
+            console.log('✅ Personal info fields rendered');
+        }
+
+        function showOTPVerificationModal() {
+            const client = window.onboardingFlowClient;
+            const config = client.config;
+            const otpConfig = config?.otpConfig || { email: { enabled: true }, phone: { enabled: false } };
+
+            const userEmail = client.userData.email || '';
+            const userCountry = client.userData.country || '';
+
+            // Determine verification method
+            const emailEnabled = otpConfig.email?.enabled !== false;
+
+            // Check if phone verification is required for this country
+            const phoneCountries = otpConfig.phone?.countries || [];
+            const phoneEnabledGlobally = otpConfig.phone?.enabled;
+
+            // Phone is enabled if:
+            // 1. Phone verification is enabled globally AND
+            // 2. Either 'All' is in countries list OR user's country is in the list
+            const phoneEnabled = phoneEnabledGlobally &&
+                                (phoneCountries.includes('All') ||
+                                 phoneCountries.includes(userCountry));
+
+            console.log('OTP Config:', otpConfig);
+            console.log('Phone verification enabled:', phoneEnabled, 'for country:', userCountry);
+            console.log('Phone countries:', phoneCountries);
+            console.log('Phone enabled globally:', phoneEnabledGlobally);
+
+            // Mask email for display
+            const maskedEmail = maskEmail(userEmail);
+            const userPhone = client.userData.phoneNumber || '';
+            const maskedPhone = maskPhone(userPhone);
+
+            // Determine if we need double verification
+            const doubleVerification = emailEnabled && phoneEnabled;
+
+            // Show OTP modal
+            $('.stage-content').html(`
+                <div class="onboarding-modal-overlay" style="position: fixed; display: flex;">
+                    <div class="onboarding-modal-content" style="max-width: ${doubleVerification ? '600px' : '500px'};">
+                        <div class="onboarding-modal-header">
+                            <h2 class="onboarding-modal-title">
+                                <i class="fas fa-shield-check" style="color: var(--vantage-primary);"></i>
+                                ${doubleVerification ? 'Double Verification Required' : 'Verify Your Email Address'}
+                            </h2>
+                            <p class="onboarding-modal-subtitle">
+                                ${doubleVerification
+                                    ? 'For your security, please verify both your email and phone number'
+                                    : `We've sent a verification code to <strong>${maskedEmail}</strong>`
+                                }
+                            </p>
+                        </div>
+
+                        <div class="onboarding-modal-body">
+                            ${doubleVerification ? renderDoubleVerificationForm(maskedEmail, maskedPhone) : renderSingleVerificationForm()}
+                        </div>
+
+                        <div class="onboarding-modal-footer">
+                            <button id="btnVerifyOTP" class="btn-onboarding-primary" disabled>
+                                <i class="fas fa-check"></i> Verify & Continue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            // Setup OTP input handlers
+            if (doubleVerification) {
+                setupDoubleOTPInputs();
+
+                //Send buttons
+                $('#btnSendEmailOTP').on('click', function() {
+                    sendOTP(userEmail, 'email');
+                });
+
+                $('#btnSendPhoneOTP').on('click', function() {
+                    sendOTP(userPhone, 'phone');
+                });
+
+                // Verify button
+                $('#btnVerifyOTP').on('click', function() {
+                    verifyDoubleOTP(userEmail, userPhone);
+                });
+            } else {
+                setupOTPInputs();
+
+                // Send OTP button
+                $('#btnSendOTP').on('click', function() {
+                    sendOTP(userEmail, 'email');
+                });
+
+                // Verify OTP button
+                $('#btnVerifyOTP').on('click', function() {
+                    verifyOTP();
+                });
+            }
+        }
+
+        function setupDoubleOTPInputs() {
+            const $emailInputs = $('[id^="email_otp"]');
+            const $phoneInputs = $('[id^="phone_otp"]');
+
+            // Setup email OTP inputs
+            setupOTPInputGroup($emailInputs, 'email');
+
+            // Setup phone OTP inputs
+            setupOTPInputGroup($phoneInputs, 'phone');
+
+            // Enable verify button only when both are filled
+            function checkBothFilled() {
+                const emailFilled = $emailInputs.toArray().every(input => $(input).val().length === 1);
+                const phoneFilled = $phoneInputs.toArray().every(input => $(input).val().length === 1);
+
+                $('#btnVerifyOTP').prop('disabled', !(emailFilled && phoneFilled));
+            }
+
+            $emailInputs.on('input', checkBothFilled);
+            $phoneInputs.on('input', checkBothFilled);
+        }
+
+        function setupOTPInputGroup($inputs, prefix) {
+            // Auto-focus next input
+            $inputs.on('input', function() {
+                const $this = $(this);
+                const value = $this.val();
+
+                if (value.length === 1) {
+                    $this.addClass('filled');
+                    const $next = $this.next(`[id^="${prefix}_otp"]`);
+                    if ($next.length) {
+                        $next.focus();
+                    }
+                } else {
+                    $this.removeClass('filled');
+                }
+            });
+
+            // Backspace handling
+            $inputs.on('keydown', function(e) {
+                if (e.key === 'Backspace' && $(this).val() === '') {
+                    const $prev = $(this).prev(`[id^="${prefix}_otp"]`);
+                    if ($prev.length) {
+                        $prev.focus().val('').removeClass('filled');
+                    }
+                }
+            });
+
+            // Paste handling
+            $inputs.first().on('paste', function(e) {
+                e.preventDefault();
+                const pasteData = e.originalEvent.clipboardData.getData('text');
+                const digits = pasteData.replace(/\D/g, '').split('').slice(0, 6);
+
+                digits.forEach((digit, index) => {
+                    $inputs.eq(index).val(digit).addClass('filled');
+                });
+            });
+        }
+
+        function maskEmail(email) {
+            if (!email) return '';
+            const [local, domain] = email.split('@');
+            if (!domain) return email;
+
+            const maskedLocal = local.length > 2
+                ? local[0] + '*'.repeat(local.length - 2) + local[local.length - 1]
+                : local;
+
+            return `${maskedLocal}@${domain}`;
+        }
+
+        function maskPhone(phone) {
+            if (!phone) return '';
+            if (phone.length <= 4) return phone;
+
+            return phone.substring(0, 3) + '****' + phone.substring(phone.length - 2);
+        }
+
+        function renderSingleVerificationForm() {
+            return `
+                            <div class="otp-input-container">
+                                <input type="text" class="otp-input-box" maxlength="1" id="otp1" />
+                                <input type="text" class="otp-input-box" maxlength="1" id="otp2" />
+                                <input type="text" class="otp-input-box" maxlength="1" id="otp3" />
+                                <input type="text" class="otp-input-box" maxlength="1" id="otp4" />
+                                <input type="text" class="otp-input-box" maxlength="1" id="otp5" />
+                                <input type="text" class="otp-input-box" maxlength="1" id="otp6" />
+                            </div>
+
+                            <div style="text-align: center; margin-top: 24px;">
+                                <button id="btnSendOTP" class="btn-onboarding-primary">
+                                    <i class="fas fa-paper-plane"></i> Send OTP Code
+                                </button>
+                            </div>
+
+                            <div style="margin-top: 24px; padding: 16px; background: #F5F7FA; border-radius: 8px;">
+                                <details>
+                                    <summary style="cursor: pointer; font-weight: 600; color: #2C3E50;">
+                                        <i class="fas fa-question-circle"></i> Did not receive OTP?
+                                    </summary>
+                                    <div style="margin-top: 12px; font-size: 13px; color: #718096;">
+                                        <p>• Check your spam/junk folder</p>
+                                        <p>• Make sure your email is correct</p>
+                                        <p>• Click "Send OTP Code" to resend</p>
+                                    </div>
+                                </details>
+                            </div>
+            `;
+        }
+
+        function renderDoubleVerificationForm(maskedEmail, maskedPhone) {
+            return `
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                                <!-- Email Verification -->
+                                <div style="border: 2px solid #E8EAED; border-radius: 12px; padding: 20px;">
+                                    <div style="text-align: center; margin-bottom: 16px;">
+                                        <div style="width: 48px; height: 48px; background: #EDF2F7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                            <i class="fas fa-envelope" style="color: var(--vantage-primary); font-size: 20px;"></i>
+                                        </div>
+                                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Email</h4>
+                                        <p style="font-size: 13px; color: #718096;">${maskedEmail}</p>
+                                    </div>
+
+                                    <div class="otp-input-container" style="gap: 8px;">
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="email_otp1" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="email_otp2" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="email_otp3" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="email_otp4" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="email_otp5" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="email_otp6" />
+                                    </div>
+
+                                    <button id="btnSendEmailOTP" class="btn-onboarding-primary" style="width: 100%; margin-top: 16px; font-size: 13px; padding: 10px;">
+                                        <i class="fas fa-paper-plane"></i> Send Code
+                                    </button>
+                                </div>
+
+                                <!-- Phone Verification -->
+                                <div style="border: 2px solid #E8EAED; border-radius: 12px; padding: 20px;">
+                                    <div style="text-align: center; margin-bottom: 16px;">
+                                        <div style="width: 48px; height: 48px; background: #EDF2F7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                            <i class="fas fa-mobile-alt" style="color: var(--vantage-primary); font-size: 20px;"></i>
+                                        </div>
+                                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Phone</h4>
+                                        <p style="font-size: 13px; color: #718096;">${maskedPhone}</p>
+                                    </div>
+
+                                    <div class="otp-input-container" style="gap: 8px;">
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="phone_otp1" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="phone_otp2" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="phone_otp3" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="phone_otp4" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="phone_otp5" />
+                                        <input type="text" class="otp-input-box" style="width: 40px; height: 48px; font-size: 18px;" maxlength="1" id="phone_otp6" />
+                                    </div>
+
+                                    <button id="btnSendPhoneOTP" class="btn-onboarding-primary" style="width: 100%; margin-top: 16px; font-size: 13px; padding: 10px;">
+                                        <i class="fas fa-paper-plane"></i> Send Code
+                                    </button>
+                                </div>
+                            </div>
+            `;
+        }
+
+        function setupOTPInputs() {
+            const $inputs = $('.otp-input-box');
+
+            // Auto-focus next input
+            $inputs.on('input', function() {
+                const $this = $(this);
+                const value = $this.val();
+
+                if (value.length === 1) {
+                    $this.addClass('filled');
+                    const $next = $this.next('.otp-input-box');
+                    if ($next.length) {
+                        $next.focus();
+                    }
+                } else {
+                    $this.removeClass('filled');
+                }
+
+                // Check if all inputs filled
+                const allFilled = $inputs.toArray().every(input => $(input).val().length === 1);
+                $('#btnVerifyOTP').prop('disabled', !allFilled);
+            });
+
+            // Backspace handling
+            $inputs.on('keydown', function(e) {
+                if (e.key === 'Backspace' && $(this).val() === '') {
+                    const $prev = $(this).prev('.otp-input-box');
+                    if ($prev.length) {
+                        $prev.focus().val('').removeClass('filled');
+                    }
+                }
+            });
+
+            // Paste handling
+            $inputs.first().on('paste', function(e) {
+                e.preventDefault();
+                const pasteData = e.originalEvent.clipboardData.getData('text');
+                const digits = pasteData.replace(/\D/g, '').split('').slice(0, 6);
+
+                digits.forEach((digit, index) => {
+                    $inputs.eq(index).val(digit).addClass('filled');
+                });
+
+                if (digits.length === 6) {
+                    $('#btnVerifyOTP').prop('disabled', false);
+                }
+            });
+        }
+
+        async function sendOTP(contact, type) {
+            console.log(`📧 Sending OTP to ${type}:`, contact);
+
+            const $btn = type === 'email' ? $('#btnSendEmailOTP') : $('#btnSendPhoneOTP');
+            const icon = type === 'email' ? 'fa-envelope' : 'fa-mobile-alt';
+
+            $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Sending...');
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // In real implementation: POST /api/otp/send
+                console.log('✅ OTP sent successfully');
+
+                showToast(`OTP code sent to your ${type}!`, 'success');
+
+                // Start countdown
+                let countdown = 60;
+                const interval = setInterval(() => {
+                    countdown--;
+                    $btn.html(`<i class="fas fa-clock"></i> ${countdown}s`);
+
+                    if (countdown === 0) {
+                        clearInterval(interval);
+                        $btn.prop('disabled', false).html(`<i class="fas ${icon}"></i> Resend`);
+                    }
+                }, 1000);
+
+            } catch (error) {
+                console.error('❌ Failed to send OTP:', error);
+                showToast(`Failed to send OTP. Please try again.`, 'error');
+                $btn.prop('disabled', false).html(`<i class="fas fa-paper-plane"></i> Send Code`);
+            }
+        }
+
+        async function verifyDoubleOTP(email, phone) {
+            const $emailInputs = $('[id^="email_otp"]');
+            const $phoneInputs = $('[id^="phone_otp"]');
+
+            const emailCode = $emailInputs.toArray().map(input => $(input).val()).join('');
+            const phoneCode = $phoneInputs.toArray().map(input => $(input).val()).join('');
+
+            console.log('🔐 Verifying double OTP:', { emailCode, phoneCode });
+
+            const $btn = $('#btnVerifyOTP');
+            $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Verifying...');
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // In real implementation: POST /api/otp/verify-double
+                const isValid = emailCode.length === 6 && phoneCode.length === 6;
+
+                if (isValid) {
+                    console.log('✅ Double OTP verified successfully');
+
+                    // Mark as verified
+                    window.onboardingFlowClient.userData.otpVerified = true;
+                    window.onboardingFlowClient.userData.emailVerified = true;
+                    window.onboardingFlowClient.userData.phoneVerified = true;
+                    window.onboardingFlowClient.saveSession();
+
+                    showToast('Email and phone verified successfully!', 'success');
+
+                    // Close modal and load personal details form
+                    $('.onboarding-modal-overlay').fadeOut(300, function() {
+                        $(this).remove();
+
+                        // Show navigation buttons again
+                        $('.onboarding-navigation').show();
+
+                        loadPersonalDetailsData();
+                    });
+                } else {
+                    throw new Error('Invalid OTP codes');
+                }
+
+            } catch (error) {
+                console.error('❌ OTP verification failed:', error);
+                showToast('Invalid OTP codes. Please try again.', 'error');
+
+                // Clear inputs
+                $emailInputs.val('').removeClass('filled');
+                $phoneInputs.val('').removeClass('filled');
+                $emailInputs.first().focus();
+
+                $btn.prop('disabled', false).html('<i class="fas fa-check"></i> Verify & Continue');
+            }
+        }
+
+        async function verifyOTP() {
+            const $inputs = $('.otp-input-box');
+            const otpCode = $inputs.toArray().map(input => $(input).val()).join('');
+
+            console.log('🔐 Verifying OTP:', otpCode);
+
+            const $btn = $('#btnVerifyOTP');
+            $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Verifying...');
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // In real implementation: POST /api/otp/verify
+                // For demo, accept any 6-digit code or "123456"
+                const isValid = otpCode.length === 6;
+
+                if (isValid) {
+                    console.log('✅ OTP verified successfully');
+
+                    // Mark as verified
+                    window.onboardingFlowClient.userData.otpVerified = true;
+                    window.onboardingFlowClient.saveSession();
+
+                    showToast('Email verified successfully!', 'success');
+
+                    // Close modal and load personal details form
+                    $('.onboarding-modal-overlay').fadeOut(300, function() {
+                        $(this).remove();
+
+                        // Show navigation buttons again
+                        $('.onboarding-navigation').show();
+
+                        loadPersonalDetailsData();
+                    });
+                } else {
+                    throw new Error('Invalid OTP code');
+                }
+
+            } catch (error) {
+                console.error('❌ OTP verification failed:', error);
+                showToast('Invalid OTP code. Please try again.', 'error');
+
+                // Clear inputs
+                $inputs.val('').removeClass('filled');
+                $inputs.first().focus();
+
+                $btn.prop('disabled', false).html('<i class="fas fa-check"></i> Verify & Continue');
+            }
+        }
+
+        function redirectToExternalPersonalInfo(h5Config) {
+            const route = h5Config.route || '/kyc-individual-personal-info.html';
+            const sessionToken = Date.now(); // Simple session identifier
+
+            // Save current session before loading iframe
+            window.onboardingFlowClient.saveSession();
+
+            // Build iframe URL with parameters
+            const iframeUrl = `${route}?session=${sessionToken}&embedded=true`;
+
+            console.log('🔗 Loading external page in iframe:', iframeUrl);
+
+            // Embed the external page in an iframe
+            $('.stage-content').html(`
+                <div class="external-iframe-container">
+                    <div class="external-iframe-header">
+                        <div class="badge badge-primary" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 16px;">
+                            <i class="fas fa-external-link-alt"></i> External Form
+                        </div>
+                        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">
+                            This form is loaded from an external page. Complete it to continue.
+                        </p>
+                    </div>
+                    <iframe
+                        id="externalPersonalInfoFrame"
+                        src="${iframeUrl}"
+                        style="width: 100%; height: 650px; border: 2px solid #E8EAED; border-radius: 12px; background: white;"
+                        frameborder="0"
+                        scrolling="auto">
+                    </iframe>
+                </div>
+            `);
+
+            // Mark that we're using external form
+            window.onboardingFlowClient.userData.usingExternalPersonalInfo = true;
+
+            // Listen for messages from iframe
+            window.addEventListener('message', handleIframeMessage);
+        }
+
+        function handleIframeMessage(event) {
+            // Verify origin in production
+            // if (event.origin !== 'https://trusted-domain.com') return;
+
+            const message = event.data;
+
+            if (message.type === 'personalInfoCompleted') {
+                console.log('✅ Personal info completed in iframe');
+
+                // Update session with data from iframe
+                window.onboardingFlowClient.userData.personalInfo = message.data;
+                window.onboardingFlowClient.userData.personalInfoCompleted = true;
+                window.onboardingFlowClient.saveSession();
+
+                showToast('Personal information saved successfully!', 'success');
+
+                // Automatically move to next stage
+                setTimeout(() => {
+                    window.onboardingFlowClient.nextStage();
+                    renderStepper();
+                    renderCurrentStage();
+                }, 1000);
+            }
+        }
+
+        // Function to trigger iframe form submission
+        function submitExternalPersonalInfoForm() {
+            const iframe = document.getElementById('externalPersonalInfoFrame');
+            if (iframe && iframe.contentWindow && iframe.contentWindow.submitExternalForm) {
+                iframe.contentWindow.submitExternalForm();
+                return true;
+            }
+            return false;
+        }
+
+        function renderPersonalInfoField(field, fieldKey) {
+            const fieldId = `pif_${fieldKey}`;
+            const required = field.required ? 'required' : '';
+            const value = window.onboardingFlowClient.userData.personalInfo?.[fieldKey] || '';
+
+            switch (field.type) {
+                case 'text':
+                    return `<input type="text" class="onboarding-form-input" id="${fieldId}"
+                                   name="${fieldKey}" value="${value}" ${required}>`;
+
+                case 'email':
+                    return `<input type="email" class="onboarding-form-input" id="${fieldId}"
+                                   name="${fieldKey}" value="${value}" ${required}>`;
+
+                case 'tel':
+                case 'phone':
+                    return `<input type="tel" class="onboarding-form-input" id="${fieldId}"
+                                   name="${fieldKey}" value="${value}" ${required}>`;
+
+                case 'date':
+                    return `<input type="date" class="onboarding-form-input" id="${fieldId}"
+                                   name="${fieldKey}" value="${value}" ${required}>`;
+
+                case 'select':
+                case 'dropdown':
+                    const options = field.options || [];
+                    const optionsHtml = options.map(opt =>
+                        `<option value="${opt.value || opt}">${opt.label || opt}</option>`
+                    ).join('');
+                    return `<select class="onboarding-form-input" id="${fieldId}"
+                                    name="${fieldKey}" ${required}>
+                                <option value="">Select...</option>
+                                ${optionsHtml}
+                            </select>`;
+
+                case 'textarea':
+                    return `<textarea class="onboarding-form-input" id="${fieldId}"
+                                      name="${fieldKey}" rows="3" ${required}>${value}</textarea>`;
+
+                default:
+                    return `<input type="text" class="onboarding-form-input" id="${fieldId}"
+                                   name="${fieldKey}" value="${value}" ${required}>`;
+            }
+        }
+
+        async function loadTradingAccountData() {
+            console.log('📊 Loading Trading Account configuration...');
+
+            const config = window.onboardingFlowClient.config;
+            const tradingAccountConfig = config?.tradingAccountConfig || {};
+
+            console.log('Trading Account Config:', tradingAccountConfig);
+
+            // Use the default template, it's already good
+        }
+
+        async function loadAgreementsData() {
+            console.log('📜 Loading Agreements configuration...');
+
+            const client = window.onboardingFlowClient;
+            const config = client.config;
+            const agreementConfig = config?.agreementConfig || {};
+
+            // Check if Individual Web Setting (H5 verification) is enabled
+            const h5Verification = agreementConfig.h5Verification;
+            if (h5Verification && h5Verification.enabled) {
+                console.log('🔗 Individual Web Setting enabled for agreements, loading external page...');
+                loadExternalAgreementPage(h5Verification);
+                return;
+            }
+
+            // Load inline agreement form
+            const items = agreementConfig.items || [];
+            console.log('Agreement Items:', items);
+
+            if (items.length === 0) {
+                console.warn('⚠️ No agreements configured, using defaults');
+                return;
+            }
+
+            // Clear and rebuild agreement form
+            const $form = $('#agreementForm');
+            if ($form.length === 0) return;
+
+            $form.empty();
+
+            items.forEach((item, index) => {
+                const $checkbox = $(`
+                    <div class="form-check" style="margin-bottom: 16px;">
+                        <input class="form-check-input" type="checkbox" id="agreement_${index}" required>
+                        <label class="form-check-label" for="agreement_${index}" style="font-size: 14px;">
+                            I confirm that I have read and agree to the
+                            <a href="${item.documentUrl || '#'}" target="_blank">${item.key || item.name}</a>
+                        </label>
+                    </div>
+                `);
+                $form.append($checkbox);
+            });
+
+            console.log('✅ Agreements rendered');
+        }
+
+        function loadExternalAgreementPage(h5Config) {
+            const route = h5Config.route || '/agreement-individual.html';
+            const sessionToken = Date.now();
+
+            // Save current session before loading iframe
+            window.onboardingFlowClient.saveSession();
+
+            // Build iframe URL
+            const iframeUrl = `${route}?session=${sessionToken}&embedded=true`;
+
+            console.log('🔗 Loading external agreement page in iframe:', iframeUrl);
+
+            // Embed the external page in an iframe
+            $('.stage-content').html(`
+                <div class="external-iframe-container">
+                    <div class="external-iframe-header">
+                        <div class="badge badge-primary" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 16px;">
+                            <i class="fas fa-external-link-alt"></i> External Agreement Page
+                        </div>
+                        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">
+                            Please review and accept all terms and conditions below.
+                        </p>
+                    </div>
+                    <iframe
+                        id="externalAgreementFrame"
+                        src="${iframeUrl}"
+                        style="width: 100%; height: 800px; border: 2px solid #E8EAED; border-radius: 12px; background: white;"
+                        frameborder="0"
+                        scrolling="auto">
+                    </iframe>
+                </div>
+            `);
+
+            // Mark that we're using external agreement page
+            window.onboardingFlowClient.userData.usingExternalAgreement = true;
+
+            // Listen for messages from iframe
+            window.addEventListener('message', handleAgreementIframeMessage);
+        }
+
+        function handleAgreementIframeMessage(event) {
+            const message = event.data;
+
+            if (message.type === 'agreementCompleted') {
+                console.log('✅ Agreement completed in iframe');
+
+                // Update session with data from iframe
+                window.onboardingFlowClient.userData.agreements = {
+                    acceptedAt: new Date().toISOString(),
+                    acceptedItems: message.data
+                };
+                window.onboardingFlowClient.saveSession();
+
+                showToast('Agreements accepted successfully!', 'success');
+
+                // Automatically move to next stage
+                setTimeout(() => {
+                    window.onboardingFlowClient.nextStage();
+                    renderStepper();
+                    renderCurrentStage();
+                }, 1000);
+            }
+        }
+
+        // Trading account selection helper
+        function selectTradingAccount(type) {
+            console.log('Selected trading account:', type);
+            $('.onboarding-card.selectable').removeClass('selected');
+            event.target.closest('.onboarding-card').classList.add('selected');
+
+            window.onboardingFlowClient.userData.tradingAccount = {
+                type: type,
+                selectedAt: new Date().toISOString()
+            };
+            window.onboardingFlowClient.saveSession();
+            showToast(`${type} account selected`, 'success');
+        }
+
+        // Complete personal details
+        function completePersonalDetails() {
+            const $form = $('#dynamicPersonalInfoForm');
+            const formData = {};
+            let hasErrors = false;
+
+            // Collect form data
+            $form.find('input, select, textarea').each(function() {
+                const $field = $(this);
+                const name = $field.attr('name');
+                const value = $field.val();
+                const isRequired = $field.prop('required');
+
+                if (isRequired && !value) {
+                    showToast(`Please fill in ${$field.prev('label').text()}`, 'error');
+                    hasErrors = true;
+                    return false;
+                }
+
+                formData[name] = value;
+            });
+
+            if (hasErrors) return false;
+
+            // Save to session
+            window.onboardingFlowClient.userData.personalInfo = formData;
+            window.onboardingFlowClient.saveSession();
+
+            console.log('Personal details saved:', formData);
+            return true;
+        }
+
+        // Complete trading account
+        function completeTradingAccount() {
+            const tradingAccount = window.onboardingFlowClient.userData.tradingAccount;
+
+            if (!tradingAccount) {
+                showToast('Please select a trading account type', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Complete agreements
+        function completeAgreements() {
+            const $checkboxes = $('#agreementForm input[type="checkbox"]');
+            const allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+
+            if (!allChecked) {
+                showToast('Please accept all terms and agreements', 'error');
+                return false;
+            }
+
+            // Save agreement acceptance
+            window.onboardingFlowClient.userData.agreements = {
+                acceptedAt: new Date().toISOString(),
+                acceptedAll: true
+            };
+            window.onboardingFlowClient.saveSession();
+
+            return true;
+        }
+
+        // ========== Questionnaire Functions ==========
+
+        async function loadQuestionnaireData() {
+            console.log('📝 Loading Questionnaire configuration...');
+
+            const client = window.onboardingFlowClient;
+            const config = client.config;
+            const questionnaireConfig = config?.questionnaireConfig || { enabled: false };
+
+            console.log('Questionnaire Config:', questionnaireConfig);
+
+            // If questionnaire is not enabled, show message and mark as complete
+            if (!questionnaireConfig.enabled) {
+                console.log('⏭️ Questionnaire disabled, marking as complete');
+
+                // Mark questionnaire as not applicable
+                client.userData.questionnaire = {
+                    notApplicable: true,
+                    skippedAt: new Date().toISOString()
+                };
+                client.saveSession();
+
+                // Show message
+                $('#stageContainer').html(`
+                    <div class="stage-content">
+                        <div class="onboarding-card" style="text-align: center; padding: 60px 20px;">
+                            <i class="fas fa-check-circle" style="font-size: 64px; color: #10B981; margin-bottom: 24px;"></i>
+                            <h3 style="font-size: 20px; font-weight: 600; color: #2C3E50; margin-bottom: 12px;">
+                                Questionnaire Not Required
+                            </h3>
+                            <p style="font-size: 14px; color: #718096; margin-bottom: 24px;">
+                                Based on your account type, the questionnaire is not required. You can proceed to the next step.
+                            </p>
+                            <button type="button" class="btn-onboarding-primary" onclick="window.onboardingFlowClient.nextStage(); renderStepper(); renderCurrentStage();">
+                                <i class="fas fa-arrow-right"></i> Continue to Next Step
+                            </button>
+                        </div>
+                    </div>
+                `);
+
+                showToast('Questionnaire not required for this account type', 'info');
+                return;
+            }
+
+            // Render questionnaire form
+            renderQuestionnaireForm(questionnaireConfig);
+        }
+
+        // Global state for questionnaire sub-pages
+        window.questionnaireState = {
+            currentSubPage: 1,
+            totalSubPages: 0,
+            config: null,
+            answers: {
+                questions: {},
+                sourceFunds: [],
+                sourceWealth: []
+            }
+        };
+
+        function renderQuestionnaireForm(questionnaireConfig) {
+            const questions = questionnaireConfig.questions || [];
+            const sourceFunds = questionnaireConfig.sourceFunds || { enabled: false };
+            const sourceWealth = questionnaireConfig.sourceWealth || { enabled: false };
+
+            console.log('Rendering Questionnaire:', {
+                questions: questions.length,
+                sourceFundsEnabled: sourceFunds.enabled,
+                sourceWealthEnabled: sourceWealth.enabled
+            });
+
+            // Store config
+            window.questionnaireState.config = questionnaireConfig;
+
+            // Calculate total sub-pages
+            let totalSubPages = 0;
+            if (questions.length > 0) totalSubPages++; // Page 1: Questions
+            if (sourceFunds.enabled) totalSubPages++;   // Page 2: Source of Funds
+            if (sourceWealth.enabled) totalSubPages++;  // Page 3: Source of Wealth
+
+            window.questionnaireState.totalSubPages = totalSubPages;
+            window.questionnaireState.currentSubPage = 1;
+
+            console.log(`📄 Questionnaire has ${totalSubPages} sub-pages`);
+
+            // Render first sub-page
+            renderQuestionnaireSubPage();
+        }
+
+        function renderQuestionnaireSubPage() {
+            const state = window.questionnaireState;
+            const config = state.config;
+            const currentPage = state.currentSubPage;
+
+            const questions = config.questions || [];
+            const sourceFunds = config.sourceFunds || { enabled: false };
+            const sourceWealth = config.sourceWealth || { enabled: false };
+
+            console.log(`🎨 Rendering questionnaire sub-page ${currentPage} of ${state.totalSubPages}`);
+
+            let pageHtml = `<div class="stage-content">`;
+
+            // Add sub-page indicator
+            pageHtml += `
+                <div style="margin-bottom: 32px;">
+                    <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 24px;">
+            `;
+
+            // Determine which pages exist
+            let pageIndex = 1;
+            const pageMapping = [];
+
+            if (questions.length > 0) {
+                pageMapping.push({ type: 'questions', title: 'Client Suitability Questionnaire' });
+            }
+            if (sourceFunds.enabled) {
+                pageMapping.push({ type: 'sourceFunds', title: 'Source of Funds' });
+            }
+            if (sourceWealth.enabled) {
+                pageMapping.push({ type: 'sourceWealth', title: 'Source of Wealth' });
+            }
+
+            // Render page indicators
+            pageMapping.forEach((page, index) => {
+                const pageNum = index + 1;
+                const isActive = pageNum === currentPage;
+                const isCompleted = pageNum < currentPage;
+
+                pageHtml += `
+                    <div style="display: flex; flex-direction: column; align-items: center; opacity: ${isActive ? '1' : '0.5'};">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: ${isCompleted ? '#10B981' : (isActive ? '#3B82F6' : '#E5E7EB')}; color: ${isCompleted || isActive ? 'white' : '#718096'}; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-bottom: 8px;">
+                            ${isCompleted ? '<i class="fas fa-check"></i>' : pageNum}
+                        </div>
+                        <div style="font-size: 11px; color: ${isActive ? '#2C3E50' : '#718096'}; font-weight: ${isActive ? '600' : '400'}; text-align: center; max-width: 100px;">
+                            ${page.title}
+                        </div>
+                    </div>
+                `;
+
+                if (index < pageMapping.length - 1) {
+                    pageHtml += `
+                        <div style="width: 60px; height: 2px; background: ${pageNum < currentPage ? '#10B981' : '#E5E7EB'}; margin-top: 20px; margin-bottom: 28px;"></div>
+                    `;
+                }
+            });
+
+            pageHtml += `
+                    </div>
+                    <h2 style="text-align: center; font-size: 22px; font-weight: 700; color: #2C3E50; margin-bottom: 8px;">
+                        ${pageMapping[currentPage - 1].title}
+                    </h2>
+                    <p style="text-align: center; font-size: 14px; color: #718096; margin-bottom: 0;">
+                        Page ${currentPage} of ${state.totalSubPages}
+                    </p>
+                </div>
+            `;
+
+            // Render content based on current page
+            pageHtml += `<form id="questionnaireSubForm">`;
+
+            const currentPageType = pageMapping[currentPage - 1].type;
+
+            if (currentPageType === 'questions') {
+                // Render regular questions
+                questions.forEach((question, qIndex) => {
+                    pageHtml += renderQuestion(question, qIndex);
+                });
+            } else if (currentPageType === 'sourceFunds') {
+                // Render Source of Funds
+                pageHtml += renderSourceOfFunds(sourceFunds);
+            } else if (currentPageType === 'sourceWealth') {
+                // Render Source of Wealth
+                pageHtml += renderSourceOfWealth(sourceWealth);
+            }
+
+            // Add navigation buttons
+            pageHtml += `
+                <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+            `;
+
+            // Previous button
+            if (currentPage > 1) {
+                pageHtml += `
+                    <button type="button" class="btn btn-outline-secondary" onclick="previousQuestionnaireSubPage()" style="padding: 12px 32px;">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                `;
+            } else {
+                pageHtml += `<div></div>`; // Spacer
+            }
+
+            // Next or Submit button
+            if (currentPage < state.totalSubPages) {
+                pageHtml += `
+                    <button type="button" class="btn-onboarding-primary" onclick="nextQuestionnaireSubPage()" style="padding: 12px 32px;">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                `;
+            } else {
+                pageHtml += `
+                    <button type="button" class="btn-onboarding-primary" onclick="submitQuestionnaire()" style="padding: 12px 32px;">
+                        <i class="fas fa-check-circle"></i> Submit Questionnaire
+                    </button>
+                `;
+            }
+
+            pageHtml += `
+                </div>
+            </form>
+        </div>`;
+
+            // Replace stage content
+            $('#stageContainer').html(pageHtml);
+
+            // Restore previous answers if navigating back
+            restoreQuestionnaireAnswers();
+
+            console.log('✅ Questionnaire sub-page rendered');
+        }
+
+        function previousQuestionnaireSubPage() {
+            // Save current page answers
+            saveCurrentQuestionnaireAnswers();
+
+            // Go to previous page
+            window.questionnaireState.currentSubPage--;
+            renderQuestionnaireSubPage();
+        }
+
+        function nextQuestionnaireSubPage() {
+            // Validate current page
+            if (!validateCurrentQuestionnairePage()) {
+                return;
+            }
+
+            // Save current page answers
+            saveCurrentQuestionnaireAnswers();
+
+            // Go to next page
+            window.questionnaireState.currentSubPage++;
+            renderQuestionnaireSubPage();
+        }
+
+        function validateCurrentQuestionnairePage() {
+            const state = window.questionnaireState;
+            const config = state.config;
+            const currentPage = state.currentSubPage;
+
+            const questions = config.questions || [];
+            const sourceFunds = config.sourceFunds || { enabled: false };
+            const sourceWealth = config.sourceWealth || { enabled: false };
+
+            // Determine current page type
+            let pageIndex = 1;
+            let currentPageType = null;
+
+            if (questions.length > 0) {
+                if (pageIndex === currentPage) {
+                    currentPageType = 'questions';
+                }
+                pageIndex++;
+            }
+            if (sourceFunds.enabled) {
+                if (pageIndex === currentPage) {
+                    currentPageType = 'sourceFunds';
+                }
+                pageIndex++;
+            }
+            if (sourceWealth.enabled) {
+                if (pageIndex === currentPage) {
+                    currentPageType = 'sourceWealth';
+                }
+            }
+
+            // Validate based on page type
+            if (currentPageType === 'questions') {
+                // Check if all required questions are answered
+                const unansweredQuestions = [];
+                questions.forEach((question, qIndex) => {
+                    const inputName = `question_${qIndex}`;
+                    const answered = $(`input[name="${inputName}"]:checked`).length > 0;
+                    if (!answered) {
+                        unansweredQuestions.push(qIndex + 1);
+                    }
+                });
+
+                if (unansweredQuestions.length > 0) {
+                    showToast(`Please answer question(s): ${unansweredQuestions.join(', ')}`, 'error');
+                    return false;
+                }
+            } else if (currentPageType === 'sourceFunds') {
+                // Check if at least one source of funds is selected
+                const selected = $('input[name="source_funds"]:checked').length > 0;
+                if (!selected) {
+                    showToast('Please select at least one source of funds', 'error');
+                    return false;
+                }
+            } else if (currentPageType === 'sourceWealth') {
+                // Check if at least one source of wealth is selected
+                const selected = $('input[name="source_wealth"]:checked').length > 0;
+                if (!selected) {
+                    showToast('Please select at least one source of wealth', 'error');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function saveCurrentQuestionnaireAnswers() {
+            const state = window.questionnaireState;
+            const config = state.config;
+            const currentPage = state.currentSubPage;
+
+            const questions = config.questions || [];
+            const sourceFunds = config.sourceFunds || { enabled: false };
+            const sourceWealth = config.sourceWealth || { enabled: false };
+
+            // Determine current page type
+            let pageIndex = 1;
+            let currentPageType = null;
+
+            if (questions.length > 0) {
+                if (pageIndex === currentPage) currentPageType = 'questions';
+                pageIndex++;
+            }
+            if (sourceFunds.enabled) {
+                if (pageIndex === currentPage) currentPageType = 'sourceFunds';
+                pageIndex++;
+            }
+            if (sourceWealth.enabled) {
+                if (pageIndex === currentPage) currentPageType = 'sourceWealth';
+            }
+
+            // Save answers based on page type
+            if (currentPageType === 'questions') {
+                questions.forEach((question, qIndex) => {
+                    const inputName = `question_${qIndex}`;
+                    const selectedValues = [];
+                    $(`input[name="${inputName}"]:checked`).each(function() {
+                        selectedValues.push($(this).val());
+                    });
+                    state.answers.questions[qIndex] = selectedValues;
+                });
+            } else if (currentPageType === 'sourceFunds') {
+                const selectedFunds = [];
+                $('input[name="source_funds"]:checked').each(function() {
+                    selectedFunds.push($(this).val());
+                });
+                state.answers.sourceFunds = selectedFunds;
+            } else if (currentPageType === 'sourceWealth') {
+                const selectedWealth = [];
+                $('input[name="source_wealth"]:checked').each(function() {
+                    selectedWealth.push($(this).val());
+                });
+                state.answers.sourceWealth = selectedWealth;
+            }
+
+            console.log('💾 Saved questionnaire answers:', state.answers);
+        }
+
+        function restoreQuestionnaireAnswers() {
+            const state = window.questionnaireState;
+            const config = state.config;
+            const currentPage = state.currentSubPage;
+
+            const questions = config.questions || [];
+            const sourceFunds = config.sourceFunds || { enabled: false };
+            const sourceWealth = config.sourceWealth || { enabled: false };
+
+            // Determine current page type
+            let pageIndex = 1;
+            let currentPageType = null;
+
+            if (questions.length > 0) {
+                if (pageIndex === currentPage) currentPageType = 'questions';
+                pageIndex++;
+            }
+            if (sourceFunds.enabled) {
+                if (pageIndex === currentPage) currentPageType = 'sourceFunds';
+                pageIndex++;
+            }
+            if (sourceWealth.enabled) {
+                if (pageIndex === currentPage) currentPageType = 'sourceWealth';
+            }
+
+            // Restore answers based on page type
+            setTimeout(() => {
+                if (currentPageType === 'questions') {
+                    questions.forEach((question, qIndex) => {
+                        const savedAnswers = state.answers.questions[qIndex] || [];
+                        savedAnswers.forEach(value => {
+                            $(`input[name="question_${qIndex}"][value="${value}"]`).prop('checked', true);
+                        });
+                    });
+                } else if (currentPageType === 'sourceFunds') {
+                    const savedFunds = state.answers.sourceFunds || [];
+                    savedFunds.forEach(value => {
+                        $(`input[name="source_funds"][value="${value}"]`).prop('checked', true);
+                    });
+                } else if (currentPageType === 'sourceWealth') {
+                    const savedWealth = state.answers.sourceWealth || [];
+                    savedWealth.forEach(value => {
+                        $(`input[name="source_wealth"][value="${value}"]`).prop('checked', true);
+                    });
+                }
+            }, 100);
+        }
+
+        function renderQuestion(question, qIndex) {
+            const isSingleChoice = question.type === 'single_choice';
+            const inputType = isSingleChoice ? 'radio' : 'checkbox';
+            const inputName = `question_${qIndex}`;
+
+            let html = `
+                <div class="onboarding-card" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
+                        ${qIndex + 1}. ${question.question}
+                    </h3>
+            `;
+
+            // Render options
+            question.options.forEach((option, optIndex) => {
+                const optionKey = option.key || option.text || option;
+                const optionText = option.text || option;
+                const optionId = `${inputName}_${optIndex}`;
+
+                html += `
+                    <div class="form-check" style="margin-bottom: 12px;">
+                        <input class="form-check-input"
+                               type="${inputType}"
+                               name="${inputName}"
+                               id="${optionId}"
+                               value="${optionKey}"
+                               data-question-index="${qIndex}"
+                               data-option-index="${optIndex}"
+                               onchange="handleQuestionOptionChange(${qIndex}, ${optIndex})">
+                        <label class="form-check-label" for="${optionId}" style="font-size: 14px; color: #2C3E50;">
+                            ${optionText}
+                        </label>
+                    </div>
+                `;
+
+                // If option requires input, add text field
+                if (option.requiresInput) {
+                    html += `
+                        <div id="input_${optionId}" style="display: none; margin-left: 32px; margin-bottom: 12px;">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Please specify..."
+                                   style="font-size: 13px; max-width: 400px;">
+                        </div>
+                    `;
+                }
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+        function renderSourceOfFunds(sourceFunds) {
+            const question = sourceFunds.question || 'Please indicate the origin of the funds you will use for your account deposits.';
+            const options = sourceFunds.options || [];
+            const isSingleChoice = sourceFunds.selectionType === 'single';
+            const inputType = isSingleChoice ? 'radio' : 'checkbox';
+            const requireUpload = sourceFunds.requireUpload || false;
+
+            let html = `
+                <div class="onboarding-card" style="margin-bottom: 24px; border: 2px solid #3B82F6;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                        <i class="fas fa-coins" style="color: #3B82F6; font-size: 20px;"></i>
+                        <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin: 0;">
+                            Source of Funds
+                        </h3>
+                    </div>
+                    <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">${question}</p>
+            `;
+
+            options.forEach((option, optIndex) => {
+                const optionId = `source_funds_${optIndex}`;
+                html += `
+                    <div class="form-check" style="margin-bottom: 12px;">
+                        <input class="form-check-input"
+                               type="${inputType}"
+                               name="source_funds"
+                               id="${optionId}"
+                               value="${option}">
+                        <label class="form-check-label" for="${optionId}" style="font-size: 14px; color: #2C3E50;">
+                            ${option}
+                        </label>
+                    </div>
+                `;
+            });
+
+            // Add document upload section if required
+            if (requireUpload) {
+                html += `
+                    <div style="margin-top: 20px; padding: 16px; background: #F9FAFB; border-radius: 8px; border: 1px solid #E5E7EB;">
+                        <h4 style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 12px;">
+                            <i class="fas fa-upload"></i> Upload Supporting Documents
+                        </h4>
+                        <p style="font-size: 12px; color: #718096; margin-bottom: 12px; white-space: pre-line;">
+                            ${sourceFunds.uploadInstructions || 'Upload supporting documents'}
+                        </p>
+                        <input type="file"
+                               class="form-control"
+                               id="source_funds_upload"
+                               accept=".pdf,.jpg,.jpeg,.png"
+                               style="font-size: 13px;">
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+            return html;
+        }
+
+        function renderSourceOfWealth(sourceWealth) {
+            const question = sourceWealth.question || 'Please indicate the origin of the funds you will use for your account deposits.';
+            const options = sourceWealth.options || [];
+            const isSingleChoice = sourceWealth.selectionType === 'single';
+            const inputType = isSingleChoice ? 'radio' : 'checkbox';
+            const requireUpload = sourceWealth.requireUpload || false;
+
+            let html = `
+                <div class="onboarding-card" style="margin-bottom: 24px; border: 2px solid #10B981;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                        <i class="fas fa-gem" style="color: #10B981; font-size: 20px;"></i>
+                        <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin: 0;">
+                            Source of Wealth
+                        </h3>
+                    </div>
+                    <p style="font-size: 14px; color: #718096; margin-bottom: 16px;">${question}</p>
+            `;
+
+            options.forEach((option, optIndex) => {
+                const optionId = `source_wealth_${optIndex}`;
+                html += `
+                    <div class="form-check" style="margin-bottom: 12px;">
+                        <input class="form-check-input"
+                               type="${inputType}"
+                               name="source_wealth"
+                               id="${optionId}"
+                               value="${option}">
+                        <label class="form-check-label" for="${optionId}" style="font-size: 14px; color: #2C3E50;">
+                            ${option}
+                        </label>
+                    </div>
+                `;
+            });
+
+            // Add document upload section if required
+            if (requireUpload) {
+                html += `
+                    <div style="margin-top: 20px; padding: 16px; background: #F9FAFB; border-radius: 8px; border: 1px solid #E5E7EB;">
+                        <h4 style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 12px;">
+                            <i class="fas fa-upload"></i> Upload Supporting Documents
+                        </h4>
+                        <p style="font-size: 12px; color: #718096; margin-bottom: 12px; white-space: pre-line;">
+                            ${sourceWealth.uploadInstructions || 'Upload supporting documents'}
+                        </p>
+                        <input type="file"
+                               class="form-control"
+                               id="source_wealth_upload"
+                               accept=".pdf,.jpg,.jpeg,.png"
+                               style="font-size: 13px;">
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+            return html;
+        }
+
+        function handleQuestionOptionChange(qIndex, optIndex) {
+            const client = window.onboardingFlowClient;
+            const config = client.config;
+            const questionnaireConfig = config?.questionnaireConfig || {};
+            const question = questionnaireConfig.questions[qIndex];
+            const option = question.options[optIndex];
+
+            const inputId = `question_${qIndex}_${optIndex}`;
+            const $input = $(`#${inputId}`);
+            const isChecked = $input.is(':checked');
+
+            // Show/hide text input if option requires input
+            if (option.requiresInput) {
+                const $textInput = $(`#input_${inputId}`);
+                if (isChecked) {
+                    $textInput.slideDown(200);
+                } else {
+                    $textInput.slideUp(200);
+                }
+            }
+        }
+
+        function submitQuestionnaire() {
+            console.log('📤 Submitting questionnaire...');
+
+            // Validate and save current page first
+            if (!validateCurrentQuestionnairePage()) {
+                return;
+            }
+            saveCurrentQuestionnaireAnswers();
+
+            const client = window.onboardingFlowClient;
+            const state = window.questionnaireState;
+            const config = state.config;
+            const questions = config.questions || [];
+            const sourceFunds = config.sourceFunds || { enabled: false };
+            const sourceWealth = config.sourceWealth || { enabled: false };
+
+            // Collect all answers from saved state
+            const answers = [];
+
+            // Collect regular question answers
+            questions.forEach((question, qIndex) => {
+                const selectedValues = state.answers.questions[qIndex] || [];
+
+                if (selectedValues.length > 0) {
+                    answers.push({
+                        questionKey: question.key || `q_${qIndex}`,
+                        question: question.question,
+                        selectedOptions: selectedValues
+                    });
+                }
+            });
+
+            // Collect Source of Funds answers
+            if (sourceFunds.enabled && state.answers.sourceFunds.length > 0) {
+                answers.push({
+                    questionKey: 'source_of_funds',
+                    question: sourceFunds.question,
+                    selectedOptions: state.answers.sourceFunds
+                });
+            }
+
+            // Collect Source of Wealth answers
+            if (sourceWealth.enabled && state.answers.sourceWealth.length > 0) {
+                answers.push({
+                    questionKey: 'source_of_wealth',
+                    question: sourceWealth.question,
+                    selectedOptions: state.answers.sourceWealth
+                });
+            }
+
+            console.log('Questionnaire Answers:', answers);
+
+            // Save to session
+            client.userData.questionnaire = {
+                answers: answers,
+                completedAt: new Date().toISOString()
+            };
+            client.saveSession();
+
+            showToast('Questionnaire submitted successfully!', 'success');
+
+            // Clear questionnaire state
+            window.questionnaireState = {
+                currentSubPage: 1,
+                totalSubPages: 0,
+                config: null,
+                answers: {
+                    questions: {},
+                    sourceFunds: [],
+                    sourceWealth: []
+                }
+            };
+
+            // Move to next stage
+            setTimeout(() => {
+                client.nextStage();
+                renderStepper();
+                renderCurrentStage();
+            }, 1000);
+        }
+
+        // ========== End Questionnaire Functions ==========
+
+        async function loadRegistrationData() {
+            // Get countries and nationalities
+            const countries = window.dataService.getCountries();
+            const nationalities = window.dataService.getNationalities();
+
+            console.log('Countries:', countries);
+            console.log('Nationalities:', nationalities);
+
+            // Populate country dropdown
+            const $countrySelect = $('#reg_country');
+            countries.forEach(country => {
+                // Handle both object format {code, name} and string format
+                const countryName = typeof country === 'string' ? country : country.name;
+                const countryValue = typeof country === 'string' ? country : country.name;
+                $countrySelect.append(`<option value="${countryValue}">${countryName}</option>`);
+            });
+
+            // Populate nationality dropdown
+            const $nationalitySelect = $('#reg_nationality');
+            nationalities.forEach(nationality => {
+                // Handle both object format {code, name} and string format
+                const nationalityName = typeof nationality === 'string' ? nationality : nationality.name;
+                const nationalityValue = typeof nationality === 'string' ? nationality : nationality.name;
+                $nationalitySelect.append(`<option value="${nationalityValue}">${nationalityName}</option>`);
+            });
+
+            // Pre-fill from session if available
+            const userData = window.onboardingFlowClient.userData;
+            if (userData.email) $('#reg_email').val(userData.email);
+            if (userData.country) $('#reg_country').val(userData.country);
+            if (userData.nationality) $('#reg_nationality').val(userData.nationality);
+            if (userData.domain) $('#reg_domain').val(userData.domain);
+            if (userData.phoneNumber) $('#reg_phoneNumber').val(userData.phoneNumber);
+            if (userData.firstName) $('#reg_firstName').val(userData.firstName);
+            if (userData.lastName) $('#reg_lastName').val(userData.lastName);
+            if (userData.referredBy) $('#reg_referredBy').val(userData.referredBy);
+        }
+
+        function updateNavigationButtons() {
+            const client = window.onboardingFlowClient;
+            const stage = client.getCurrentStage();
+
+            // Show/hide Previous button
+            if (client.currentStage > 1) {
+                $('#btnPrevious').show();
+            } else {
+                $('#btnPrevious').hide();
+            }
+
+            // Show/hide Skip button (for optional stages)
+            const optionalStages = ['identityVerification', 'kycProgress'];
+            if (optionalStages.includes(stage.key)) {
+                $('#btnSkip').show();
+            } else {
+                $('#btnSkip').hide();
+            }
+
+            // Update Next button text
+            if (client.currentStage === client.totalStages) {
+                $('#btnNext').html('<i class="fas fa-check"></i> Complete');
+            } else {
+                $('#btnNext').html('Continue <i class="fas fa-arrow-right"></i>');
+            }
+        }
+
+        async function handleNext() {
+            try {
+                console.log('🔘 Next button clicked!');
+                const client = window.onboardingFlowClient;
+
+                if (!client) {
+                    console.error('❌ onboardingFlowClient not found');
+                    showToast('System error: Client not initialized', 'error');
+                    return;
+                }
+
+                const stage = client.getCurrentStage();
+                console.log('➡️ Current stage:', stage);
+
+                // Stage-specific completion
+                if (stage.key === 'registration') {
+                    console.log('📝 Completing registration...');
+                    const success = await completeRegistration();
+                    console.log('Registration result:', success);
+                    if (!success) return;
+                } else if (stage.key === 'personalDetails') {
+                    console.log('📝 Completing personal details...');
+
+                    // Check if using external form in iframe
+                    if (client.userData.usingExternalPersonalInfo) {
+                        console.log('🔗 Triggering external form submission...');
+                        const submitted = submitExternalPersonalInfoForm();
+                        if (submitted) {
+                            // Form submission triggered, iframe will send message when complete
+                            // handleIframeMessage will handle moving to next stage
+                            return;
+                        } else {
+                            showToast('Error: External form not available', 'error');
+                            return;
+                        }
+                    }
+
+                    const success = completePersonalDetails();
+                    if (!success) return;
+                } else if (stage.key === 'tradingAccount') {
+                    console.log('📝 Completing trading account...');
+                    const success = completeTradingAccount();
+                    if (!success) return;
+                } else if (stage.key === 'agreements') {
+                    console.log('📝 Completing agreements...');
+                    const success = completeAgreements();
+                    if (!success) return;
+                }
+
+                // Move to next stage
+                console.log('⏭️ Moving to next stage...');
+                client.nextStage();
+                renderStepper();
+                renderCurrentStage();
+            } catch (error) {
+                console.error('❌ Error in handleNext:', error);
+                showToast('An error occurred: ' + error.message, 'error');
+            }
+        }
+
+        function handlePrevious() {
+            window.onboardingFlowClient.previousStage();
+            renderStepper();
+            renderCurrentStage();
+        }
+
+        function handleSkip() {
+            const client = window.onboardingFlowClient;
+            const stage = client.getCurrentStage();
+
+            console.log('⏭️ Skipping stage:', stage.name);
+            showToast(`Skipped ${stage.name}. You can complete this later.`, 'info');
+
+            client.nextStage();
+            renderStepper();
+            renderCurrentStage();
+        }
+
+        async function completeRegistration() {
+            try {
+                console.log('📋 Starting registration validation...');
+
+                const email = $('#reg_email').val().trim();
+                const password = $('#reg_password').val();
+                const country = $('#reg_country').val();
+                const nationality = $('#reg_nationality').val();
+                const domain = $('#reg_domain').val().trim();
+                const phoneNumber = $('#reg_phoneNumber').val().trim();
+
+                // Optional fields
+                const firstName = $('#reg_firstName').val()?.trim() || '';
+                const lastName = $('#reg_lastName').val()?.trim() || '';
+                const referredBy = $('#reg_referredBy').val()?.trim() || '';
+
+                console.log('Form values:', {
+                    email, password: '***', country, nationality, domain,
+                    phoneNumber, firstName, lastName, referredBy
+                });
+
+                // Basic validation - check all required fields
+                if (!email || !password || !country || !nationality || !domain || !phoneNumber) {
+                    showToast('Please fill in all required fields', 'error');
+                    return false;
+                }
+
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('Please enter a valid email address', 'error');
+                    return false;
+                }
+
+                // Password validation
+                if (password.length < 8) {
+                    showToast('Password must be at least 8 characters long', 'error');
+                    return false;
+                }
+
+                // Determine license
+                showToast('Determining your regulation...', 'info');
+                console.log('🔍 Determining license for:', { country, nationality, domain });
+
+                // Check what regulations exist
+                const allRegulations = window.dataService.getAllRegulations();
+                console.log('📋 Available regulations:', allRegulations.length);
+                console.log('📋 Raw regulations data:', allRegulations);
+
+                if (allRegulations.length === 0) {
+                    console.warn('⚠️ No regulations found in system!');
+                    showToast('No regulations configured. Please contact administrator.', 'error');
+                    return false;
+                }
+
+                console.log('Regulations summary:', allRegulations.map(r => ({
+                    brand: r.brand,
+                    license: r.licenseCode || r.code,
+                    regulation: r.regulation,
+                    registrationFields: r.registrationFields
+                })));
+
+                const result = await window.onboardingFlowClient.determineLicense(country, nationality, domain);
+                console.log('License determination result:', result);
+
+                if (!result.matched) {
+                    console.warn('⚠️ No matching regulation found');
+                    console.log('💡 Using fallback for testing...');
+
+                    // For testing: create a mock result
+                    showToast('No matching regulation found. Using test mode.', 'warning');
+
+                    window.onboardingFlowClient.brand = 'TEST_BRAND';
+                    window.onboardingFlowClient.license = 'TEST_LICENSE';
+                    window.onboardingFlowClient.config = window.onboardingFlowClient.getDefaultConfig();
+
+                    // Save user data
+                    window.onboardingFlowClient.userData = {
+                        email,
+                        country,
+                        nationality,
+                        domain,
+                        phoneNumber,
+                        firstName,
+                        lastName,
+                        referredBy,
+                        createdAt: new Date().toISOString()
+                    };
+
+                    window.onboardingFlowClient.saveSession();
+
+                    showToast('Test mode: Proceeding without regulation match', 'info');
+                    return true;
+                }
+
+                // Save license and brand
+                console.log('💾 Saving brand and license...');
+                window.onboardingFlowClient.brand = result.brand;
+                window.onboardingFlowClient.license = result.license;
+
+                // Load configuration
+                console.log('📥 Loading configuration...');
+                await window.onboardingFlowClient.loadConfig();
+
+                // Save user data (including dynamic registration fields)
+                window.onboardingFlowClient.userData = {
+                    email,
+                    country,
+                    nationality,
+                    domain,
+                    phoneNumber,
+                    firstName,
+                    lastName,
+                    referredBy,
+                    createdAt: new Date().toISOString()
+                };
+
+                window.onboardingFlowClient.saveSession();
+                console.log('✅ Session saved');
+
+                showToast(`Successfully matched to ${result.brand} - ${result.license}`, 'success');
+
+                return true;
+            } catch (error) {
+                console.error('❌ Error in completeRegistration:', error);
+                showToast('Registration error: ' + error.message, 'error');
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

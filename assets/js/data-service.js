@@ -137,27 +137,35 @@ class DataService {
     }
 
     const regulations = this.loadRegulations();
+    const currentUser = this.getCurrentUser();
 
     if (regulation.id) {
       // Update existing regulation
       const index = regulations.findIndex(r => r.id === regulation.id);
       if (index !== -1) {
         const existingRegulation = regulations[index];
-        regulations[index] = {
+        // Deep clone to avoid reference issues
+        regulations[index] = JSON.parse(JSON.stringify({
           ...regulation,
           createdAt: existingRegulation.createdAt || new Date().toISOString(), // Preserve original createdAt
-          updatedAt: new Date().toISOString()
-        };
+          createdBy: existingRegulation.createdBy || currentUser, // Preserve original createdBy
+          updatedAt: new Date().toISOString(),
+          updatedBy: currentUser
+        }));
         console.log('✅ Updated regulation:', regulation.code);
       }
     } else {
       // Create new regulation
-      const newRegulation = {
+      // Deep clone to avoid reference issues
+      const newRegulation = JSON.parse(JSON.stringify({
         ...regulation,
         id: Date.now(),
+        enabled: regulation.enabled !== undefined ? regulation.enabled : true, // Default to enabled
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
+        createdBy: currentUser,
+        updatedAt: new Date().toISOString(),
+        updatedBy: currentUser
+      }));
       regulations.push(newRegulation);
       console.log('✅ Created new regulation:', newRegulation.code);
     }
@@ -167,6 +175,13 @@ class DataService {
     this.regulations = regulations;
 
     return regulation;
+  }
+
+  // Get current user (placeholder - can be replaced with actual auth system)
+  getCurrentUser() {
+    // For demo purposes, return a default user
+    // In production, this would be retrieved from authentication system
+    return localStorage.getItem('currentUser') || 'Admin';
   }
 
   getRegulation(id) {
@@ -187,6 +202,18 @@ class DataService {
 
   getAllRegulations() {
     return this.loadRegulations();
+  }
+
+  getActiveRegulations() {
+    const allRegulations = this.getAllRegulations();
+    return allRegulations.filter(reg => reg.enabled !== false);
+  }
+
+  getRegulationsByStatus(enabled = true) {
+    const allRegulations = this.getAllRegulations();
+    return allRegulations.filter(reg =>
+      enabled ? (reg.enabled !== false) : (reg.enabled === false)
+    );
   }
 
   // ==========================

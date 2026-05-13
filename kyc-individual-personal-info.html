@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individual Personal Information</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.com/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/onboarding-flow.css">
+
+    <style>
+        body {
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        body.standalone {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+
+        .external-page-container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        body.standalone .external-page-container {
+            max-width: 700px;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .external-page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .external-page-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #F05742 0%, #D94632 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: white;
+        }
+
+        .external-page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2C3E50;
+            margin-bottom: 8px;
+        }
+
+        .external-page-subtitle {
+            color: #718096;
+            font-size: 15px;
+        }
+
+        .badge-external {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="external-page-container">
+        <div class="external-page-header">
+            <div class="external-page-logo">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="badge-external">
+                <i class="fas fa-external-link-alt"></i> External Page
+            </div>
+            <h1 class="external-page-title">Complete Your Profile</h1>
+            <p class="external-page-subtitle">Individual Web Setting - Personal Information Collection</p>
+        </div>
+
+        <form id="externalPersonalInfoForm">
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    First Name <span class="required">*</span>
+                </label>
+                <input type="text" class="onboarding-form-input" id="firstName" required>
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Middle Name
+                </label>
+                <input type="text" class="onboarding-form-input" id="middleName">
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Last Name <span class="required">*</span>
+                </label>
+                <input type="text" class="onboarding-form-input" id="lastName" required>
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Gender <span class="required">*</span>
+                </label>
+                <select class="onboarding-form-input" id="gender" required>
+                    <option value="">Select...</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Date of Birth <span class="required">*</span>
+                </label>
+                <input type="date" class="onboarding-form-input" id="dateOfBirth" required>
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Country of Residence <span class="required">*</span>
+                </label>
+                <select class="onboarding-form-input" id="countryOfResidence" required>
+                    <option value="">Select...</option>
+                </select>
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Nationality <span class="required">*</span>
+                </label>
+                <select class="onboarding-form-input" id="nationality" required>
+                    <option value="">Select...</option>
+                </select>
+            </div>
+
+            <div class="onboarding-form-group">
+                <label class="onboarding-form-label">
+                    Place of Birth <span class="required">*</span>
+                </label>
+                <input type="text" class="onboarding-form-input" id="placeOfBirth" required>
+            </div>
+
+            <div id="submitButtonContainer" style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #E8EAED;">
+                <button type="submit" class="btn-onboarding-primary" style="width: 100%;">
+                    <i class="fas fa-check"></i> Complete & Return to Main Flow
+                </button>
+            </div>
+        </form>
+
+        <div id="standaloneInfo" style="text-align: center; margin-top: 24px; color: #718096; font-size: 13px;">
+            <i class="fas fa-info-circle"></i>
+            This is a standalone page. After submission, you'll return to the onboarding flow.
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Get parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionToken = urlParams.get('session');
+            const returnUrl = urlParams.get('returnUrl') || '/onboarding.html';
+            const isEmbedded = urlParams.get('embedded') === 'true';
+
+            console.log('📄 External page loaded');
+            console.log('Session token:', sessionToken);
+            console.log('Embedded mode:', isEmbedded);
+            console.log('Return URL:', returnUrl);
+
+            // Apply styling based on mode
+            if (!isEmbedded) {
+                $('body').addClass('standalone');
+            } else {
+                // Hide elements in embedded mode
+                $('.badge-external').hide();
+                $('.external-page-logo').hide();
+                $('#submitButtonContainer').hide(); // Hide submit button in iframe
+                $('#standaloneInfo').hide(); // Hide standalone info message
+
+                // Expose submit function to parent window
+                window.submitExternalForm = function() {
+                    $('#externalPersonalInfoForm').trigger('submit');
+                };
+            }
+
+            // Load countries and nationalities
+            loadDropdowns();
+
+            // Load saved data if exists
+            loadSavedData(sessionToken);
+
+            // Handle form submission
+            $('#externalPersonalInfoForm').on('submit', function(e) {
+                e.preventDefault();
+
+                const personalInfo = {
+                    firstName: $('#firstName').val().trim(),
+                    middleName: $('#middleName').val().trim(),
+                    lastName: $('#lastName').val().trim(),
+                    gender: $('#gender').val(),
+                    dateOfBirth: $('#dateOfBirth').val(),
+                    countryOfResidence: $('#countryOfResidence').val(),
+                    nationality: $('#nationality').val(),
+                    placeOfBirth: $('#placeOfBirth').val().trim()
+                };
+
+                console.log('✅ Personal info collected:', personalInfo);
+
+                // Save to sessionStorage (in real implementation, this would be an API call)
+                savePersonalInfo(sessionToken, personalInfo);
+
+                if (isEmbedded) {
+                    // Send message to parent window
+                    window.parent.postMessage({
+                        type: 'personalInfoCompleted',
+                        data: personalInfo
+                    }, '*'); // In production, specify the exact origin
+
+                    // Show success message in iframe
+                    showSuccessMessage('Information saved! You can now continue in the main flow.');
+                } else {
+                    // Show success message
+                    showSuccessMessage('Returning to onboarding flow...');
+
+                    // Return to main flow after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = returnUrl + '?session=' + sessionToken + '&completed=personalInfo';
+                    }, 2000);
+                }
+            });
+        });
+
+        function loadDropdowns() {
+            // Load countries
+            fetch('assets/data/countries.json')
+                .then(res => res.json())
+                .then(countries => {
+                    const $select = $('#countryOfResidence');
+                    countries.forEach(country => {
+                        const name = typeof country === 'string' ? country : country.name;
+                        $select.append(`<option value="${name}">${name}</option>`);
+                    });
+                })
+                .catch(err => {
+                    console.warn('Could not load countries:', err);
+                });
+
+            // Load nationalities
+            fetch('assets/data/nationalities.json')
+                .then(res => res.json())
+                .then(nationalities => {
+                    const $select = $('#nationality');
+                    nationalities.forEach(nationality => {
+                        const name = typeof nationality === 'string' ? nationality : nationality.name;
+                        $select.append(`<option value="${name}">${name}</option>`);
+                    });
+                })
+                .catch(err => {
+                    console.warn('Could not load nationalities:', err);
+                });
+        }
+
+        function loadSavedData(sessionToken) {
+            // In real implementation, fetch from backend API
+            // For now, check sessionStorage
+            const sessionData = sessionStorage.getItem('onboarding_session');
+            if (sessionData) {
+                const data = JSON.parse(sessionData);
+                const personalInfo = data.userData?.personalInfo || {};
+
+                // Pre-fill form
+                $('#firstName').val(personalInfo.firstName || '');
+                $('#middleName').val(personalInfo.middleName || '');
+                $('#lastName').val(personalInfo.lastName || '');
+                $('#gender').val(personalInfo.gender || '');
+                $('#dateOfBirth').val(personalInfo.dateOfBirth || '');
+                $('#countryOfResidence').val(personalInfo.countryOfResidence || '');
+                $('#nationality').val(personalInfo.nationality || '');
+                $('#placeOfBirth').val(personalInfo.placeOfBirth || '');
+
+                console.log('📥 Pre-filled with saved data');
+            }
+        }
+
+        function savePersonalInfo(sessionToken, personalInfo) {
+            // Update sessionStorage
+            const sessionData = JSON.parse(sessionStorage.getItem('onboarding_session') || '{}');
+            if (!sessionData.userData) {
+                sessionData.userData = {};
+            }
+            sessionData.userData.personalInfo = personalInfo;
+            sessionData.userData.personalInfoCompleted = true;
+            sessionStorage.setItem('onboarding_session', JSON.stringify(sessionData));
+
+            console.log('💾 Saved personal info to session');
+        }
+
+        function showSuccessMessage(message = 'Returning to onboarding flow...') {
+            const $form = $('#externalPersonalInfoForm');
+            $form.html(`
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="width: 80px; height: 80px; background: #10B981; border-radius: 50%;
+                                display: flex; align-items: center; justify-content: center;
+                                margin: 0 auto 20px; font-size: 40px; color: white;">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3 style="color: #2C3E50; margin-bottom: 12px;">Information Saved!</h3>
+                    <p style="color: #718096;">${message}</p>
+                </div>
+            `);
+        }
+    </script>
+</body>
+</html>

@@ -5,7 +5,9 @@ class Router {
       '#/regulation/list': 'pages/regulation-list-new.html',
       '#/regulation/create': 'pages/regulation-list-new.html',
       '#/regulation/edit/:id': 'pages/regulation-list-new.html',
-      '#/regulation/onboarding': 'pages/onboarding-flow.html'
+      '#/regulation/onboarding': 'pages/onboarding-flow.html',
+      '#/kyc/system-config': 'pages/kyc-system-config.html',
+      '#/onboarding/start': 'pages/onboarding/user-flow.html'
     };
     this.currentRoute = null;
     this.currentParams = {};
@@ -67,8 +69,18 @@ class Router {
         $breadcrumb.append('<li class="breadcrumb-item active">Create Regulation</li>');
       } else if (hash.startsWith('#/regulation/edit/')) {
         $breadcrumb.append('<li class="breadcrumb-item active">Edit Regulation</li>');
+      } else if (hash === '#/regulation/onboarding') {
+        $breadcrumb.append('<li class="breadcrumb-item active">Onboarding Flow</li>');
       } else {
         $breadcrumb.append('<li class="breadcrumb-item active">Regulation List</li>');
+      }
+    } else if (hash.startsWith('#/kyc')) {
+      $breadcrumb.append('<li class="breadcrumb-item">KYC Management</li>');
+
+      if (hash === '#/kyc/system-config') {
+        $breadcrumb.append('<li class="breadcrumb-item active">System Configuration</li>');
+      } else {
+        $breadcrumb.append('<li class="breadcrumb-item active">Dashboard</li>');
       }
     } else {
       $breadcrumb.append('<li class="breadcrumb-item active">Dashboard</li>');

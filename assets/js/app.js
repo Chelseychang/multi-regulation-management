@@ -11,6 +11,9 @@ class App {
     // Initialize DataService
     this.dataService = new DataService();
 
+    // Make dataService globally available
+    window.dataService = this.dataService;
+
     // Load master data (countries, nationalities)
     try {
       await this.dataService.loadMasterData();

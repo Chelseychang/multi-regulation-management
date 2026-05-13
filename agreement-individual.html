@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions Agreement</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/onboarding-flow.css">
+
+    <style>
+        body {
+            background: white;
+            min-height: 100vh;
+        }
+
+        body.standalone {
+            background: #F5F7FA;
+            padding: 40px 20px;
+        }
+
+        .agreement-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        body.standalone .agreement-container {
+            max-width: 900px;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            background: #F9FAFB;
+            border-right: 1px solid #E5E7EB;
+            padding: 24px 16px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 24px;
+            padding-left: 8px;
+        }
+
+        .sidebar-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background: #EFF6FF;
+        }
+
+        .sidebar-item.active {
+            background: #EFF6FF;
+            border-left-color: #3B82F6;
+        }
+
+        .sidebar-item.completed {
+            background: #F0FDF4;
+            border-left-color: #10B981;
+        }
+
+        .sidebar-item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-item.active .sidebar-item-title {
+            color: #3B82F6;
+        }
+
+        .sidebar-item.completed .sidebar-item-title {
+            color: #10B981;
+        }
+
+        .sidebar-item-desc {
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        .sidebar-item-icon {
+            float: right;
+            color: #D1D5DB;
+            font-size: 16px;
+        }
+
+        .sidebar-item.completed .sidebar-item-icon {
+            color: #10B981;
+        }
+
+        .agreement-form-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .agreement-form-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+
+        .agreement-form-subtitle {
+            font-size: 14px;
+            color: #6B7280;
+            margin-bottom: 32px;
+        }
+
+        .agreement-item {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .agreement-item.expanded {
+            background: white;
+            border-color: #3B82F6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .agreement-item.submitted {
+            background: #F0FDF4;
+            border-color: #10B981;
+        }
+
+        .agreement-header {
+            display: flex;
+            align-items: start;
+            gap: 16px;
+            cursor: pointer;
+        }
+
+        .agreement-number {
+            width: 32px;
+            height: 32px;
+            background: #E5E7EB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #374151;
+            flex-shrink: 0;
+        }
+
+        .agreement-item.submitted .agreement-number {
+            background: #10B981;
+            color: white;
+        }
+
+        .agreement-content {
+            flex: 1;
+        }
+
+        .agreement-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .agreement-text {
+            font-size: 13px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        .agreement-expand-icon {
+            font-size: 16px;
+            color: #6B7280;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        .agreement-item.expanded .agreement-expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .agreement-details {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #E5E7EB;
+        }
+
+        .agreement-item.expanded .agreement-details {
+            display: block;
+        }
+
+        .agreement-full-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #F9FAFB;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .agreement-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-submit-single {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit-single:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-download-single {
+            background: linear-gradient(135deg, #F05742 0%, #D94632 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .agreement-item.submitted .btn-submit-single {
+            display: none;
+        }
+
+        .agreement-item.submitted .btn-download-single {
+            display: inline-flex;
+        }
+
+        .btn-download-single:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 87, 66, 0.4);
+        }
+
+        .submitted-badge {
+            display: none;
+            background: #10B981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .agreement-item.submitted .submitted-badge {
+            display: inline-flex;
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 32px 0;
+            border-top: 2px solid #E5E7EB;
+            margin-top: 24px;
+        }
+
+        .progress-summary {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1E40AF;
+        }
+
+        .progress-count {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3B82F6;
+        }
+
+        .success-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #10B981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            color: white;
+        }
+
+        .download-pdf-btn {
+            background: linear-gradient(135deg, #F05742 0%, #D94632 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(240, 87, 66, 0.3);
+        }
+
+        .download-pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 87, 66, 0.4);
+        }
+
+        .pdf-icon {
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar (only in standalone mode) -->
+            <div class="col-md-3 sidebar" id="agreementSidebar" style="display: none;">
+                <div class="sidebar-title">BUKA AKUN LIVE</div>
+                <div id="sidebarItems">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9" id="agreementMainContent">
+                <div class="agreement-container">
+                    <!-- Form State -->
+                    <div id="formState">
+                        <div class="agreement-form-card">
+                            <h1 class="agreement-form-title">
+                                <i class="fas fa-file-contract" style="color: var(--vantage-primary);"></i>
+                                Terms & Conditions Agreement
+                            </h1>
+                            <p class="agreement-form-subtitle">
+                                Please read and accept all terms and conditions to continue
+                            </p>
+
+                            <!-- Progress Summary -->
+                            <div class="progress-summary">
+                                <div class="progress-text">
+                                    <i class="fas fa-clipboard-check"></i> Agreement Progress
+                                </div>
+                                <div class="progress-count">
+                                    <span id="submittedCount">0</span> / <span id="totalCount">10</span>
+                                </div>
+                            </div>
+
+                            <form id="agreementForm">
+                                <!-- Agreement Items will be populated here -->
+                                <div id="agreementItems"></div>
+
+                                <div class="submit-section">
+                                    <button type="submit" class="btn-onboarding-primary" id="btnSubmitAgreement" disabled>
+                                        <i class="fas fa-check-circle"></i> Complete All Agreements
+                                    </button>
+                                    <div style="margin-top: 12px; font-size: 13px; color: #6B7280;">
+                                        <i class="fas fa-info-circle"></i>
+                                        You must submit all 10 agreements to continue
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Success State (hidden initially) -->
+                    <div id="successState" style="display: none;">
+                        <div class="success-state">
+                            <div class="success-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h2 style="font-size: 24px; font-weight: 700; color: #1F2937; margin-bottom: 12px;">
+                                Agreement Submitted Successfully!
+                            </h2>
+                            <p style="font-size: 15px; color: #6B7280; margin-bottom: 32px;">
+                                Thank you for accepting our terms and conditions.
+                            </p>
+
+                            <button class="download-pdf-btn" onclick="downloadPDF()">
+                                <i class="fas fa-file-pdf pdf-icon"></i>
+                                <span>Download PDF Copy</span>
+                            </button>
+
+                            <div style="margin-top: 24px; font-size: 13px; color: #6B7280;">
+                                <i class="fas fa-info-circle"></i>
+                                A copy has been sent to your email
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Get parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionToken = urlParams.get('session');
+            const isEmbedded = urlParams.get('embedded') === 'true';
+
+            console.log('Agreement page loaded');
+            console.log('Embedded mode:', isEmbedded);
+
+            // Apply styling based on mode
+            if (!isEmbedded) {
+                $('body').addClass('standalone');
+                $('#agreementSidebar').show();
+                populateSidebar();
+            }
+
+            // Load agreement items (10 terms)
+            loadAgreementItems();
+
+            // Handle form submission
+            $('#agreementForm').on('submit', function(e) {
+                e.preventDefault();
+                submitAgreement();
+            });
+        });
+
+        function loadAgreementItems() {
+            const agreements = [
+                {
+                    id: 1,
+                    title: 'Profile Perusahaan',
+                    text: 'Informasi perusahaan pialang berjangka',
+                    fullText: `
+                        <h4>Company Profile - Vantage International Group Limited</h4>
+                        <p>Vantage International Group Limited adalah perusahaan pialang berjangka yang terdaftar dan diatur oleh otoritas keuangan internasional. Kami menyediakan layanan perdagangan untuk berbagai instrumen keuangan termasuk forex, komoditas, indeks, dan saham.</p>
+                        <h5>Regulasi dan Lisensi:</h5>
+                        <ul>
+                            <li>Lisensi ASIC (Australia): 428901</li>
+                            <li>Lisensi FCA (UK): 579514</li>
+                            <li>Lisensi CIMA (Cayman Islands): 1383491</li>
+                        </ul>
+                        <h5>Informasi Perusahaan:</h5>
+                        <p><strong>Nama:</strong> Vantage International Group Limited</p>
+                        <p><strong>Alamat:</strong> 1st Floor, First St. Vincent Bank Ltd Building, James Street, Kingstown, St. Vincent and the Grenadines</p>
+                        <p><strong>Email:</strong> support@vantagemarkets.com</p>
+                        <p><strong>Telepon:</strong> +1-784-456-7890</p>
+                        <p>Dengan pengalaman lebih dari 15 tahun di industri keuangan, kami berkomitmen untuk memberikan layanan terbaik kepada klien kami di seluruh dunia.</p>
+                    `
+                },
+                {
+                    id: 2,
+                    title: 'Pernyataan Simulasi Perdagangan Berjangka',
+                    text: 'Informasi tentang perdagangan perdagangan berjangka anda',
+                    fullText: `
+                        <h4>Trading Simulation Statement</h4>
+                        <p>Pernyataan ini menjelaskan bahwa perdagangan berjangka melibatkan risiko tinggi dan tidak cocok untuk semua investor. Anda harus mempertimbangkan dengan hati-hati apakah perdagangan cocok untuk Anda berdasarkan pengalaman, tujuan, sumber daya keuangan, dan keadaan lain yang relevan.</p>
+                        <h5>Risiko Utama:</h5>
+                        <ul>
+                            <li>Kerugian dapat melebihi investasi awal Anda</li>
+                            <li>Volatilitas pasar dapat menyebabkan pergerakan harga yang cepat</li>
+                            <li>Leverage dapat memperbesar keuntungan dan kerugian</li>
+                            <li>Kondisi pasar yang tidak normal dapat meningkatkan risiko</li>
+                        </ul>
+                        <p>Dengan menandatangani dokumen ini, Anda mengakui bahwa Anda telah membaca, memahami, dan menerima semua risiko yang terkait dengan perdagangan berjangka.</p>
+                    `
+                },
+                {
+                    id: 3,
+                    title: 'Pernyataan Pengalaman Transaksi Perdagangan Berjangka',
+                    text: 'Informasi tentang pengalaman transaksi berjangka anda',
+                    fullText: `
+                        <h4>Trading Experience Declaration</h4>
+                        <p>Dokumen ini mengumpulkan informasi tentang pengalaman perdagangan Anda untuk membantu kami memahami tingkat pengetahuan dan pengalaman Anda dalam perdagangan instrumen keuangan.</p>
+                        <h5>Informasi yang Diperlukan:</h5>
+                        <ul>
+                            <li>Berapa lama Anda telah berdagang di pasar keuangan?</li>
+                            <li>Instrumen apa yang pernah Anda perdagangkan? (Forex, Saham, Komoditas, dll.)</li>
+                            <li>Berapa frekuensi perdagangan Anda?</li>
+                            <li>Apakah Anda memahami konsep leverage dan margin?</li>
+                            <li>Apakah Anda pernah mengalami kerugian signifikan dalam perdagangan?</li>
+                        </ul>
+                        <p>Informasi ini akan membantu kami memberikan layanan dan dukungan yang sesuai dengan kebutuhan Anda. Semua informasi akan dijaga kerahasiaannya sesuai dengan kebijakan privasi kami.</p>
+                    `
+                },
+                {
+                    id: 4,
+                    title: 'Form Aplikasi Pembukaan Rekening Transaksi Secara Elektronik On-Line',
+                    text: 'Mengisi informasi data pribadi anda',
+                    fullText: `
+                        <h4>Online Electronic Trading Account Opening Application Form</h4>
+                        <p>Formulir ini digunakan untuk membuka rekening perdagangan elektronik secara online. Mohon isi semua informasi dengan lengkap dan akurat.</p>
+                        <h5>Informasi yang Diperlukan:</h5>
+                        <ul>
+                            <li>Informasi Pribadi: Nama lengkap, tanggal lahir, nomor identitas</li>
+                            <li>Informasi Kontak: Alamat, nomor telepon, email</li>
+                            <li>Informasi Keuangan: Sumber pendapatan, penghasilan tahunan</li>
+                            <li>Informasi Perdagangan: Pengalaman perdagangan, tujuan investasi</li>
+                            <li>Dokumen Pendukung: KTP, bukti alamat, dll.</li>
+                        </ul>
+                        <p>Dengan mengisi formulir ini, Anda menyatakan bahwa semua informasi yang diberikan adalah benar dan akurat. Informasi palsu dapat mengakibatkan penolakan aplikasi atau penutupan akun.</p>
+                        <p><strong>Catatan:</strong> Kami akan memverifikasi identitas Anda sesuai dengan peraturan Anti-Money Laundering (AML) dan Know Your Customer (KYC).</p>
+                    `
+                },
+                {
+                    id: 5,
+                    title: 'Dokumen Pemberitahuan Adanya Risiko',
+                    text: 'Pemberitahuan adanya risiko',
+                    fullText: `
+                        <h4>Risk Disclosure Document</h4>
+                        <p><strong>PERINGATAN PENTING:</strong> Perdagangan produk derivatif seperti CFD, Forex, dan instrumen keuangan lainnya melibatkan risiko tinggi dan tidak cocok untuk semua investor.</p>
+                        <h5>Risiko yang Perlu Anda Ketahui:</h5>
+                        <ol>
+                            <li><strong>Risiko Leverage:</strong> Produk dengan leverage memungkinkan Anda untuk mengontrol posisi yang lebih besar dengan modal yang lebih kecil. Namun, ini juga berarti kerugian Anda dapat melebihi deposit awal Anda.</li>
+                            <li><strong>Risiko Volatilitas Pasar:</strong> Harga dapat bergerak dengan cepat dan tidak terduga, terutama selama peristiwa ekonomi atau politik penting.</li>
+                            <li><strong>Risiko Likuiditas:</strong> Dalam kondisi pasar tertentu, mungkin sulit untuk menutup posisi pada harga yang diinginkan.</li>
+                            <li><strong>Risiko Slippage:</strong> Harga eksekusi aktual mungkin berbeda dari harga yang Anda harapkan.</li>
+                            <li><strong>Risiko Gap:</strong> Pasar dapat membuka dengan harga yang jauh berbeda dari harga penutupan sebelumnya.</li>
+                        </ol>
+                        <p>Anda harus mempertimbangkan dengan hati-hati apakah perdagangan cocok untuk Anda berdasarkan keadaan keuangan dan toleransi risiko Anda. Jangan pernah menginvestasikan uang yang Anda tidak mampu kehilangan.</p>
+                    `
+                },
+                {
+                    id: 6,
+                    title: 'Perjanjian Pemberian Amanat Secara Elektronik On-Line',
+                    text: 'Perjanjian antara anda dengan perusahaan pialang berjangka',
+                    fullText: `
+                        <h4>Online Electronic Trading Agreement</h4>
+                        <p>Perjanjian ini mengatur hubungan antara Anda (Klien) dan Vantage International Group Limited (Broker) dalam pelaksanaan perdagangan elektronik online.</p>
+                        <h5>Ketentuan Utama:</h5>
+                        <ol>
+                            <li><strong>Pemberian Amanat:</strong> Klien memberi kuasa kepada Broker untuk melaksanakan order perdagangan atas nama Klien melalui platform elektronik.</li>
+                            <li><strong>Eksekusi Order:</strong> Broker akan berusaha untuk mengeksekusi order sesuai dengan instruksi Klien, namun tidak menjamin harga eksekusi tertentu.</li>
+                            <li><strong>Margin dan Leverage:</strong> Klien wajib menjaga margin yang cukup dalam akun. Broker berhak untuk menutup posisi jika margin tidak mencukupi.</li>
+                            <li><strong>Platform Trading:</strong> Klien bertanggung jawab untuk menjaga keamanan login dan password. Semua transaksi yang dilakukan melalui akun Klien dianggap sah.</li>
+                            <li><strong>Biaya dan Komisi:</strong> Klien setuju untuk membayar semua biaya, spread, dan komisi yang berlaku.</li>
+                            <li><strong>Konflik Kepentingan:</strong> Broker dapat bertindak sebagai counterparty dalam transaksi Klien.</li>
+                        </ol>
+                        <p>Dengan menyetujui perjanjian ini, Anda mengakui bahwa Anda telah membaca, memahami, dan menerima semua ketentuan yang tercantum di dalamnya.</p>
+                    `
+                },
+                {
+                    id: 7,
+                    title: 'Peraturan Perdagangan (Trading Rules)',
+                    text: 'Peraturan perdagangan dalam sistem aplikasi penerimaan nasabah secara elektronik on-line',
+                    fullText: `
+                        <h4>Trading Rules</h4>
+                        <p>Peraturan ini mengatur pelaksanaan perdagangan melalui platform elektronik online kami.</p>
+                        <h5>Aturan Pelaksanaan Perdagangan:</h5>
+                        <ol>
+                            <li><strong>Jam Perdagangan:</strong> Forex 24/5 (Senin - Jumat), Komoditas dan Indeks sesuai jam bursa.</li>
+                            <li><strong>Ukuran Lot:</strong> Minimum 0.01 lot (micro lot), maksimum sesuai batas akun.</li>
+                            <li><strong>Leverage Maksimum:</strong> Hingga 1:500 untuk forex, bervariasi untuk instrumen lainnya.</li>
+                            <li><strong>Stop Out Level:</strong> 50% - posisi akan ditutup otomatis jika margin level mencapai 50%.</li>
+                            <li><strong>Margin Call:</strong> Peringatan akan dikirim saat margin level mencapai 100%.</li>
+                            <li><strong>Slippage:</strong> Dapat terjadi selama volatilitas tinggi atau gap pasar.</li>
+                            <li><strong>Pending Orders:</strong> Harus ditempatkan minimal 5 pips dari harga pasar saat ini.</li>
+                            <li><strong>Hedging:</strong> Diperbolehkan - Anda dapat membuka posisi berlawanan untuk instrumen yang sama.</li>
+                            <li><strong>Scalping:</strong> Diperbolehkan tanpa batasan.</li>
+                            <li><strong>EA/Expert Advisor:</strong> Diperbolehkan, namun pastikan strategi Anda tidak melanggar aturan trading kami.</li>
+                        </ol>
+                        <h5>Larangan:</h5>
+                        <ul>
+                            <li>Arbitrase latensi atau eksploitasi kesalahan harga</li>
+                            <li>Penggunaan strategi yang memanfaatkan kelemahan sistem</li>
+                            <li>Trading yang dianggap abusive atau manipulatif</li>
+                        </ul>
+                        <p>Pelanggaran terhadap aturan ini dapat mengakibatkan pembatalan profit, penutupan akun, atau tindakan hukum.</p>
+                    `
+                },
+                {
+                    id: 8,
+                    title: 'Pernyataan Pembukaan Rekening',
+                    text: 'Pernyataan pembukaan rekening trading anda',
+                    fullText: `
+                        <h4>Account Opening Statement</h4>
+                        <p>Dengan ini saya menyatakan bahwa:</p>
+                        <ol>
+                            <li>Saya telah berusia minimal 18 tahun dan memiliki kapasitas hukum penuh untuk masuk ke dalam perjanjian ini.</li>
+                            <li>Semua informasi yang saya berikan dalam aplikasi pembukaan rekening adalah benar, akurat, dan lengkap.</li>
+                            <li>Saya akan segera memberi tahu Broker tentang setiap perubahan pada informasi yang telah saya berikan.</li>
+                            <li>Dana yang saya depositkan adalah milik saya sendiri dan bukan hasil dari kegiatan ilegal.</li>
+                            <li>Saya memahami risiko yang terlibat dalam perdagangan produk leverage dan bersedia menanggung risiko tersebut.</li>
+                            <li>Saya telah membaca dan memahami semua dokumen yang terkait dengan pembukaan akun ini, termasuk:
+                                <ul>
+                                    <li>Perjanjian Klien</li>
+                                    <li>Pemberitahuan Risiko</li>
+                                    <li>Peraturan Perdagangan</li>
+                                    <li>Kebijakan Privasi</li>
+                                    <li>Kebijakan AML/KYC</li>
+                                </ul>
+                            </li>
+                            <li>Saya setuju untuk terikat oleh semua ketentuan dan kondisi yang ditetapkan dalam dokumen-dokumen tersebut.</li>
+                            <li>Saya memahami bahwa Broker berhak untuk menolak aplikasi saya atau menutup akun saya tanpa memberikan alasan.</li>
+                            <li>Saya setuju bahwa semua komunikasi dengan Broker dapat dilakukan secara elektronik.</li>
+                        </ol>
+                        <p><strong>Konfirmasi:</strong> Dengan mengklik "Submit", saya menyatakan bahwa saya telah membaca, memahami, dan setuju dengan pernyataan di atas.</p>
+                    `
+                },
+                {
+                    id: 9,
+                    title: 'Privacy Policy',
+                    text: 'Our privacy policy regarding your personal data',
+                    fullText: `
+                        <h4>Privacy Policy</h4>
+                        <p>Vantage International Group Limited ("kami", "kita", "Vantage") berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda.</p>
+                        <h5>1. Informasi yang Kami Kumpulkan:</h5>
+                        <ul>
+                            <li><strong>Informasi Identitas:</strong> Nama, tanggal lahir, nomor identitas</li>
+                            <li><strong>Informasi Kontak:</strong> Alamat, email, nomor telepon</li>
+                            <li><strong>Informasi Keuangan:</strong> Rekening bank, kartu kredit, sumber pendapatan</li>
+                            <li><strong>Informasi Perdagangan:</strong> Riwayat transaksi, posisi terbuka</li>
+                            <li><strong>Informasi Teknis:</strong> IP address, device information, cookies</li>
+                        </ul>
+                        <h5>2. Bagaimana Kami Menggunakan Informasi Anda:</h5>
+                        <ul>
+                            <li>Memproses aplikasi pembukaan akun</li>
+                            <li>Melaksanakan transaksi perdagangan</li>
+                            <li>Mematuhi kewajiban hukum dan regulasi (KYC, AML)</li>
+                            <li>Meningkatkan layanan kami</li>
+                            <li>Mengirim komunikasi pemasaran (dengan persetujuan Anda)</li>
+                            <li>Mencegah penipuan dan kegiatan ilegal</li>
+                        </ul>
+                        <h5>3. Berbagi Informasi:</h5>
+                        <p>Kami dapat membagikan informasi Anda dengan:</p>
+                        <ul>
+                            <li>Penyedia layanan pihak ketiga (payment processors, technology providers)</li>
+                            <li>Regulator dan otoritas hukum (bila diwajibkan)</li>
+                            <li>Perusahaan afiliasi dalam grup Vantage</li>
+                        </ul>
+                        <h5>4. Keamanan Data:</h5>
+                        <p>Kami menggunakan langkah-langkah keamanan yang sesuai untuk melindungi informasi Anda, termasuk enkripsi, firewall, dan akses terbatas.</p>
+                        <h5>5. Hak Anda:</h5>
+                        <ul>
+                            <li>Mengakses informasi pribadi Anda</li>
+                            <li>Memperbaiki informasi yang tidak akurat</li>
+                            <li>Meminta penghapusan data (dalam kondisi tertentu)</li>
+                            <li>Menarik persetujuan untuk pemasaran</li>
+                            <li>Mengajukan keluhan kepada otoritas perlindungan data</li>
+                        </ul>
+                        <p>Untuk pertanyaan tentang Kebijakan Privasi ini, silakan hubungi: privacy@vantagemarkets.com</p>
+                    `
+                },
+                {
+                    id: 10,
+                    title: 'Risk Disclosure',
+                    text: 'Important information about trading risks',
+                    fullText: `
+                        <h4>Risk Disclosure Statement</h4>
+                        <p><strong>PERINGATAN RISIKO:</strong> Perdagangan produk dengan leverage seperti CFD dan Forex memiliki tingkat risiko yang tinggi dan dapat mengakibatkan kerugian yang melebihi investasi awal Anda. Produk-produk ini tidak cocok untuk semua investor.</p>
+                        <h5>Risiko Spesifik:</h5>
+                        <ol>
+                            <li><strong>Risiko Pasar:</strong>
+                                <ul>
+                                    <li>Harga dapat bergerak berlawanan dengan posisi Anda</li>
+                                    <li>Volatilitas pasar dapat menyebabkan pergerakan harga yang cepat dan signifikan</li>
+                                    <li>Kondisi pasar yang tidak normal dapat meningkatkan risiko</li>
+                                </ul>
+                            </li>
+                            <li><strong>Risiko Leverage:</strong>
+                                <ul>
+                                    <li>Leverage dapat memperbesar keuntungan dan kerugian</li>
+                                    <li>Anda dapat kehilangan lebih dari deposit awal Anda</li>
+                                    <li>Margin call dapat mengharuskan Anda untuk menambah dana</li>
+                                </ul>
+                            </li>
+                            <li><strong>Risiko Likuiditas:</strong>
+                                <ul>
+                                    <li>Mungkin sulit untuk menutup posisi pada harga yang diinginkan</li>
+                                    <li>Spread dapat melebar selama volatilitas tinggi</li>
+                                    <li>Order mungkin tidak dapat dieksekusi</li>
+                                </ul>
+                            </li>
+                            <li><strong>Risiko Teknologi:</strong>
+                                <ul>
+                                    <li>Platform trading dapat mengalami gangguan teknis</li>
+                                    <li>Koneksi internet dapat terputus</li>
+                                    <li>Kesalahan sistem dapat mempengaruhi perdagangan Anda</li>
+                                </ul>
+                            </li>
+                            <li><strong>Risiko Counterparty:</strong>
+                                <ul>
+                                    <li>Broker bertindak sebagai counterparty dalam transaksi CFD</li>
+                                    <li>Risiko default oleh broker atau pihak ketiga</li>
+                                </ul>
+                            </li>
+                            <li><strong>Risiko Mata Uang:</strong>
+                                <ul>
+                                    <li>Nilai tukar dapat mempengaruhi nilai investasi Anda</li>
+                                    <li>Profit/loss dapat dipengaruhi oleh fluktuasi mata uang</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <h5>Pertimbangan Penting:</h5>
+                        <ul>
+                            <li>Hanya investasikan uang yang Anda mampu kehilangan</li>
+                            <li>Pahami sepenuhnya produk yang Anda perdagangkan</li>
+                            <li>Gunakan manajemen risiko yang tepat (stop loss, position sizing)</li>
+                            <li>Jangan pernah menginvestasikan dana pinjaman</li>
+                            <li>Pertimbangkan untuk mencari saran keuangan independen</li>
+                            <li>Mulai dengan akun demo untuk memahami cara kerja platform</li>
+                        </ul>
+                        <p><strong>Pengakuan:</strong> Dengan menerima Risk Disclosure ini, Anda mengakui bahwa Anda telah membaca, memahami, dan menerima semua risiko yang terlibat dalam perdagangan produk leverage. Anda bertanggung jawab penuh atas keputusan perdagangan Anda dan setiap kerugian yang mungkin timbul.</p>
+                        <p><em>Jika Anda tidak memahami risiko yang terlibat, Anda harus mencari saran independen sebelum membuka akun perdagangan.</em></p>
+                    `
+                }
+            ];
+
+            const $container = $('#agreementItems');
+            $container.empty();
+
+            // Update total count
+            $('#totalCount').text(agreements.length);
+
+            agreements.forEach((agreement, index) => {
+                const $item = $(`
+                    <div class="agreement-item" data-agreement-id="${agreement.id}">
+                        <div class="agreement-header" onclick="toggleAgreement(${agreement.id})">
+                            <div class="agreement-number">${index + 1}</div>
+                            <div class="agreement-content">
+                                <div class="agreement-label">${agreement.title}</div>
+                                <div class="agreement-text">${agreement.text}</div>
+                            </div>
+                            <i class="fas fa-chevron-down agreement-expand-icon"></i>
+                        </div>
+                        <div class="agreement-details">
+                            <div class="agreement-full-text">${agreement.fullText}</div>
+                            <div class="agreement-actions">
+                                <button type="button" class="btn-submit-single" onclick="submitSingleAgreement(${agreement.id})">
+                                    <i class="fas fa-check"></i> Submit Agreement
+                                </button>
+                                <button type="button" class="btn-download-single" onclick="downloadSinglePDF(${agreement.id})">
+                                    <i class="fas fa-file-pdf"></i> Download PDF
+                                </button>
+                                <span class="submitted-badge">
+                                    <i class="fas fa-check-circle"></i> Submitted
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `);
+
+                $container.append($item);
+            });
+        }
+
+        function toggleAgreement(agreementId) {
+            const $item = $(`.agreement-item[data-agreement-id="${agreementId}"]`);
+            $item.toggleClass('expanded');
+        }
+
+        function submitSingleAgreement(agreementId) {
+            console.log('Submitting agreement:', agreementId);
+
+            const $item = $(`.agreement-item[data-agreement-id="${agreementId}"]`);
+            $item.addClass('submitted');
+
+            // Update progress count
+            const submittedCount = $('.agreement-item.submitted').length;
+            $('#submittedCount').text(submittedCount);
+
+            // Check if all agreements are submitted
+            checkAllAgreements();
+
+            // Show toast notification
+            showToast(`Agreement ${agreementId} submitted successfully!`, 'success');
+        }
+
+        function downloadSinglePDF(agreementId) {
+            console.log('Downloading PDF for agreement:', agreementId);
+
+            // In real implementation, this would download the actual PDF
+            showToast(`Downloading PDF for Agreement ${agreementId}...`, 'info');
+
+            // Simulate PDF download
+            setTimeout(() => {
+                alert(`PDF for Agreement ${agreementId} has been downloaded!`);
+            }, 500);
+        }
+
+        function checkAllAgreements() {
+            const totalAgreements = $('.agreement-item').length;
+            const submittedAgreements = $('.agreement-item.submitted').length;
+
+            // Enable submit button only when all are submitted
+            $('#btnSubmitAgreement').prop('disabled', submittedAgreements !== totalAgreements);
+        }
+
+        function showToast(message, type = 'info') {
+            // Simple toast notification
+            const bgColor = type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6';
+            const toast = $(`
+                <div style="position: fixed; top: 20px; right: 20px; background: ${bgColor}; color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; font-size: 14px; font-weight: 600;">
+                    ${message}
+                </div>
+            `);
+
+            $('body').append(toast);
+
+            setTimeout(() => {
+                toast.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+
+        function submitAgreement() {
+            console.log('Submitting all agreements...');
+
+            // Collect all submitted agreement IDs
+            const submittedAgreements = [];
+            $('.agreement-item.submitted').each(function() {
+                submittedAgreements.push($(this).data('agreement-id'));
+            });
+
+            console.log('All submitted agreements:', submittedAgreements);
+
+            // Save to session
+            const sessionData = JSON.parse(sessionStorage.getItem('onboarding_session') || '{}');
+            if (!sessionData.userData) {
+                sessionData.userData = {};
+            }
+            sessionData.userData.agreements = {
+                acceptedAt: new Date().toISOString(),
+                acceptedItems: submittedAgreements,
+                totalItems: $('.agreement-item').length
+            };
+            sessionStorage.setItem('onboarding_session', JSON.stringify(sessionData));
+
+            // Check if embedded
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEmbedded = urlParams.get('embedded') === 'true';
+
+            if (isEmbedded) {
+                // Send message to parent window
+                window.parent.postMessage({
+                    type: 'agreementCompleted',
+                    data: submittedAgreements
+                }, '*');
+            }
+
+            // Show success state
+            $('#formState').fadeOut(300, function() {
+                $('#successState').fadeIn(300);
+            });
+        }
+
+        function downloadPDF() {
+            console.log('Downloading PDF...');
+
+            // In real implementation, this would generate/download actual PDF
+            // For now, show a message
+            alert('PDF download started! A copy will be saved to your downloads folder.');
+
+            // Simulate PDF generation
+            // In real app: POST /api/agreements/generate-pdf
+        }
+
+        function populateSidebar() {
+            const sidebarSteps = [
+                { title: 'Profile Perusahaan', desc: 'Informasi perusahaan pialang berjangka', completed: true },
+                { title: 'Rate & Jenis Real Account', desc: 'Pilih jenis akun real, produk, dan kura', completed: true },
+                { title: 'Pernyataan Simulasi Perdagangan Berjangka', desc: 'Informasi tentang perdagangan perdagangan berjangka anda', completed: false, active: true },
+                { title: 'Pernyataan Pengalaman Transaksi', desc: 'Informasi tentang pengalaman transaksi berjangka anda', completed: false },
+                { title: 'Pernyataan Pengungkapan #1', desc: 'Pernyataan pengungkapan pertama', completed: false },
+                { title: 'Aplikasi Pembukaan Rekening', desc: 'Mengisi informasi data pribadi anda', completed: false },
+                { title: 'Pernyataan Pengungkapan #2', desc: 'Pernyataan pengungkapan kedua', completed: false },
+                { title: 'Formulir Dokumen Resiko', desc: 'Pemberitahuan adanya risiko', completed: false },
+                { title: 'Pernyataan Pengungkapan #3', desc: 'Pernyataan pengungkapan ketiga', completed: false },
+                { title: 'Perjanjian Pemberian Amanat', desc: 'Perjanjian antara anda dengan perusahaan pialang berjangka', completed: false }
+            ];
+
+            const $container = $('#sidebarItems');
+            $container.empty();
+
+            sidebarSteps.forEach(step => {
+                const classes = ['sidebar-item'];
+                if (step.active) classes.push('active');
+                if (step.completed) classes.push('completed');
+
+                const icon = step.completed ? 'fa-check-circle' : 'fa-circle';
+
+                const $item = $(`
+                    <div class="${classes.join(' ')}">
+                        <div class="sidebar-item-title">
+                            ${step.title}
+                            <i class="fas ${icon} sidebar-item-icon"></i>
+                        </div>
+                        <div class="sidebar-item-desc">${step.desc}</div>
+                    </div>
+                `);
+
+                $container.append($item);
+            });
+        }
+    </script>
+</body>
+</html>

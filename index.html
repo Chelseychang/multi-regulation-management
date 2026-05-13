@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/drawer.css">
     <link rel="stylesheet" href="assets/css/toast-fix.css">
+    <link rel="stylesheet" href="assets/css/onboarding-flow.css">
 </head>
 <body>
     <div class="app-container">
@@ -75,11 +76,15 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#kyc" class="nav-link">
+                <!-- KYC Management - WITH SUBMENU -->
+                <li class="nav-item has-submenu">
+                    <a href="javascript:void(0)" class="nav-link">
                         <i class="fas fa-user-check"></i>
                         <span>KYC Management</span>
                     </a>
+                    <ul class="submenu">
+                        <li><a href="#/kyc/system-config" class="submenu-link">System Configuration</a></li>
+                    </ul>
                 </li>
 
                 <li class="nav-item">
@@ -188,6 +193,8 @@
 
     <!-- Custom JS -->
     <script src="assets/js/data-service.js"></script>
+    <script src="assets/js/kyc-system-service.js"></script>
+    <script src="assets/js/onboarding-flow-client.js"></script>
     <script src="assets/js/router.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
