@@ -2021,6 +2021,7 @@
                 const optionKey = option.key || option.text || option;
                 const optionText = option.text || option;
                 const optionId = `${inputName}_${optIndex}`;
+                const hasPopup = option.hasPopup && option.popupConfig;
 
                 html += `
                     <div class="form-check" style="margin-bottom: 12px;">
@@ -2031,9 +2032,11 @@
                                value="${optionKey}"
                                data-question-index="${qIndex}"
                                data-option-index="${optIndex}"
+                               ${hasPopup ? `data-has-popup="true" data-popup-title="${escapeHtml(option.popupConfig.title)}" data-popup-content="${escapeHtml(option.popupConfig.content)}"` : ''}
                                onchange="handleQuestionOptionChange(${qIndex}, ${optIndex})">
                         <label class="form-check-label" for="${optionId}" style="font-size: 14px; color: #2C3E50;">
                             ${optionText}
+                            ${hasPopup ? '<i class="fas fa-info-circle" style="color: #3B82F6; margin-left: 4px;" title="This option will show additional information"></i>' : ''}
                         </label>
                     </div>
                 `;
@@ -2053,6 +2056,14 @@
 
             html += `</div>`;
             return html;
+        }
+
+        // Helper function to escape HTML for data attributes
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML.replace(/"/g, '&quot;');
         }
 
         function renderSourceOfFunds(sourceFunds) {
@@ -2189,6 +2200,20 @@
                     $textInput.slideUp(200);
                 }
             }
+
+            // Show popup if option has popup configured
+            if (isChecked && option.hasPopup && option.popupConfig) {
+                showQuestionnairePopup(option.popupConfig.title, option.popupConfig.content);
+            }
+        }
+
+        // Show questionnaire option popup
+        function showQuestionnairePopup(title, content) {
+            $('#popupModalTitle').text(title || 'Important Notice');
+            $('#popupModalContent').html(content || '');
+
+            const modal = new bootstrap.Modal(document.getElementById('questionnairePopupModal'));
+            modal.show();
         }
 
         function submitQuestionnaire() {
@@ -2547,5 +2572,29 @@
             }
         }
     </script>
+
+    <!-- Questionnaire Option Popup Modal -->
+    <div class="modal fade" id="questionnairePopupModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                <div class="modal-header" style="border-bottom: 1px solid #E5E7EB; padding: 20px 24px;">
+                    <h5 class="modal-title" id="popupModalTitle" style="font-weight: 600; color: #2C3E50; font-size: 18px;">
+                        Important Notice
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 24px;">
+                    <div id="popupModalContent" style="font-size: 14px; color: #4B5563; line-height: 1.6;">
+                        <!-- Popup content will be inserted here -->
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #E5E7EB; padding: 16px 24px;">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="padding: 8px 24px;">
+                        <i class="fas fa-check"></i> I Understand
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
