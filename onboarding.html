@@ -734,43 +734,108 @@
             const videoVerificationComplete = sessionStorage.getItem('videoVerificationComplete') === 'true';
 
             let html = `
-                <div class="onboarding-card">
-                    <h3 style="font-size: 18px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
-                        🆔 Identity Verification
-                    </h3>
-                    <p style="color: #718096; margin-bottom: 24px;">
-                        Upload proof of identity and address documents to unlock higher account limits.
-                    </p>
-                    <div class="onboarding-card-description">
-                        <strong>Required documents:</strong>
-                        <ul style="margin-top: 12px; padding-left: 20px;">
-                            <li><strong>POI (Proof of Identity):</strong> Passport, National ID, or Driver's License</li>
-                            <li><strong>POA (Proof of Address):</strong> Utility bill, Bank statement (within 3 months)</li>
+                <!-- POI Card -->
+                <div class="onboarding-card" style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3B82F6, #2563EB); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
+                            <i class="fas fa-id-card" style="color: white; font-size: 20px;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2C3E50;">
+                                1. Proof of Identity (POI)
+                            </h3>
+                            <p style="margin: 4px 0 0 0; font-size: 13px; color: #718096;">
+                                Verify your identity with an official document
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background: #F9FAFB; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                        <p style="font-size: 14px; color: #4B5563; margin-bottom: 12px; font-weight: 500;">
+                            <i class="fas fa-info-circle" style="color: #3B82F6;"></i> Accepted Documents:
+                        </p>
+                        <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #6B7280;">
+                            <li style="margin-bottom: 6px;">Passport</li>
+                            <li style="margin-bottom: 6px;">National ID Card</li>
+                            <li style="margin-bottom: 6px;">Driver's License</li>
                         </ul>
                     </div>
+
+                    <button class="btn btn-primary" onclick="uploadPOI()" style="width: 100%; padding: 12px; font-size: 15px; font-weight: 600;">
+                        <i class="fas fa-upload"></i> Upload POI Document
+                    </button>
+                </div>
+
+                <!-- POA Card -->
+                <div class="onboarding-card" style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                            <i class="fas fa-home" style="color: white; font-size: 20px;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2C3E50;">
+                                2. Proof of Address (POA)
+                            </h3>
+                            <p style="margin: 4px 0 0 0; font-size: 13px; color: #718096;">
+                                Confirm your residential address
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background: #F9FAFB; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                        <p style="font-size: 14px; color: #4B5563; margin-bottom: 12px; font-weight: 500;">
+                            <i class="fas fa-info-circle" style="color: #10B981;"></i> Accepted Documents (within 3 months):
+                        </p>
+                        <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #6B7280;">
+                            <li style="margin-bottom: 6px;">Utility Bill (electricity, water, gas)</li>
+                            <li style="margin-bottom: 6px;">Bank Statement</li>
+                            <li style="margin-bottom: 6px;">Government-issued Document with Address</li>
+                        </ul>
+                    </div>
+
+                    <button class="btn btn-success" onclick="uploadPOA()" style="width: 100%; padding: 12px; font-size: 15px; font-weight: 600;">
+                        <i class="fas fa-upload"></i> Upload POA Document
+                    </button>
+                </div>
             `;
 
-            // Show Video Verification option if H5 is enabled
+            // Video Verification Card (only if H5 is enabled)
             if (hasH5Verification) {
                 html += `
-                    <div style="margin-top: 24px; padding: 20px; background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%); border-radius: 12px; border: 2px solid #818CF8;">
+                    <!-- Video Verification Card -->
+                    <div class="onboarding-card" style="background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); border: 2px solid #A78BFA;">
                         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366F1, #8B5CF6); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #8B5CF6, #7C3AED); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);">
                                 <i class="fas fa-video" style="color: white; font-size: 20px;"></i>
                             </div>
                             <div style="flex: 1;">
-                                <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #4338CA;">Video Verification ${videoVerificationComplete ? '✓' : ''}</h4>
-                                <p style="margin: 4px 0 0 0; font-size: 13px; color: #6366F1;">
-                                    ${videoVerificationComplete ? 'Video verification completed successfully' : 'Optional: Complete video verification for faster approval'}
+                                <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #6B21A8;">
+                                    3. Video Verification ${videoVerificationComplete ? '✓' : ''}
+                                </h3>
+                                <p style="margin: 4px 0 0 0; font-size: 13px; color: #7C3AED;">
+                                    ${videoVerificationComplete ? 'Completed successfully' : 'Optional: Complete for faster approval'}
                                 </p>
                             </div>
                         </div>
+
+                        <div style="background: rgba(139, 92, 246, 0.1); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                            <p style="font-size: 14px; color: #6B21A8; margin-bottom: 12px; font-weight: 500;">
+                                <i class="fas fa-clock" style="color: #8B5CF6;"></i> Quick 10-second verification:
+                            </p>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #7C3AED;">
+                                <li style="margin-bottom: 6px;">Record a short video (10 seconds)</li>
+                                <li style="margin-bottom: 6px;">State your full name clearly</li>
+                                <li style="margin-bottom: 6px;">Speeds up approval process</li>
+                            </ul>
+                        </div>
+
                         ${videoVerificationComplete ? `
-                            <div style="text-align: center; padding: 12px; background: #D1FAE5; border-radius: 8px; color: #065F46; font-size: 14px; font-weight: 500;">
-                                <i class="fas fa-check-circle"></i> Video verification submitted successfully!
+                            <div style="text-align: center; padding: 16px; background: #D1FAE5; border-radius: 8px; color: #065F46; font-size: 15px; font-weight: 600;">
+                                <i class="fas fa-check-circle" style="font-size: 20px; margin-bottom: 8px; display: block;"></i>
+                                Video verification submitted successfully!
                             </div>
                         ` : `
-                            <button class="btn btn-primary" onclick="goToVideoVerification()" style="width: 100%; padding: 12px; font-size: 15px; font-weight: 600; border-radius: 8px;">
+                            <button class="btn" onclick="goToVideoVerification()" style="width: 100%; padding: 12px; font-size: 15px; font-weight: 600; background: linear-gradient(135deg, #8B5CF6, #7C3AED); color: white; border: none;">
                                 <i class="fas fa-play-circle"></i> Start Video Verification
                             </button>
                         `}
@@ -779,15 +844,24 @@
             }
 
             html += `
-                    <div style="margin-top: 24px; text-align: center;">
-                        <p style="font-size: 13px; color: #9CA3AF; margin-bottom: 12px;">
-                            <i class="fas fa-info-circle"></i> Documents will be processed within 24 hours
-                        </p>
-                    </div>
+                <div style="text-align: center; margin-top: 24px; padding: 16px; background: #F9FAFB; border-radius: 8px;">
+                    <p style="font-size: 13px; color: #6B7280; margin: 0;">
+                        <i class="fas fa-shield-alt" style="color: #3B82F6;"></i> Your documents are securely encrypted and processed within 24 hours
+                    </p>
                 </div>
             `;
 
             $('#identityVerificationContent').html(html);
+        }
+
+        function uploadPOI() {
+            showToast('POI upload functionality will be integrated with your KYC provider', 'info');
+            // TODO: Integrate with Sumsub or other KYC provider
+        }
+
+        function uploadPOA() {
+            showToast('POA upload functionality will be integrated with your KYC provider', 'info');
+            // TODO: Integrate with Sumsub or other KYC provider
         }
 
         function goToVideoVerification() {
