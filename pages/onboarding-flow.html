@@ -1311,12 +1311,12 @@
                 </div>
 
                 <!-- Days to Complete -->
-                <div class="mb-4">
+                <div class="mb-4" id="questionnaire_days_section" style="display: none;">
                     <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">2. Days to Complete Questionnaire</h3>
 
                     <div class="mb-3">
                         <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">Number of Days</label>
-                        <input type="number" class="form-control" id="questionnaire_days" min="0" max="365" placeholder="Enter number of days (optional)" style="max-width: 200px; font-size: 13px;" disabled onchange="handleQuestionnaireDaysChange()">
+                        <input type="number" class="form-control" id="questionnaire_days" min="0" max="365" placeholder="Enter number of days (optional)" style="max-width: 200px; font-size: 13px;" onchange="handleQuestionnaireDaysChange()">
                     </div>
                 </div>
 
@@ -1401,7 +1401,7 @@
                 </div>
 
                 <!-- Question Configuration -->
-                <div class="mb-4">
+                <div class="mb-4" id="questionnaire_questions_section" style="display: none;">
                     <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">4. Question and Option Configuration</h3>
 
                     <!-- Questions List -->
@@ -4921,29 +4921,27 @@ function loadQuestionnaireConfig() {
 function handleQuestionnaireEnabledChange() {
     const isEnabled = $('#questionnaire_enabled').prop('checked');
 
-    // Enable/disable all related fields (No.2-4 only)
-    $('#questionnaire_days').prop('disabled', !isEnabled);
-    $('#add_question_btn').prop('disabled', !isEnabled);
-    $('#add_question_empty_btn').prop('disabled', !isEnabled);
-
-    // Show/hide questions section (No.2-4 only)
+    // Show/hide all Questionnaire sections (No.2-4)
     if (isEnabled) {
-        $('#questionnaire_questions_list, #questionnaire_questions_empty').show();
+        $('#questionnaire_days_section').show();
         $('#questionnaire_scoring_section').show();
+        $('#questionnaire_questions_section').show();
+        $('#questionnaire_questions_list, #questionnaire_questions_empty').show();
+        $('#add_question_btn').prop('disabled', false);
+        $('#add_question_empty_btn').prop('disabled', false);
         // Note: Source of Funds/Wealth (No.5) is NOT controlled by this toggle
         renderQuestionsList();
-    } else {
-        $('#questionnaire_questions_list, #questionnaire_questions_empty').hide();
-        $('#questionnaire_scoring_section').hide();
-        // Note: Source of Funds/Wealth (No.5) remains visible
-    }
-
-    // If disabled, hide mandatory reminder section
-    if (!isEnabled) {
-        $('#questionnaire_mandatory_reminder_section').hide();
-    } else {
         // Check if days has value to show/hide mandatory reminder section
         handleQuestionnaireDaysChange();
+    } else {
+        $('#questionnaire_days_section').hide();
+        $('#questionnaire_scoring_section').hide();
+        $('#questionnaire_questions_section').hide();
+        $('#questionnaire_questions_list, #questionnaire_questions_empty').hide();
+        $('#questionnaire_mandatory_reminder_section').hide();
+        $('#add_question_btn').prop('disabled', true);
+        $('#add_question_empty_btn').prop('disabled', true);
+        // Note: Source of Funds/Wealth (No.5) remains visible
     }
 }
 
