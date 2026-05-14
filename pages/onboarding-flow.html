@@ -492,15 +492,20 @@
             <h1 class="page-title" style="color: #010F2C;">Onboarding Flow Configuration</h1>
             <p class="page-description" style="color: rgba(0, 15, 44, 0.80);">Configure user onboarding steps and requirements for each Brand + License combination</p>
         </div>
-        <div class="page-header-right" id="currentConfigInfo" style="display: none; background: white;">
-            <div>
-                <div class="current-config-label" style="color: #718096 !important; font-size: 11px;">BRAND</div>
-                <div class="current-config-value" id="currentBrandDisplay" style="color: #2C3E50 !important; font-size: 15px; font-weight: 700;">-</div>
-            </div>
-            <div class="config-divider" style="background-color: #D5E0E2;"></div>
-            <div>
-                <div class="current-config-label" style="color: #718096 !important; font-size: 11px;">LICENSE</div>
-                <div class="current-config-value" id="currentLicenseDisplay" style="color: #2C3E50 !important; font-size: 15px; font-weight: 700;">-</div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-outline-primary" onclick="openOnboardingPreview()" style="white-space: nowrap;">
+                <i class="fas fa-play-circle"></i> Preview Onboarding
+            </button>
+            <div class="page-header-right" id="currentConfigInfo" style="display: none; background: white;">
+                <div>
+                    <div class="current-config-label" style="color: #718096 !important; font-size: 11px;">BRAND</div>
+                    <div class="current-config-value" id="currentBrandDisplay" style="color: #2C3E50 !important; font-size: 15px; font-weight: 700;">-</div>
+                </div>
+                <div class="config-divider" style="background-color: #D5E0E2;"></div>
+                <div>
+                    <div class="current-config-label" style="color: #718096 !important; font-size: 11px;">LICENSE</div>
+                    <div class="current-config-value" id="currentLicenseDisplay" style="color: #2C3E50 !important; font-size: 15px; font-weight: 700;">-</div>
+                </div>
             </div>
         </div>
     </div>
@@ -6144,6 +6149,21 @@ class SimpleTagInput {
         this.tags = [];
         this.renderTags();
     }
+}
+
+// ========== Preview Onboarding ==========
+function openOnboardingPreview() {
+    // Open onboarding.html in a new tab to simulate the user flow
+    const baseUrl = window.location.origin + window.location.pathname.replace(/pages\/onboarding-flow\.html$/, '');
+    const previewUrl = baseUrl + 'onboarding.html';
+
+    // Show toast notification
+    if (window.showToast) {
+        window.showToast('Opening Onboarding Preview in new tab...', 'info');
+    }
+
+    // Open in new tab
+    window.open(previewUrl, '_blank');
 }
 </script>
 
