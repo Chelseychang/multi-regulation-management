@@ -2009,6 +2009,8 @@
             const inputType = isSingleChoice ? 'radio' : 'checkbox';
             const inputName = `question_${qIndex}`;
 
+            console.log(`[renderQuestion] Question ${qIndex}:`, question);
+
             let html = `
                 <div class="onboarding-card" style="margin-bottom: 24px;">
                     <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">
@@ -2018,10 +2020,15 @@
 
             // Render options
             question.options.forEach((option, optIndex) => {
+                console.log(`[renderQuestion] Option ${optIndex}:`, option);
+
                 const optionKey = option.key || option.text || option;
                 const optionText = option.text || option;
                 const optionId = `${inputName}_${optIndex}`;
-                const hasPopup = option.hasPopup && option.popupConfig;
+                // Check for popup - the config uses popupTitle/popupContent fields
+                const hasPopup = option.hasPopup && (option.popupTitle || option.popupContent);
+
+                console.log(`[renderQuestion] Option ${optIndex} hasPopup:`, hasPopup, 'hasPopup flag:', option.hasPopup, 'title:', option.popupTitle);
 
                 html += `
                     <div class="form-check" style="margin-bottom: 12px;">
@@ -2032,7 +2039,7 @@
                                value="${optionKey}"
                                data-question-index="${qIndex}"
                                data-option-index="${optIndex}"
-                               ${hasPopup ? `data-has-popup="true" data-popup-title="${escapeHtml(option.popupConfig.title)}" data-popup-content="${escapeHtml(option.popupConfig.content)}"` : ''}
+                               ${hasPopup ? `data-has-popup="true"` : ''}
                                onchange="handleQuestionOptionChange(${qIndex}, ${optIndex})">
                         <label class="form-check-label" for="${optionId}" style="font-size: 14px; color: #2C3E50;">
                             ${optionText}
@@ -2202,13 +2209,15 @@
             }
 
             // Show popup if option has popup configured
-            if (isChecked && option.hasPopup && option.popupConfig) {
-                showQuestionnairePopup(option.popupConfig.title, option.popupConfig.content);
+            if (isChecked && option.hasPopup) {
+                console.log('[handleQuestionOptionChange] Showing popup for option:', option);
+                showQuestionnairePopup(option.popupTitle, option.popupContent);
             }
         }
 
         // Show questionnaire option popup
         function showQuestionnairePopup(title, content) {
+            console.log('[showQuestionnairePopup] Title:', title, 'Content:', content);
             $('#popupModalTitle').text(title || 'Important Notice');
             $('#popupModalContent').html(content || '');
 
