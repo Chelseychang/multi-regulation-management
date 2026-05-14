@@ -1442,10 +1442,10 @@
                 </div>
 
                 <!-- Source of Funds and Source of Wealth -->
-                <div class="mb-4" id="questionnaire_source_funds_section" style="display: none;">
+                <div class="mb-4">
                     <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">5. Source of Funds and Source of Wealth</h3>
                     <p style="margin: 0 0 16px 0; font-size: 13px; color: #718096;">
-                        Configure options for Source of Funds and Source of Wealth verification
+                        Configure options for Source of Funds and Source of Wealth verification (independent of Questionnaire)
                     </p>
 
                     <!-- Source of Funds -->
@@ -4921,21 +4921,21 @@ function loadQuestionnaireConfig() {
 function handleQuestionnaireEnabledChange() {
     const isEnabled = $('#questionnaire_enabled').prop('checked');
 
-    // Enable/disable all related fields
+    // Enable/disable all related fields (No.2-4 only)
     $('#questionnaire_days').prop('disabled', !isEnabled);
     $('#add_question_btn').prop('disabled', !isEnabled);
     $('#add_question_empty_btn').prop('disabled', !isEnabled);
 
-    // Show/hide questions section
+    // Show/hide questions section (No.2-4 only)
     if (isEnabled) {
         $('#questionnaire_questions_list, #questionnaire_questions_empty').show();
         $('#questionnaire_scoring_section').show();
-        $('#questionnaire_source_funds_section').show();
+        // Note: Source of Funds/Wealth (No.5) is NOT controlled by this toggle
         renderQuestionsList();
     } else {
         $('#questionnaire_questions_list, #questionnaire_questions_empty').hide();
         $('#questionnaire_scoring_section').hide();
-        $('#questionnaire_source_funds_section').hide();
+        // Note: Source of Funds/Wealth (No.5) remains visible
     }
 
     // If disabled, hide mandatory reminder section
