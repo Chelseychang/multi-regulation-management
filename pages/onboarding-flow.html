@@ -6154,8 +6154,12 @@ class SimpleTagInput {
 // ========== Preview Onboarding ==========
 function openOnboardingPreview() {
     // Open onboarding.html in a new tab to simulate the user flow
-    const baseUrl = window.location.origin + window.location.pathname.replace(/pages\/onboarding-flow\.html$/, '');
+    // Get the base directory (handle both direct access and hash router)
+    const currentPath = window.location.pathname;
+    const baseUrl = window.location.origin + currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
     const previewUrl = baseUrl + 'onboarding.html';
+
+    console.log('Opening preview:', previewUrl);
 
     // Show toast notification
     if (window.showToast) {
