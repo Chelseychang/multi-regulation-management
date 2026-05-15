@@ -767,17 +767,18 @@ function getDataService() {
         : new DataService();
 }
 
-// Tag Input Manager
-class TagInputManager {
-    constructor(inputId, tagContainerId, dropdownId, hiddenInputId, allCountries) {
-        this.input = $(`#${inputId}`);
-        this.tagContainer = $(`#${tagContainerId}`);
-        this.dropdown = $(`#${dropdownId}`);
-        this.hiddenInput = $(`#${hiddenInputId}`);
-        this.allCountries = allCountries;
-        this.selectedCountries = [];
-        this.init();
-    }
+// Tag Input Manager (only define if not already defined)
+if (typeof TagInputManager === 'undefined') {
+    window.TagInputManager = class TagInputManager {
+        constructor(inputId, tagContainerId, dropdownId, hiddenInputId, allCountries) {
+            this.input = $(`#${inputId}`);
+            this.tagContainer = $(`#${tagContainerId}`);
+            this.dropdown = $(`#${dropdownId}`);
+            this.hiddenInput = $(`#${hiddenInputId}`);
+            this.allCountries = allCountries;
+            this.selectedCountries = [];
+            this.init();
+        }
 
     init() {
         // Input event
@@ -938,6 +939,7 @@ class TagInputManager {
         this.renderTags();
         this.updateHiddenInput();
     }
+    };
 }
 
 let nationalityWhitelistManager = null;
@@ -1201,7 +1203,7 @@ function initDrawerForm() {
     console.log(`✅ Loaded ${countries.length} countries and ${nationalities.length} nationalities`);
 
     // Initialize Tag Input Managers for Nationality Whitelist/Blacklist
-    nationalityWhitelistManager = new TagInputManager(
+    nationalityWhitelistManager = new window.TagInputManager(
         'nationalityWhitelistInput',
         'nationalityWhitelistTagInput',
         'nationalityWhitelistDropdown',
@@ -1209,7 +1211,7 @@ function initDrawerForm() {
         nationalities
     );
 
-    nationalityBlacklistManager = new TagInputManager(
+    nationalityBlacklistManager = new window.TagInputManager(
         'nationalityBlacklistInput',
         'nationalityBlacklistTagInput',
         'nationalityBlacklistDropdown',
@@ -1218,7 +1220,7 @@ function initDrawerForm() {
     );
 
     // Initialize Tag Input Managers for Country Whitelist/Blacklist
-    countryWhitelistManager = new TagInputManager(
+    countryWhitelistManager = new window.TagInputManager(
         'countryWhitelistInput',
         'countryWhitelistTagInput',
         'countryWhitelistDropdown',
@@ -1226,7 +1228,7 @@ function initDrawerForm() {
         countries
     );
 
-    countryBlacklistManager = new TagInputManager(
+    countryBlacklistManager = new window.TagInputManager(
         'countryBlacklistInput',
         'countryBlacklistTagInput',
         'countryBlacklistDropdown',
@@ -1428,7 +1430,7 @@ function openEditDrawer(id) {
     const nationalities = dataService.getNationalities();
     const countries = dataService.getCountries();
 
-    nationalityWhitelistManager = new TagInputManager(
+    nationalityWhitelistManager = new window.TagInputManager(
         'nationalityWhitelistInput',
         'nationalityWhitelistTagInput',
         'nationalityWhitelistDropdown',
@@ -1436,7 +1438,7 @@ function openEditDrawer(id) {
         nationalities
     );
 
-    nationalityBlacklistManager = new TagInputManager(
+    nationalityBlacklistManager = new window.TagInputManager(
         'nationalityBlacklistInput',
         'nationalityBlacklistTagInput',
         'nationalityBlacklistDropdown',
@@ -1444,7 +1446,7 @@ function openEditDrawer(id) {
         nationalities
     );
 
-    countryWhitelistManager = new TagInputManager(
+    countryWhitelistManager = new window.TagInputManager(
         'countryWhitelistInput',
         'countryWhitelistTagInput',
         'countryWhitelistDropdown',
@@ -1452,7 +1454,7 @@ function openEditDrawer(id) {
         countries
     );
 
-    countryBlacklistManager = new TagInputManager(
+    countryBlacklistManager = new window.TagInputManager(
         'countryBlacklistInput',
         'countryBlacklistTagInput',
         'countryBlacklistDropdown',
@@ -1552,7 +1554,7 @@ function openViewDrawer(id) {
     const nationalities = dataService.getNationalities();
     const countries = dataService.getCountries();
 
-    nationalityWhitelistManager = new TagInputManager(
+    nationalityWhitelistManager = new window.TagInputManager(
         'nationalityWhitelistInput',
         'nationalityWhitelistTagInput',
         'nationalityWhitelistDropdown',
@@ -1560,7 +1562,7 @@ function openViewDrawer(id) {
         nationalities
     );
 
-    nationalityBlacklistManager = new TagInputManager(
+    nationalityBlacklistManager = new window.TagInputManager(
         'nationalityBlacklistInput',
         'nationalityBlacklistTagInput',
         'nationalityBlacklistDropdown',
@@ -1568,7 +1570,7 @@ function openViewDrawer(id) {
         nationalities
     );
 
-    countryWhitelistManager = new TagInputManager(
+    countryWhitelistManager = new window.TagInputManager(
         'countryWhitelistInput',
         'countryWhitelistTagInput',
         'countryWhitelistDropdown',
@@ -1576,7 +1578,7 @@ function openViewDrawer(id) {
         countries
     );
 
-    countryBlacklistManager = new TagInputManager(
+    countryBlacklistManager = new window.TagInputManager(
         'countryBlacklistInput',
         'countryBlacklistTagInput',
         'countryBlacklistDropdown',
