@@ -947,15 +947,29 @@ let countryBlacklistManager = null;
 
 // Initialize when page loads
 $(document).on('pageLoaded', function(event, data) {
-    if (data.route === '#/regulation/list') {
-        console.log('🔄 Initializing Regulation List page');
+    // Match regulation list routes (but not onboarding)
+    const isRegulationList = data.route && (
+        data.route === '#/regulation/list' ||
+        data.route.startsWith('#/regulation/create') ||
+        data.route.startsWith('#/regulation/edit')
+    );
+
+    if (isRegulationList) {
+        console.log('🔄 Initializing Regulation List page for route:', data.route);
         initRegulationListPage();
     }
 });
 
 // Cleanup when page unloads
 $(document).on('pageUnload', function(event, data) {
-    if (data.route === '#/regulation/list') {
+    // Match regulation list routes (but not onboarding)
+    const isRegulationList = data.route && (
+        data.route === '#/regulation/list' ||
+        data.route.startsWith('#/regulation/create') ||
+        data.route.startsWith('#/regulation/edit')
+    );
+
+    if (isRegulationList) {
         console.log('🧹 Cleaning up Regulation List page');
         // Destroy DataTable if it exists
         if (regulationTable && $.fn.DataTable.isDataTable('#regulationTable')) {
