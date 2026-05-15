@@ -1005,19 +1005,26 @@ function migrateRegulations() {
 }
 
 function initRegulationListPage() {
+    console.log('📋 initRegulationListPage called');
+
     const dataService = getDataService();
+    console.log('📊 DataService instance:', dataService);
+
     // Migrate existing regulations to add enabled field
     migrateRegulations();
 
     const regulations = dataService.getAllRegulations();
+    console.log(`📦 Loaded ${regulations.length} regulations`);
 
     // Check if DataTable is already initialized
     if (regulationTable && $.fn.DataTable.isDataTable('#regulationTable')) {
         // If already initialized, just reload the data
+        console.log('♻️ DataTable already exists, reloading data');
         regulationTable.clear().rows.add(regulations).draw();
         return;
     }
 
+    console.log('🆕 Initializing new DataTable');
     // Initialize DataTable
     regulationTable = $('#regulationTable').DataTable({
         data: regulations,
