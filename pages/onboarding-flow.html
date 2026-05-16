@@ -1032,36 +1032,7 @@
                             <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
                                 Accepted Documents <span style="color: #F6465D;">*</span>
                             </label>
-                            <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poi_passport" checked>
-                                    <label class="form-check-label" for="poi_passport" style="font-size: 14px;">
-                                        <i class="fas fa-passport" style="color: #3B82F6; margin-right: 6px;"></i>
-                                        Passport
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poi_national_id" checked>
-                                    <label class="form-check-label" for="poi_national_id" style="font-size: 14px;">
-                                        <i class="fas fa-id-card" style="color: #3B82F6; margin-right: 6px;"></i>
-                                        National ID Card
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poi_driver_license" checked>
-                                    <label class="form-check-label" for="poi_driver_license" style="font-size: 14px;">
-                                        <i class="fas fa-id-card-alt" style="color: #3B82F6; margin-right: 6px;"></i>
-                                        Driver's License / Driving License
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poi_government_id">
-                                    <label class="form-check-label" for="poi_government_id" style="font-size: 14px;">
-                                        <i class="fas fa-landmark" style="color: #3B82F6; margin-right: 6px;"></i>
-                                        Government-issued ID (e.g., Resident Permit-BRP)
-                                    </label>
-                                </div>
-                            </div>
+                            <div id="poi_documents_selector"></div>
                         </div>
                     </div>
 
@@ -1081,43 +1052,7 @@
                             <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
                                 Accepted Documents <span style="color: #F6465D;">*</span>
                             </label>
-                            <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_bank_statement" checked>
-                                    <label class="form-check-label" for="poa_bank_statement" style="font-size: 14px;">
-                                        <i class="fas fa-university" style="color: #10B981; margin-right: 6px;"></i>
-                                        Bank Statement
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_utility_bill" checked>
-                                    <label class="form-check-label" for="poa_utility_bill" style="font-size: 14px;">
-                                        <i class="fas fa-file-invoice" style="color: #10B981; margin-right: 6px;"></i>
-                                        Utility Bill (electricity, water, gas)
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_voting_slip">
-                                    <label class="form-check-label" for="poa_voting_slip" style="font-size: 14px;">
-                                        <i class="fas fa-vote-yea" style="color: #10B981; margin-right: 6px;"></i>
-                                        Voting Slips (must contain full name and address)
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_tax_bill">
-                                    <label class="form-check-label" for="poa_tax_bill" style="font-size: 14px;">
-                                        <i class="fas fa-file-invoice-dollar" style="color: #10B981; margin-right: 6px;"></i>
-                                        UK Council Tax Bills/Statements
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_government_letter" checked>
-                                    <label class="form-check-label" for="poa_government_letter" style="font-size: 14px;">
-                                        <i class="fas fa-landmark" style="color: #10B981; margin-right: 6px;"></i>
-                                        Other Official Government-Issued Letters
-                                    </label>
-                                </div>
-                            </div>
+                            <div id="poa_documents_selector"></div>
 
                             <div style="margin-top: 12px; padding: 12px; background: #FEF3C7; border-radius: 6px; border: 1px solid #FCD34D;">
                                 <p style="margin: 0; font-size: 12px; color: #92400E;">
@@ -1128,16 +1063,57 @@
                         </div>
                     </div>
 
-                    <!-- KYC Provider (Coming Soon) -->
-                    <div style="background: #F9FAFB; padding: 16px; border-radius: 8px; border: 1px dashed #D1D5DB;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-user-shield" style="color: #9CA3AF; font-size: 16px;"></i>
-                            <span style="font-size: 13px; color: #6B7280; font-weight: 500;">KYC Provider Integration</span>
-                            <span style="background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Coming Soon</span>
+                    <!-- Section 2: POA Address Validation Configuration -->
+                    <div style="background: #FFFFFF; padding: 24px; border-radius: 8px; border: 1px solid #E1EDF2; border-left: 4px solid #F59E0B; margin-bottom: 20px;">
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #2C3E50;">
+                                <i class="fas fa-map-marker-alt" style="color: #F59E0B; margin-right: 8px;"></i>
+                                2. POA Address Validation
+                            </h3>
+                            <p style="margin: 0; font-size: 13px; color: #718096; padding-left: 28px;">
+                                Configure which address fields to validate for Proof of Address documents
+                            </p>
                         </div>
-                        <p style="margin: 8px 0 0 24px; font-size: 12px; color: #9CA3AF;">
-                            Direct integration with Sumsub, Onfido, and other KYC providers will be available in a future release
-                        </p>
+
+                        <div>
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 12px;">
+                                Address Fields to Validate
+                            </label>
+                            <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="poa_address_city">
+                                    <label class="form-check-label" for="poa_address_city" style="font-size: 14px;">
+                                        <i class="fas fa-building" style="color: #6B7280; margin-right: 6px;"></i>
+                                        City
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="poa_address_state">
+                                    <label class="form-check-label" for="poa_address_state" style="font-size: 14px;">
+                                        <i class="fas fa-map" style="color: #6B7280; margin-right: 6px;"></i>
+                                        State
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="poa_address_street">
+                                    <label class="form-check-label" for="poa_address_street" style="font-size: 14px;">
+                                        <i class="fas fa-road" style="color: #6B7280; margin-right: 6px;"></i>
+                                        Street
+                                    </label>
+                                </div>
+                            </div>
+                            <small class="text-muted" style="font-size: 11px; display: block; margin-top: 8px;">
+                                Select which address components must match for POA document validation (1/2/3 pass criteria)
+                            </small>
+                        </div>
+
+                        <!-- Info Banner -->
+                        <div style="background: #EFF6FF; border-left: 4px solid #3B82F6; padding: 12px 16px; border-radius: 6px; margin-top: 16px;">
+                            <p style="margin: 0; font-size: 12px; color: #1E3A8A;">
+                                <i class="fas fa-info-circle" style="color: #3B82F6; margin-right: 8px;"></i>
+                                <strong>Note:</strong> The document types selected in "Document Type Configuration" above will be sent as acceptedDocTypes to KYC provider APIs (Sumsub, Onfido, etc.).
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -3404,11 +3380,91 @@ const defaultKycConfig = {
     h5Verification: {
         enabled: false,
         route: ''
+    },
+    // POA Address Validation (City, State, Street)
+    poaAddressValidation: {
+        city: false,
+        state: false,
+        street: false
     }
 };
 
-let kycPoiTagManager = null;
-let kycPoaTagManager = null;
+// TagInputManager for POI and POA documents
+let poiDocumentsManager = null;
+let poaDocumentsManager = null;
+
+// POI document options
+const poiDocumentOptions = [
+    'Passport',
+    'National ID Card',
+    'Driving License',
+    'Government-issued ID',
+    'Residence Permit',
+    'Birth Certificate'
+];
+
+// POA document options
+const poaDocumentOptions = [
+    'Bank Statement',
+    'Utility Bill',
+    'Voting Slips',
+    'UK Council Tax Bills/Statements',
+    'Other Official Government-Issued Letters',
+    'Lease Agreement',
+    'Property Deed',
+    'Insurance Statement',
+    'Payslip'
+];
+
+// Initialize POI documents TagInputManager
+function initializePoiDocumentsManager() {
+    console.log('🔍 Initializing POI documents manager...');
+    console.log('POI container exists:', $('#poi_documents_selector').length > 0);
+    console.log('POI options:', poiDocumentOptions);
+
+    if (!poiDocumentsManager) {
+        poiDocumentsManager = new window.TagInputManager(
+            'poi_documents_selector',
+            poiDocumentOptions
+        );
+        console.log('✅ POI manager created:', poiDocumentsManager);
+
+        // Update placeholder text
+        if (poiDocumentsManager.input) {
+            poiDocumentsManager.input.attr('placeholder', 'Type to search POI documents...');
+            console.log('✅ POI placeholder updated');
+        } else {
+            console.error('❌ POI manager input not found');
+        }
+    } else {
+        console.log('⏭️ POI manager already exists');
+    }
+}
+
+// Initialize POA documents TagInputManager
+function initializePoaDocumentsManager() {
+    console.log('🔍 Initializing POA documents manager...');
+    console.log('POA container exists:', $('#poa_documents_selector').length > 0);
+    console.log('POA options:', poaDocumentOptions);
+
+    if (!poaDocumentsManager) {
+        poaDocumentsManager = new window.TagInputManager(
+            'poa_documents_selector',
+            poaDocumentOptions
+        );
+        console.log('✅ POA manager created:', poaDocumentsManager);
+
+        // Update placeholder text
+        if (poaDocumentsManager.input) {
+            poaDocumentsManager.input.attr('placeholder', 'Type to search POA documents...');
+            console.log('✅ POA placeholder updated');
+        } else {
+            console.error('❌ POA manager input not found');
+        }
+    } else {
+        console.log('⏭️ POA manager already exists');
+    }
+}
 
 function loadKycConfig() {
     // Load from localStorage if exists, otherwise use defaults
@@ -3417,20 +3473,19 @@ function loadKycConfig() {
 
     console.log('📥 Loading KYC config:', config);
 
-    // Load POI document types
+    // Initialize and load POI documents
+    initializePoiDocumentsManager();
     const poiDocuments = config.poiDocuments || ['Passport', 'National ID Card', 'Driving License'];
-    $('#poi_passport').prop('checked', poiDocuments.includes('Passport'));
-    $('#poi_national_id').prop('checked', poiDocuments.includes('National ID Card'));
-    $('#poi_driver_license').prop('checked', poiDocuments.includes('Driving License'));
-    $('#poi_government_id').prop('checked', poiDocuments.includes('Government-issued ID (e.g., Resident Permit-BRP)'));
+    if (poiDocumentsManager) {
+        poiDocumentsManager.setCountries(poiDocuments);
+    }
 
-    // Load POA document types
+    // Initialize and load POA documents
+    initializePoaDocumentsManager();
     const poaDocuments = config.poaDocuments || ['Bank Statement', 'Utility Bill', 'Other Official Government-Issued Letters'];
-    $('#poa_bank_statement').prop('checked', poaDocuments.includes('Bank Statement'));
-    $('#poa_utility_bill').prop('checked', poaDocuments.includes('Utility Bill'));
-    $('#poa_voting_slip').prop('checked', poaDocuments.includes('Voting Slips (must contain full name and address)'));
-    $('#poa_tax_bill').prop('checked', poaDocuments.includes('UK Council Tax Bills/Statements'));
-    $('#poa_government_letter').prop('checked', poaDocuments.includes('Other Official Government-Issued Letters'));
+    if (poaDocumentsManager) {
+        poaDocumentsManager.setCountries(poaDocuments);
+    }
 
     // Load H5 Verification settings
     if (config.h5Verification) {
@@ -3440,6 +3495,12 @@ function loadKycConfig() {
             $('#h5_verification_input_container').show();
         }
     }
+
+    // Load POA Address Validation settings (backward compatibility)
+    const poaAddressValidation = config.poaAddressValidation || defaultKycConfig.poaAddressValidation;
+    $('#poa_address_city').prop('checked', poaAddressValidation.city || false);
+    $('#poa_address_state').prop('checked', poaAddressValidation.state || false);
+    $('#poa_address_street').prop('checked', poaAddressValidation.street || false);
 
     // Update state
     kycConfigState = JSON.parse(JSON.stringify(config));
@@ -3465,20 +3526,11 @@ function updateKycProvider(provider) {
 }
 
 function saveKycConfig() {
-    // Collect POI document types
-    const poiDocuments = [];
-    if ($('#poi_passport').is(':checked')) poiDocuments.push('Passport');
-    if ($('#poi_national_id').is(':checked')) poiDocuments.push('National ID Card');
-    if ($('#poi_driver_license').is(':checked')) poiDocuments.push('Driving License');
-    if ($('#poi_government_id').is(':checked')) poiDocuments.push('Government-issued ID (e.g., Resident Permit-BRP)');
+    // Collect POI document types from TagInputManager
+    const poiDocuments = poiDocumentsManager ? poiDocumentsManager.getSelectedItems() : [];
 
-    // Collect POA document types
-    const poaDocuments = [];
-    if ($('#poa_bank_statement').is(':checked')) poaDocuments.push('Bank Statement');
-    if ($('#poa_utility_bill').is(':checked')) poaDocuments.push('Utility Bill');
-    if ($('#poa_voting_slip').is(':checked')) poaDocuments.push('Voting Slips (must contain full name and address)');
-    if ($('#poa_tax_bill').is(':checked')) poaDocuments.push('UK Council Tax Bills/Statements');
-    if ($('#poa_government_letter').is(':checked')) poaDocuments.push('Other Official Government-Issued Letters');
+    // Collect POA document types from TagInputManager
+    const poaDocuments = poaDocumentsManager ? poaDocumentsManager.getSelectedItems() : [];
 
     // Validate at least one POI document is selected
     if (poiDocuments.length === 0) {
@@ -3503,19 +3555,27 @@ function saveKycConfig() {
         return;
     }
 
-    // Build KYC config
+    // Collect POA Address Validation settings
+    const poaAddressValidation = {
+        city: $('#poa_address_city').is(':checked'),
+        state: $('#poa_address_state').is(':checked'),
+        street: $('#poa_address_street').is(':checked')
+    };
+
+    // Build KYC config (acceptedDocTypes = poiDocuments + poaDocuments)
     kycConfigState.poiDocuments = poiDocuments;
     kycConfigState.poaDocuments = poaDocuments;
     kycConfigState.h5Verification = {
         enabled: h5Enabled,
         route: h5Route
     };
+    kycConfigState.poaAddressValidation = poaAddressValidation;
 
     console.log('💾 Saving KYC configuration:', kycConfigState);
 
     // Save to localStorage via OnboardingService
     onboardingService.saveSection(currentBrand, currentLicense, 'kycConfig', kycConfigState);
-    showToast('KYC document configuration saved successfully!', 'success');
+    showToast('KYC configuration saved successfully!', 'success');
 }
 
 // ========== Section 2: Golden Flow Configuration ==========
@@ -6012,7 +6072,7 @@ class TagInputManager {
 
             // Create the tag input HTML structure
             const $container = $(`#${containerId}`);
-            const uniqueId = 'tag_' + Date.now();
+            const uniqueId = 'tag_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
             $container.html(`
                 <div class="tag-input-container" id="${uniqueId}_container" style="min-height: 45px; padding: 6px 10px; border: 1px solid #D5E0E2; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; background: white;">
@@ -6239,6 +6299,11 @@ class TagInputManager {
         this.dropdown.off();
         this.dropdown.remove();
     }
+}
+
+// Attach TagInputManager to window for global access
+if (typeof window.TagInputManager === 'undefined') {
+    window.TagInputManager = TagInputManager;
 }
 
 // ========== Simple Tag Input (for free-text tags like Agreement Keys) ==========
