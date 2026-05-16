@@ -6375,6 +6375,11 @@ class TagInputManager {
         return this.selectedCountries.map(c => c.code);
     }
 
+    getSelectedItems() {
+        // Return array of selected country codes/names
+        return this.selectedCountries.map(c => c.code);
+    }
+
     clear() {
         this.selectedCountries = [];
         this.renderTags();
