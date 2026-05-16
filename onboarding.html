@@ -1800,10 +1800,18 @@
 
             // Check for H5 Verification (Individual Web Setting)
             const h5Verification = questionnaireConfig.h5Verification;
+            console.log('🔍 Checking H5 Verification:', {
+                h5Verification: h5Verification,
+                enabled: h5Verification?.enabled,
+                route: h5Verification?.route
+            });
+
             if (h5Verification && h5Verification.enabled && h5Verification.route) {
                 console.log('🌐 Redirecting to external questionnaire page:', h5Verification.route);
                 loadExternalQuestionnairePage(h5Verification);
                 return;
+            } else {
+                console.log('ℹ️ H5 Verification not configured or disabled, using default questionnaire form');
             }
 
             // Render questionnaire form
@@ -2477,7 +2485,13 @@
 
         // Load External Questionnaire Page (H5 Verification)
         function loadExternalQuestionnairePage(h5Config) {
-            const route = h5Config.route || '/kyc-bank-verification.html';
+            let route = h5Config.route || 'kyc-bank-verification.html';
+
+            // Ensure route starts with / for relative path
+            if (!route.startsWith('/') && !route.startsWith('http')) {
+                route = '/' + route;
+            }
+
             const sessionToken = Date.now();
 
             // Save current session before loading iframe
@@ -2487,6 +2501,8 @@
             const iframeUrl = `${route}?session=${sessionToken}&embedded=true`;
 
             console.log('🔗 Loading external questionnaire page in iframe:', iframeUrl);
+            console.log('📍 Original route:', h5Config.route);
+            console.log('📍 Processed route:', route);
 
             // Embed the external page in an iframe
             $('#stageContainer').html(`
