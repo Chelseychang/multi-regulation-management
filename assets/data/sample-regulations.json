@@ -4,8 +4,8 @@
     "brand": "VAU",
     "regulation": "V1",
     "description": "印尼强监管",
-    "license": "VIG",
-    "code": "VIG",
+    "license": "VMF",
+    "code": "VMF",
     "registrationTypes": [
       "域名",
       "国籍",
@@ -54,7 +54,7 @@
     },
     "createdAt": "2026-05-04T13:57:35.305Z",
     "createdBy": "Admin",
-    "updatedAt": "2026-05-11T06:44:13.568Z",
+    "updatedAt": "2026-05-16T08:30:00.000Z",
     "updatedBy": "Admin"
   },
   {
