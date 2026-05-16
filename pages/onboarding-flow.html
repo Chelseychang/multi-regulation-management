@@ -1504,9 +1504,79 @@
                     </div>
                 </div>
 
+                <!-- Pass/Failed Popup Messages -->
+                <div class="mb-4" id="questionnaire_popup_messages_section" style="display: none;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">4. Pass/Failed Popup Messages</h3>
+                    <p style="margin: 0 0 16px 0; font-size: 13px; color: #718096;">
+                        Configure popup messages displayed when user passes or fails the questionnaire
+                    </p>
+
+                    <!-- Pass Message Configuration -->
+                    <div class="mb-4" style="border: 1px solid #10B981; border-radius: 8px; padding: 20px; background: #F0FDF4;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                            <i class="fas fa-check-circle" style="color: #10B981; font-size: 18px;"></i>
+                            <label class="form-label" style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 0;">
+                                Pass Message
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                Popup Title
+                            </label>
+                            <input type="text" class="form-control" id="questionnaire_pass_title"
+                                   placeholder="e.g., Congratulations!"
+                                   style="font-size: 13px;">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                Popup Message
+                            </label>
+                            <textarea class="form-control" id="questionnaire_pass_message" rows="3"
+                                      placeholder="e.g., You have successfully passed the questionnaire. You may now proceed to the next step."
+                                      style="font-size: 13px;"></textarea>
+                            <div style="font-size: 12px; color: #718096; margin-top: 4px;">
+                                <i class="fas fa-info-circle"></i> This message will be displayed when user passes the scoring criteria
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Failed Message Configuration -->
+                    <div class="mb-4" style="border: 1px solid #EF4444; border-radius: 8px; padding: 20px; background: #FEF2F2;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                            <i class="fas fa-times-circle" style="color: #EF4444; font-size: 18px;"></i>
+                            <label class="form-label" style="font-size: 14px; font-weight: 600; color: #2C3E50; margin-bottom: 0;">
+                                Failed Message
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                Popup Title
+                            </label>
+                            <input type="text" class="form-control" id="questionnaire_failed_title"
+                                   placeholder="e.g., Sorry, You Did Not Pass"
+                                   style="font-size: 13px;">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50;">
+                                Popup Message
+                            </label>
+                            <textarea class="form-control" id="questionnaire_failed_message" rows="3"
+                                      placeholder="e.g., Unfortunately, you did not meet the minimum score requirement. Please review the questions and try again."
+                                      style="font-size: 13px;"></textarea>
+                            <div style="font-size: 12px; color: #718096; margin-top: 4px;">
+                                <i class="fas fa-info-circle"></i> This message will be displayed when user fails the scoring criteria
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Question Configuration -->
                 <div class="mb-4" id="questionnaire_questions_section" style="display: none;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">4. Question and Option Configuration</h3>
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">5. Question and Option Configuration</h3>
 
                     <!-- Questions List -->
                     <div id="questionnaire_questions_list" style="display: none; margin-top: 16px;">
@@ -1547,7 +1617,7 @@
 
                 <!-- Source of Funds and Source of Wealth -->
                 <div class="mb-4">
-                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">5. Source of Funds and Source of Wealth</h3>
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">6. Source of Funds and Source of Wealth</h3>
                     <p style="margin: 0 0 16px 0; font-size: 13px; color: #718096;">
                         Configure options for Source of Funds and Source of Wealth verification (independent of Questionnaire)
                     </p>
@@ -1695,7 +1765,7 @@ Maximum upload file size: 15MB</textarea>
 
                 <!-- Individual Web Setting -->
                 <div class="mb-4">
-                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">6. Individual Web Setting</h3>
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">7. Individual Web Setting</h3>
                     <p style="margin: 0 0 16px 0; font-size: 13px; color: #718096;">
                         Configure additional H5/Web page for custom flows
                     </p>
@@ -5073,6 +5143,12 @@ function loadQuestionnaireConfig() {
     $('#pass_criteria_type').val(config.passCriteria?.type || 'percentage');
     $('#pass_threshold').val(config.passCriteria?.value || 80);
 
+    // Load popup messages
+    $('#questionnaire_pass_title').val(config.popupMessages?.pass?.title || '');
+    $('#questionnaire_pass_message').val(config.popupMessages?.pass?.message || '');
+    $('#questionnaire_failed_title').val(config.popupMessages?.failed?.title || '');
+    $('#questionnaire_failed_message').val(config.popupMessages?.failed?.message || '');
+
     // Load H5 Verification settings
     $('#h5_verification_enabled_questionnaire').prop('checked', config.h5Verification?.enabled || false);
     $('#h5_verification_route_questionnaire').val(config.h5Verification?.route || '');
@@ -5239,6 +5315,12 @@ function saveQuestionnaireConfig() {
         const passCriteriaType = $('#pass_criteria_type').val();
         const passThreshold = parseFloat($('#pass_threshold').val());
 
+        // Get popup messages
+        const passTitle = $('#questionnaire_pass_title').val().trim();
+        const passMessage = $('#questionnaire_pass_message').val().trim();
+        const failedTitle = $('#questionnaire_failed_title').val().trim();
+        const failedMessage = $('#questionnaire_failed_message').val().trim();
+
         // Validate scoring settings
         if (scoringEnabled) {
             if (!passThreshold || passThreshold <= 0) {
@@ -5299,6 +5381,16 @@ function saveQuestionnaireConfig() {
         questionnaireConfigState.passCriteria = {
             type: passCriteriaType,
             value: passThreshold
+        };
+        questionnaireConfigState.popupMessages = {
+            pass: {
+                title: passTitle,
+                message: passMessage
+            },
+            failed: {
+                title: failedTitle,
+                message: failedMessage
+            }
         };
         questionnaireConfigState.sourceFunds = JSON.parse(JSON.stringify(sourceFundsState));
         questionnaireConfigState.sourceWealth = JSON.parse(JSON.stringify(sourceWealthState));
@@ -5941,9 +6033,11 @@ function handleScoringEnabledChange() {
 
     if (isEnabled && isQuestionnaireEnabled) {
         $('#scoring_config_section').slideDown(300);
+        $('#questionnaire_popup_messages_section').slideDown(300);
         calculateAndDisplayTotalPoints();
     } else {
         $('#scoring_config_section').slideUp(300);
+        $('#questionnaire_popup_messages_section').slideUp(300);
     }
 
     // Update question list to show/hide scoring column
