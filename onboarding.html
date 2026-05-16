@@ -1755,10 +1755,15 @@
             console.log('📝 Loading Questionnaire configuration...');
 
             const client = window.onboardingFlowClient;
+            console.log('🔍 Client brand/license:', client.brand, client.license);
+            console.log('🔍 Full client config:', client.config);
+
             const config = client.config;
             const questionnaireConfig = config?.questionnaireConfig || { enabled: false };
 
-            console.log('Questionnaire Config:', questionnaireConfig);
+            console.log('📋 Questionnaire Config:', questionnaireConfig);
+            console.log('📋 Questionnaire enabled?', questionnaireConfig.enabled);
+            console.log('📋 Questions count:', questionnaireConfig.questions?.length || 0);
 
             // If questionnaire is not enabled, show message and mark as complete
             if (!questionnaireConfig.enabled) {
