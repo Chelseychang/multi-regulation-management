@@ -1049,12 +1049,20 @@
         $('#kycSystemName').val('');
 
         try {
+            const countriesData = window.dataService.getCountries();
+
+            // Check if countries are loaded
+            if (!countriesData || countriesData.length === 0) {
+                console.error('[ERROR] Countries data not loaded yet');
+                alert('Countries data is still loading. Please wait a moment and try again.');
+                return;
+            }
+
             if (countriesTagInputManager) {
                 console.log('[DEBUG] Clearing existing tag manager');
                 countriesTagInputManager.clearTags();
             } else {
                 console.log('[DEBUG] Creating new tag manager');
-                const countriesData = window.dataService.getCountries();
                 console.log('[DEBUG] Loaded countries data:', countriesData.length);
 
                 // Convert country objects to name strings
@@ -1085,23 +1093,43 @@
         const system = window.kycSystemService.getById(id);
         if (!system) return;
 
+        if (!window.dataService) {
+            console.error('[ERROR] DataService not loaded');
+            alert('Error: Data service not available. Please refresh the page.');
+            return;
+        }
+
         $('#kycSystemModalTitle').text('Edit KYC System');
         $('#kycSystemId').val(system.id);
         $('#kycSystemName').val(system.name);
 
-        if (!countriesTagInputManager) {
+        try {
             const countriesData = window.dataService.getCountries();
-            const countryNames = countriesData.map(c => c.name);
-            countriesTagInputManager = new TagInputManager(
-                'kycCountriesTagContainer',
-                'kycCountriesSearch',
-                'kycCountriesHidden',
-                'kycCountriesDropdown',
-                countryNames
-            );
-        }
 
-        countriesTagInputManager.setTags(system.countries || []);
+            // Check if countries are loaded
+            if (!countriesData || countriesData.length === 0) {
+                console.error('[ERROR] Countries data not loaded yet');
+                alert('Countries data is still loading. Please wait a moment and try again.');
+                return;
+            }
+
+            if (!countriesTagInputManager) {
+                const countryNames = countriesData.map(c => c.name);
+                countriesTagInputManager = new TagInputManager(
+                    'kycCountriesTagContainer',
+                    'kycCountriesSearch',
+                    'kycCountriesHidden',
+                    'kycCountriesDropdown',
+                    countryNames
+                );
+            }
+
+            countriesTagInputManager.setTags(system.countries || []);
+        } catch (error) {
+            console.error('[ERROR] Failed to initialize tag manager:', error);
+            alert('Error initializing country selector: ' + error.message);
+            return;
+        }
 
         const modal = new bootstrap.Modal(document.getElementById('kycSystemModal'));
         modal.show();
