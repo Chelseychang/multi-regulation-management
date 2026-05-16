@@ -447,6 +447,52 @@
         .vmf-agreement-content u {
             text-decoration: underline;
         }
+
+        /* Numbered items - display on separate lines */
+        .vmf-agreement-content .numbered-item {
+            margin: 12px 0;
+            line-height: 1.8;
+            padding-left: 0;
+        }
+
+        /* Radio button group for Ya/Tidak */
+        .vmf-agreement-content .radio-group {
+            margin: 16px 0;
+            padding: 12px;
+            background: #F9FAFB;
+            border-radius: 6px;
+            border-left: 3px solid #10B981;
+        }
+
+        .vmf-agreement-content .radio-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .vmf-agreement-content .radio-label input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Disabled submit button */
+        .btn-submit-single.disabled,
+        .btn-submit-single:disabled {
+            background: #9CA3AF;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-submit-single.disabled:hover,
+        .btn-submit-single:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -898,11 +944,42 @@
 
                 $container.append($item);
             });
+
+            // Initialize submit buttons as disabled for agreements with checkboxes
+            $('.agreement-item').each(function() {
+                const $item = $(this);
+                const hasCheckboxes = $item.find('.individual-check, .master-check').length > 0;
+                const hasRadio = $item.find('.acceptance-radio').length > 0;
+
+                if (hasCheckboxes || hasRadio) {
+                    const submitBtn = $item.find('.btn-submit-single')[0];
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('disabled');
+                    }
+                }
+
+                // Add event listeners to radio buttons
+                $item.find('.acceptance-radio').on('change', function() {
+                    if (typeof checkAllCheckboxes === 'function') {
+                        checkAllCheckboxes();
+                    }
+                });
+            });
         }
 
         function toggleAgreement(agreementId) {
             const $item = $(`.agreement-item[data-agreement-id="${agreementId}"]`);
             $item.toggleClass('expanded');
+
+            // After expanding, check checkbox state
+            if ($item.hasClass('expanded')) {
+                setTimeout(() => {
+                    if (typeof checkAllCheckboxes === 'function') {
+                        checkAllCheckboxes();
+                    }
+                }, 100);
+            }
         }
 
         function submitSingleAgreement(agreementId) {
