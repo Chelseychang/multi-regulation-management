@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Account Verification - Questionnaire</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #08B2A4;
+            --primary-hover: #06998C;
+            --text-primary: #2C3E50;
+            --text-secondary: #718096;
+            --border-color: #E8EAED;
+            --bg-light: #F5F7FA;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #F9FAFB;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #08B2A4 0%, #06998C 100%);
+            color: white;
+            padding: 24px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .page-header .container {
+            max-width: 800px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 800px;
+            margin: 32px auto;
+            padding: 0 16px;
+        }
+
+        .verification-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        /* Form Fields */
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-label .required {
+            color: var(--error-color);
+            margin-left: 2px;
+        }
+
+        .form-control, .form-select {
+            font-size: 14px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(8, 178, 164, 0.1);
+            outline: none;
+        }
+
+        .form-control:disabled {
+            background-color: #F5F7FA;
+            cursor: not-allowed;
+        }
+
+        /* File Upload */
+        .upload-container {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            background: #FAFBFC;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-container:hover {
+            border-color: var(--primary-color);
+            background: #F0FDF4;
+        }
+
+        .upload-container.dragover {
+            border-color: var(--primary-color);
+            background: #E6F7F7;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .upload-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .btn-upload {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-upload:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(8, 178, 164, 0.3);
+        }
+
+        /* File Preview */
+        .file-preview {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .file-preview.show {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .btn-remove {
+            background: var(--error-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-remove:hover {
+            background: #DC2626;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #EFF6FF;
+            border-left: 4px solid #3B82F6;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .info-box i {
+            color: #3B82F6;
+            margin-right: 8px;
+        }
+
+        .info-box p {
+            font-size: 13px;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-primary-custom {
+            flex: 1;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-custom:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 178, 164, 0.3);
+        }
+
+        .btn-secondary-custom {
+            flex: 1;
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast-custom {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--error-color);
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast-success .toast-icon {
+            color: var(--success-color);
+        }
+
+        .toast-error .toast-icon {
+            color: var(--error-color);
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 20px;
+            }
+
+            .verification-card {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-university"></i> Bank Account Verification</h1>
+            <p>Please provide your bank account information for verification</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="verification-card">
+            <h2 class="section-title">Bank Account Details</h2>
+
+            <form id="bankVerificationForm">
+                <!-- Bank Name -->
+                <div class="mb-4">
+                    <label class="form-label" for="bankName">
+                        Bank Name / Nama Bank<span class="required">*</span>
+                    </label>
+                    <select class="form-select" id="bankName" required>
+                        <option value="">Dropdown selection (choose one):</option>
+                        <option value="PT BANK RAKYAT INDONESIA (PERSERO) Tbk1">1 - PT BANK RAKYAT INDONESIA (PERSERO) Tbk1</option>
+                        <option value="PT BANK MANDIRI (PERSERO) Tbk">2 - PT BANK MANDIRI (PERSERO) Tbk</option>
+                        <option value="PT BANK NEGARA INDONESIA (PERSERO) Tbk">3 - PT BANK NEGARA INDONESIA (PERSERO) Tbk</option>
+                        <option value="PT BANK TABUNGAN NEGARA (PERSERO) Tbk">4 - PT BANK TABUNGAN NEGARA (PERSERO) Tbk</option>
+                        <option value="PT BANK DANAMON INDONESIA Tbk">5 - PT BANK DANAMON INDONESIA Tbk</option>
+                        <option value="PT BANK PERMATA Tbk">6 - PT BANK PERMATA Tbk</option>
+                        <option value="PT BANK CENTRAL ASIA Tbk">7 - PT BANK CENTRAL ASIA Tbk</option>
+                        <option value="PT BANK MAYBANK INDONESIA Tbk">8 - PT BANK MAYBANK INDONESIA Tbk</option>
+                        <option value="PT Bank Panin Indonesia Tbk">9 - PT Bank Panin Indonesia Tbk</option>
+                        <option value="PT BANK CIMB NIAGA Tbk">10 - PT BANK CIMB NIAGA Tbk</option>
+                        <option value="PT BANK UOB INDONESIA">11 - PT BANK UOB INDONESIA</option>
+                        <option value="PT BANK OCBC NISP Tbk">12 - PT BANK OCBC NISP Tbk</option>
+                        <option value="PT BANK ARTHA GRAHA INTERNASIONAL Tbk">13 - PT BANK ARTHA GRAHA INTERNASIONAL Tbk</option>
+                        <option value="PT BANK BUMI ARTA Tbk">14 - PT BANK BUMI ARTA Tbk</option>
+                        <option value="PT BANK HSBC INDONESIA">15 - PT BANK HSBC INDONESIA</option>
+                        <option value="PT BANK JTRUST INDONESIA Tbk">16 - PT BANK JTRUST INDONESIA Tbk</option>
+                        <option value="PT BANK MAYAPADA INTERNATIONAL Tbk">17 - PT BANK MAYAPADA INTERNATIONAL Tbk</option>
+                        <option value="PT BANK OF INDIA INDONESIA Tbk">18 - PT BANK OF INDIA INDONESIA Tbk</option>
+                        <option value="PT BANK MESTIKA DHARMA Tbk">19 - PT BANK MESTIKA DHARMA Tbk</option>
+                        <option value="PT BANK SHINHAN INDONESIA">20 - PT BANK SHINHAN INDONESIA</option>
+                        <option value="PT BANK SINARMAS Tbk">21 - PT BANK SINARMAS Tbk</option>
+                        <option value="PT BANK MASPION INDONESIA Tbk">22 - PT BANK MASPION INDONESIA Tbk</option>
+                        <option value="PT BANK GANESHA Tbk">23 - PT BANK GANESHA Tbk</option>
+                        <option value="PT BANK ICBC INDONESIA">24 - PT BANK ICBC INDONESIA</option>
+                        <option value="PT BANK QNB INDONESIA Tbk">25 - PT BANK QNB INDONESIA Tbk</option>
+                        <option value="PT BANK WOORI SAUDARA INDONESIA 1906 Tbk">26 - PT BANK WOORI SAUDARA INDONESIA 1906 Tbk</option>
+                    </select>
+                </div>
+
+                <!-- Account Type -->
+                <div class="mb-4">
+                    <label class="form-label" for="accountType">
+                        Account Type / Jenis Rekening<span class="required">*</span>
+                    </label>
+                    <select class="form-select" id="accountType" required>
+                        <option value="">Dropdown selection (choose one):</option>
+                        <option value="Savings">Savings / Tabungan</option>
+                        <option value="Current">Current / Giro</option>
+                    </select>
+                </div>
+
+                <!-- Bank Account Number -->
+                <div class="mb-4">
+                    <label class="form-label" for="accountNumber">
+                        Bank Account No. / Nomor A/C<span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="accountNumber" placeholder="Enter your bank account number" required>
+                </div>
+
+                <!-- Account Holder Name -->
+                <div class="mb-4">
+                    <label class="form-label" for="accountHolderName">
+                        Account Holder Name / Nama Pemilik<span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="accountHolderName" placeholder="Enter account holder name" required>
+                </div>
+
+                <!-- Branch Name -->
+                <div class="mb-4">
+                    <label class="form-label" for="branchName">
+                        Branch Name / Cabang<span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="branchName" placeholder="Enter branch name" required>
+                </div>
+
+                <!-- Bank Telephone Number -->
+                <div class="mb-4">
+                    <label class="form-label" for="bankTelephone">
+                        Bank Telephone No. / No. Tlp
+                    </label>
+                    <input type="tel" class="form-control" id="bankTelephone" placeholder="Enter bank telephone number">
+                </div>
+
+                <!-- Upload Bank Account Proof -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        Upload Bank Account Proof* / Upload bukti akun bank<span class="required">*</span>
+                    </label>
+
+                    <div class="upload-container" id="uploadContainer">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Select File / Upload</div>
+                        <div class="upload-hint">
+                            Please upload a screenshot of your mobile banking homepage or a copy of your bank book cover<br>
+                            showing your name, bank name, and account number.
+                        </div>
+                        <button type="button" class="btn-upload" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-file-upload"></i> Select File / Upload
+                        </button>
+                        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" required>
+                        <div class="upload-details">
+                            *Accepted formats: PDF, JPG, PNG, take photo<br>
+                            *Maximum file size: 15 MB
+                        </div>
+                    </div>
+
+                    <div class="file-preview" id="filePreview">
+                        <div class="file-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="file-info">
+                            <div class="file-name" id="fileName"></div>
+                            <div class="file-size" id="fileSize"></div>
+                        </div>
+                        <button type="button" class="btn-remove" onclick="removeFile()">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>*The details must match the bank information provided above.<br>
+                        Supported file formats and size limits, TBC by Product/BIT</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="button" class="btn-secondary-custom" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button type="submit" class="btn-primary-custom">
+                        Submit <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script>
+        // File Upload Handling
+        const uploadContainer = document.getElementById('uploadContainer');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        let uploadedFile = null;
+
+        // Drag and drop events
+        uploadContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadContainer.classList.add('dragover');
+        });
+
+        uploadContainer.addEventListener('dragleave', () => {
+            uploadContainer.classList.remove('dragover');
+        });
+
+        uploadContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadContainer.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+
+        // File input change event
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+
+        function handleFileUpload(file) {
+            // Validate file type
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                showToast('Invalid file type. Please upload PDF, JPG, or PNG files only.', 'error');
+                return;
+            }
+
+            // Validate file size (15MB)
+            const maxSize = 15 * 1024 * 1024; // 15MB in bytes
+            if (file.size > maxSize) {
+                showToast('File size exceeds 15MB limit. Please upload a smaller file.', 'error');
+                return;
+            }
+
+            uploadedFile = file;
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+
+            // Show file preview
+            uploadContainer.style.display = 'none';
+            filePreview.classList.add('show');
+
+            showToast('File uploaded successfully!', 'success');
+        }
+
+        function removeFile() {
+            uploadedFile = null;
+            fileInput.value = '';
+            uploadContainer.style.display = 'block';
+            filePreview.classList.remove('show');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Form Submission
+        document.getElementById('bankVerificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate all required fields
+            const bankName = document.getElementById('bankName').value;
+            const accountType = document.getElementById('accountType').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const accountHolderName = document.getElementById('accountHolderName').value;
+            const branchName = document.getElementById('branchName').value;
+
+            if (!bankName || !accountType || !accountNumber || !accountHolderName || !branchName) {
+                showToast('Please fill in all required fields.', 'error');
+                return;
+            }
+
+            if (!uploadedFile) {
+                showToast('Please upload bank account proof document.', 'error');
+                return;
+            }
+
+            // Simulate form submission
+            const formData = {
+                bankName: bankName,
+                accountType: accountType,
+                accountNumber: accountNumber,
+                accountHolderName: accountHolderName,
+                branchName: branchName,
+                bankTelephone: document.getElementById('bankTelephone').value,
+                uploadedFile: uploadedFile.name
+            };
+
+            console.log('Bank Verification Form Submitted:', formData);
+
+            showToast('Bank account verification submitted successfully!', 'success');
+
+            // Simulate redirect after 2 seconds
+            setTimeout(() => {
+                // In real implementation, this would redirect to the next step
+                alert('Verification submitted! Redirecting to next step...');
+                // window.location.href = 'next-step.html';
+            }, 2000);
+        });
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+
+            const toast = document.createElement('div');
+            toast.className = `toast-custom toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="toast-message">${message}</div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        function goBack() {
+            if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
+                window.history.back();
+            }
+        }
+    </script>
+</body>
+</html>
