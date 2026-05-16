@@ -511,7 +511,26 @@
         });
 
         function loadAgreementItems() {
-            const agreements = [
+            // Use VMF agreement data from external file
+            const vmfAgreements = window.VMF_AGREEMENTS || [];
+
+            if (vmfAgreements.length === 0) {
+                console.warn('⚠️ No VMF agreements data loaded');
+                return;
+            }
+
+            console.log(`✅ Loaded ${vmfAgreements.length} VMF agreements`);
+
+            // Transform VMF data structure to match expected format
+            const agreements = vmfAgreements.map(agr => ({
+                id: agr.id,
+                title: agr.name,
+                text: agr.name.substring(0, 80) + '...',  // Short description
+                fullText: `<div class="vmf-agreement-content">${agr.content.replace(/\n\n/g, '</p><p>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>`
+            }));
+
+            // Original code starts here - remove the old hardcoded array
+            const oldAgreements = [
                 {
                     id: 1,
                     title: 'Profile Perusahaan',
@@ -789,7 +808,7 @@
                         <p><em>Jika Anda tidak memahami risiko yang terlibat, Anda harus mencari saran independen sebelum membuka akun perdagangan.</em></p>
                     `
                 }
-            ];
+            ]; // End of old dummy data - now using VMF_AGREEMENTS instead
 
             const $container = $('#agreementItems');
             $container.empty();
@@ -979,5 +998,8 @@
             });
         }
     </script>
+
+    <!-- VMF Agreements Data -->
+    <script src="assets/data/vmf-agreements.js"></script>
 </body>
 </html>

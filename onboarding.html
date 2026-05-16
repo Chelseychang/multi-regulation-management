@@ -98,6 +98,22 @@
         }
 
         .toast-success { border-left: 4px solid #10B981; }
+
+        /* Prefill option cards hover effect */
+        .prefill-card {
+            cursor: pointer;
+            padding: 20px;
+            border: 2px solid #E8EAED;
+            border-radius: 12px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .prefill-card:hover {
+            border-color: var(--vantage-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(240, 87, 66, 0.2);
+        }
         .toast-error { border-left: 4px solid var(--vantage-primary); }
         .toast-warning { border-left: 4px solid var(--vantage-accent); }
         .toast-info { border-left: 4px solid var(--vantage-secondary); }
@@ -208,6 +224,41 @@
         </div>
 
         <div class="stage-content" style="max-width: 500px; margin: 0 auto;">
+            <!-- Prefill Options -->
+            <div id="prefillOptions" style="margin-bottom: 32px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
+                        Quick Start Options
+                    </h3>
+                    <p style="font-size: 14px; color: #718096;">
+                        Choose a preset to prefill registration information
+                    </p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                    <!-- Option 1: Indonesian User -->
+                    <div onclick="prefillRegistration('indonesian')" class="prefill-card">
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; margin-bottom: 12px;">🇮🇩</div>
+                            <h4 style="font-size: 15px; font-weight: 600; color: #2C3E50; margin-bottom: 6px;">Indonesian User</h4>
+                            <p style="font-size: 12px; color: #718096; margin: 0;">VMF License</p>
+                        </div>
+                    </div>
+                    <!-- Option 2: UAE User -->
+                    <div onclick="prefillRegistration('uae')" class="prefill-card">
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; margin-bottom: 12px;">🇦🇪</div>
+                            <h4 style="font-size: 15px; font-weight: 600; color: #2C3E50; margin-bottom: 6px;">UAE User</h4>
+                            <p style="font-size: 12px; color: #718096; margin: 0;">SCA License</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button type="button" onclick="document.getElementById('prefillOptions').style.display='none'" style="background: white; border: 1px solid #E8EAED; color: #718096; padding: 8px 20px; border-radius: 8px; font-size: 13px; cursor: pointer;">
+                        Skip - Fill Manually
+                    </button>
+                </div>
+            </div>
+
             <form id="registrationForm">
                 <!-- Domain Input -->
                 <div class="onboarding-form-group">
@@ -2559,6 +2610,57 @@
                 }, 1000);
             }
         }
+
+        // Prefill registration data based on preset choice
+        window.prefillRegistration = function(preset) {
+            console.log('🔄 Prefilling registration with preset:', preset);
+
+            const presets = {
+                indonesian: {
+                    domain: 'vantagemarkets.co.id',
+                    country: 'Indonesia',
+                    nationality: 'Indonesian',
+                    email: 'user.indonesia@example.com',
+                    phoneNumber: '+62812345678',
+                    firstName: 'Budi',
+                    lastName: 'Santoso',
+                    password: 'Test123!@#',
+                    license: 'VMF'
+                },
+                uae: {
+                    domain: 'vantagemarkets.ae',
+                    country: 'United Arab Emirates',
+                    nationality: 'Emirati',
+                    email: 'user.uae@example.com',
+                    phoneNumber: '+971501234567',
+                    firstName: 'Ahmed',
+                    lastName: 'Al Maktoum',
+                    password: 'Test123!@#',
+                    license: 'SCA'
+                }
+            };
+
+            const data = presets[preset];
+            if (!data) {
+                console.error('❌ Unknown preset:', preset);
+                return;
+            }
+
+            // Fill form fields
+            $('#reg_domain').val(data.domain);
+            $('#reg_country').val(data.country);
+            $('#reg_nationality').val(data.nationality);
+            $('#reg_email').val(data.email);
+            $('#reg_phoneNumber').val(data.phoneNumber);
+            $('#reg_firstName').val(data.firstName);
+            $('#reg_lastName').val(data.lastName);
+            $('#reg_password').val(data.password);
+
+            // Hide prefill options
+            $('#prefillOptions').slideUp(300);
+
+            showToast(`Prefilled with ${preset === 'indonesian' ? 'Indonesian (VMF)' : 'UAE (SCA)'} user data`, 'success');
+        };
 
         async function loadRegistrationData() {
             // Get countries and nationalities
