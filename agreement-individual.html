@@ -21,6 +21,31 @@
             padding: 40px 20px;
         }
 
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #08B2A4 0%, #06998C 100%);
+            color: white;
+            padding: 24px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 0;
+        }
+
+        .page-header .container {
+            max-width: 1200px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
         .agreement-container {
             max-width: 100%;
             margin: 0 auto;
@@ -374,6 +399,14 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-file-contract"></i> Terms & Conditions Agreement</h1>
+            <p>Please review and accept all terms and conditions to continue</p>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar (only in standalone mode) -->
@@ -390,13 +423,6 @@
                     <!-- Form State -->
                     <div id="formState">
                         <div class="agreement-form-card">
-                            <h1 class="agreement-form-title">
-                                <i class="fas fa-file-contract" style="color: var(--vantage-primary);"></i>
-                                Terms & Conditions Agreement
-                            </h1>
-                            <p class="agreement-form-subtitle">
-                                Please read and accept all terms and conditions to continue
-                            </p>
 
                             <!-- Progress Summary -->
                             <div class="progress-summary">

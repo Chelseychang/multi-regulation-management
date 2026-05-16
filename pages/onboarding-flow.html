@@ -1048,74 +1048,88 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
-                                Accepted Documents <span style="color: #F6465D;">*</span>
-                            </label>
-                            <div id="poa_documents_selector"></div>
-
-                            <div style="margin-top: 12px; padding: 12px; background: #FEF3C7; border-radius: 6px; border: 1px solid #FCD34D;">
-                                <p style="margin: 0; font-size: 12px; color: #92400E;">
-                                    <i class="fas fa-info-circle" style="color: #F59E0B;"></i>
-                                    <strong>Note:</strong> POA documents must be dated within the last 3 months
-                                </p>
+                        <!-- POA Required Toggle -->
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="poa_required" checked style="width: 44px; height: 24px; cursor: pointer;" onchange="togglePoaRequired()">
+                                <label class="form-check-label" for="poa_required" style="font-size: 14px; color: #2C3E50; margin-left: 8px; cursor: pointer; font-weight: 600;">
+                                    POA Required
+                                </label>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 2: POA Address Validation Configuration -->
-                    <div style="background: #FFFFFF; padding: 24px; border-radius: 8px; border: 1px solid #E1EDF2; border-left: 4px solid #F59E0B; margin-bottom: 20px;">
-                        <div style="margin-bottom: 20px;">
-                            <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #2C3E50;">
-                                <i class="fas fa-map-marker-alt" style="color: #F59E0B; margin-right: 8px;"></i>
-                                2. POA Address Validation
-                            </h3>
-                            <p style="margin: 0; font-size: 13px; color: #718096; padding-left: 28px;">
-                                Configure which address fields to validate for Proof of Address documents
-                            </p>
-                        </div>
-
-                        <div>
-                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 12px;">
-                                Address Fields to Validate
-                            </label>
-                            <div style="display: flex; gap: 24px; flex-wrap: wrap;">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_address_city">
-                                    <label class="form-check-label" for="poa_address_city" style="font-size: 14px;">
-                                        <i class="fas fa-building" style="color: #6B7280; margin-right: 6px;"></i>
-                                        City
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_address_state">
-                                    <label class="form-check-label" for="poa_address_state" style="font-size: 14px;">
-                                        <i class="fas fa-map" style="color: #6B7280; margin-right: 6px;"></i>
-                                        State
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="poa_address_street">
-                                    <label class="form-check-label" for="poa_address_street" style="font-size: 14px;">
-                                        <i class="fas fa-road" style="color: #6B7280; margin-right: 6px;"></i>
-                                        Street
-                                    </label>
-                                </div>
-                            </div>
-                            <small class="text-muted" style="font-size: 11px; display: block; margin-top: 8px;">
-                                Select which address components must match for POA document validation (1/2/3 pass criteria)
+                            <small class="text-muted" style="font-size: 11px; display: block; margin-top: 4px; margin-left: 52px;">
+                                Uncheck if Proof of Address is not required for this regulation
                             </small>
                         </div>
 
-                        <!-- Info Banner -->
-                        <div style="background: #EFF6FF; border-left: 4px solid #3B82F6; padding: 12px 16px; border-radius: 6px; margin-top: 16px;">
-                            <p style="margin: 0; font-size: 12px; color: #1E3A8A;">
-                                <i class="fas fa-info-circle" style="color: #3B82F6; margin-right: 8px;"></i>
-                                <strong>Note:</strong> The document types selected in "Document Type Configuration" above will be sent as acceptedDocTypes to KYC provider APIs (Sumsub, Onfido, etc.).
-                            </p>
+                        <div id="poa_documents_container">
+                            <div class="form-group">
+                                <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
+                                    Accepted Documents <span style="color: #F6465D;">*</span>
+                                </label>
+                                <div id="poa_documents_selector"></div>
+
+                                <div style="margin-top: 12px; padding: 12px; background: #FEF3C7; border-radius: 6px; border: 1px solid #FCD34D;">
+                                    <p style="margin: 0; font-size: 12px; color: #92400E;">
+                                        <i class="fas fa-info-circle" style="color: #F59E0B;"></i>
+                                        <strong>Note:</strong> POA documents must be dated within the last 3 months
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- POA Address Validation (nested inside POA container) -->
+                            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #E5E7EB;">
+                                <div style="margin-bottom: 16px;">
+                                    <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 600; color: #2C3E50;">
+                                        <i class="fas fa-map-marker-alt" style="color: #F59E0B; margin-right: 6px;"></i>
+                                        POA Address Validation
+                                    </h4>
+                                    <p style="margin: 0; font-size: 12px; color: #718096;">
+                                        Configure which address fields to validate for Proof of Address documents
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 12px;">
+                                        Address Fields to Validate
+                                    </label>
+                                    <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="poa_address_city">
+                                            <label class="form-check-label" for="poa_address_city" style="font-size: 13px;">
+                                                <i class="fas fa-building" style="color: #6B7280; margin-right: 6px;"></i>
+                                                City
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="poa_address_state">
+                                            <label class="form-check-label" for="poa_address_state" style="font-size: 13px;">
+                                                <i class="fas fa-map" style="color: #6B7280; margin-right: 6px;"></i>
+                                                State
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="poa_address_street">
+                                            <label class="form-check-label" for="poa_address_street" style="font-size: 13px;">
+                                                <i class="fas fa-road" style="color: #6B7280; margin-right: 6px;"></i>
+                                                Street
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted" style="font-size: 11px; display: block; margin-top: 8px;">
+                                        Select which address components must match for POA document validation (1/2/3 pass criteria)
+                                    </small>
+                                </div>
+
+                                <!-- Info Banner -->
+                                <div style="background: #EFF6FF; border-left: 4px solid #3B82F6; padding: 12px 16px; border-radius: 6px; margin-top: 16px;">
+                                    <p style="margin: 0; font-size: 12px; color: #1E3A8A;">
+                                        <i class="fas fa-info-circle" style="color: #3B82F6; margin-right: 8px;"></i>
+                                        <strong>Note:</strong> The document types selected in "Document Type Configuration" above will be sent as acceptedDocTypes to KYC provider APIs (Sumsub, Onfido, etc.).
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
                 <!-- Individual Web Setting -->
                 <div style="background: #FFFFFF; padding: 24px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
@@ -3446,6 +3460,7 @@ const poaDocuments = [
 const defaultKycConfig = {
     provider: 'Sumsub',  // Options: Sumsub, Advance AI, Green ID
     poiDocuments: ['Passport', 'National ID Card', 'Driving License'],
+    poaRequired: true,  // Whether POA is required
     poaDocuments: ['Bank Statement', 'Utility Bill', 'Other Official Government-Issued Letters'],
     h5Verification: {
         enabled: false,
@@ -3550,6 +3565,15 @@ function loadKycConfig() {
         poiDocumentsManager.setCountries(poiDocuments);
     }
 
+    // Load POA Required setting (backward compatibility)
+    const poaRequired = config.poaRequired !== undefined ? config.poaRequired : true;
+    $('#poa_required').prop('checked', poaRequired);
+    if (!poaRequired) {
+        $('#poa_documents_container').hide();
+    } else {
+        $('#poa_documents_container').show();
+    }
+
     // Initialize and load POA documents
     initializePoaDocumentsManager();
     const poaDocuments = config.poaDocuments || ['Bank Statement', 'Utility Bill', 'Other Official Government-Issued Letters'];
@@ -3587,6 +3611,15 @@ function toggleH5VerificationInput() {
     }
 }
 
+function togglePoaRequired() {
+    const isRequired = $('#poa_required').is(':checked');
+    if (isRequired) {
+        $('#poa_documents_container').slideDown(300);
+    } else {
+        $('#poa_documents_container').slideUp(300);
+    }
+}
+
 // Temporary storage for KYC config changes
 let kycConfigState = JSON.parse(JSON.stringify(defaultKycConfig));
 
@@ -3599,8 +3632,11 @@ function saveKycConfig() {
     // Collect POI document types from TagInputManager
     const poiDocuments = poiDocumentsManager ? poiDocumentsManager.getSelectedItems() : [];
 
-    // Collect POA document types from TagInputManager
-    const poaDocuments = poaDocumentsManager ? poaDocumentsManager.getSelectedItems() : [];
+    // Get POA Required setting
+    const poaRequired = $('#poa_required').is(':checked');
+
+    // Collect POA document types from TagInputManager (only if POA is required)
+    const poaDocuments = poaRequired && poaDocumentsManager ? poaDocumentsManager.getSelectedItems() : [];
 
     // Validate at least one POI document is selected
     if (poiDocuments.length === 0) {
@@ -3608,8 +3644,8 @@ function saveKycConfig() {
         return;
     }
 
-    // Validate at least one POA document is selected
-    if (poaDocuments.length === 0) {
+    // Validate at least one POA document is selected (only if POA is required)
+    if (poaRequired && poaDocuments.length === 0) {
         showToast('Please select at least one POA document type', 'error');
         return;
     }
@@ -3634,6 +3670,7 @@ function saveKycConfig() {
 
     // Build KYC config (acceptedDocTypes = poiDocuments + poaDocuments)
     kycConfigState.poiDocuments = poiDocuments;
+    kycConfigState.poaRequired = poaRequired;
     kycConfigState.poaDocuments = poaDocuments;
     kycConfigState.h5Verification = {
         enabled: h5Enabled,
@@ -5285,7 +5322,23 @@ function handleQuestionnaireMandatoryReminderChange() {
 function saveQuestionnaireConfig() {
     const enabled = $('#questionnaire_enabled').prop('checked');
 
-    // If not enabled, save minimal config
+    // Get H5 Verification settings (ALWAYS, regardless of enabled status)
+    const h5Enabled = $('#h5_verification_enabled_questionnaire').is(':checked');
+    const h5Route = $('#h5_verification_route_questionnaire').val().trim();
+
+    console.log('💾 [DEBUG] Saving H5 Verification settings:', {
+        h5Enabled: h5Enabled,
+        h5Route: h5Route,
+        questionnaireEnabled: enabled
+    });
+
+    // Validate H5 route if H5 is enabled
+    if (h5Enabled && !h5Route) {
+        showToast('Please enter Page Route for Individual Web Setting', 'error');
+        return;
+    }
+
+    // If not enabled, save minimal config BUT keep H5 verification
     if (!enabled) {
         questionnaireConfigState = {
             enabled: false,
@@ -5294,7 +5347,10 @@ function saveQuestionnaireConfig() {
             reminderText: '',
             scoringEnabled: false,
             passCriteria: { type: 'percentage', value: 80 },
-            h5Verification: { enabled: false, route: '' },
+            h5Verification: {
+                enabled: h5Enabled,
+                route: h5Route
+            },
             questions: []
         };
     } else {
@@ -5349,16 +5405,6 @@ function saveQuestionnaireConfig() {
                 showToast('All questions must have scoring configured when scoring is enabled', 'error');
                 return;
             }
-        }
-
-        // Get H5 Verification settings
-        const h5Enabled = $('#h5_verification_enabled_questionnaire').is(':checked');
-        const h5Route = $('#h5_verification_route_questionnaire').val().trim();
-
-        // Validate H5 route if enabled
-        if (h5Enabled && !h5Route) {
-            showToast('Please enter Page Route for Individual Web Setting', 'error');
-            return;
         }
 
         // Get Source of Funds and Source of Wealth configuration

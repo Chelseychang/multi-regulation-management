@@ -724,6 +724,15 @@
             const config = client.config;
             const kycConfig = config?.kycConfig || {};
 
+            // Check if POA is required (backward compatibility: default to true)
+            const poaRequired = kycConfig.poaRequired !== undefined ? kycConfig.poaRequired : true;
+
+            console.log('📋 KYC Config:', {
+                poaRequired: poaRequired,
+                poiDocuments: kycConfig.poiDocuments,
+                poaDocuments: kycConfig.poaDocuments
+            });
+
             // Check if Individual Web Setting (H5 verification) is enabled for POI&POA
             const h5Verification = kycConfig.h5Verification;
             const hasH5Verification = h5Verification && h5Verification.enabled && h5Verification.route;
@@ -765,7 +774,11 @@
                         <i class="fas fa-upload"></i> Upload POI Document
                     </button>
                 </div>
+            `;
 
+            // POA Card (only if POA is required)
+            if (poaRequired) {
+                html += `
                 <!-- POA Card -->
                 <div class="onboarding-card" style="margin-bottom: 20px;">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
@@ -797,7 +810,10 @@
                         <i class="fas fa-upload"></i> Upload POA Document
                     </button>
                 </div>
-            `;
+                `;
+            } else {
+                console.log('ℹ️ POA not required - skipping POA card');
+            }
 
             // Video Verification Card (only if H5 is enabled)
             if (hasH5Verification) {
@@ -1442,17 +1458,12 @@
 
             console.log('🔗 Loading external page in iframe:', iframeUrl);
 
-            // Embed the external page in an iframe
+            // Hide the stage header (Personal Details Verification title)
+            $('.stage-header').hide();
+
+            // Embed the external page in an iframe (without header - let individual page show its own title)
             $('.stage-content').html(`
                 <div class="external-iframe-container">
-                    <div class="external-iframe-header">
-                        <div class="badge badge-primary" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 16px;">
-                            <i class="fas fa-external-link-alt"></i> External Form
-                        </div>
-                        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">
-                            This form is loaded from an external page. Complete it to continue.
-                        </p>
-                    </div>
                     <iframe
                         id="externalPersonalInfoFrame"
                         src="${iframeUrl}"
@@ -1619,17 +1630,12 @@
 
             console.log('🔗 Loading external agreement page in iframe:', iframeUrl);
 
-            // Embed the external page in an iframe
+            // Hide the stage header (Terms and Agreements title)
+            $('.stage-header').hide();
+
+            // Embed the external page in an iframe (without header - let individual page show its own title)
             $('.stage-content').html(`
                 <div class="external-iframe-container">
-                    <div class="external-iframe-header">
-                        <div class="badge badge-primary" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 16px;">
-                            <i class="fas fa-external-link-alt"></i> External Agreement Page
-                        </div>
-                        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">
-                            Please review and accept all terms and conditions below.
-                        </p>
-                    </div>
                     <iframe
                         id="externalAgreementFrame"
                         src="${iframeUrl}"
@@ -1765,7 +1771,24 @@
             console.log('📋 Questionnaire enabled?', questionnaireConfig.enabled);
             console.log('📋 Questions count:', questionnaireConfig.questions?.length || 0);
 
-            // If questionnaire is not enabled, show message and mark as complete
+            // PRIORITY 1: Check for H5 Verification (Individual Web Setting) FIRST
+            // This allows external pages to load regardless of enabled status
+            const h5Verification = questionnaireConfig.h5Verification;
+            console.log('🔍 Checking H5 Verification:', {
+                h5Verification: h5Verification,
+                enabled: h5Verification?.enabled,
+                route: h5Verification?.route
+            });
+
+            if (h5Verification && h5Verification.enabled && h5Verification.route) {
+                console.log('🌐 Redirecting to external questionnaire page:', h5Verification.route);
+                loadExternalQuestionnairePage(h5Verification);
+                return;
+            }
+
+            console.log('ℹ️ H5 Verification not configured, checking if default questionnaire is enabled');
+
+            // PRIORITY 2: If no H5 verification, check if questionnaire is enabled
             if (!questionnaireConfig.enabled) {
                 console.log('⏭️ Questionnaire disabled, marking as complete');
 
@@ -1798,23 +1821,7 @@
                 return;
             }
 
-            // Check for H5 Verification (Individual Web Setting)
-            const h5Verification = questionnaireConfig.h5Verification;
-            console.log('🔍 Checking H5 Verification:', {
-                h5Verification: h5Verification,
-                enabled: h5Verification?.enabled,
-                route: h5Verification?.route
-            });
-
-            if (h5Verification && h5Verification.enabled && h5Verification.route) {
-                console.log('🌐 Redirecting to external questionnaire page:', h5Verification.route);
-                loadExternalQuestionnairePage(h5Verification);
-                return;
-            } else {
-                console.log('ℹ️ H5 Verification not configured or disabled, using default questionnaire form');
-            }
-
-            // Render questionnaire form
+            // PRIORITY 3: Render default questionnaire form
             renderQuestionnaireForm(questionnaireConfig);
         }
 
@@ -2504,18 +2511,13 @@
             console.log('📍 Original route:', h5Config.route);
             console.log('📍 Processed route:', route);
 
-            // Embed the external page in an iframe
+            // Hide the stage header (Client Suitability Questionnaire title)
+            $('.stage-header').hide();
+
+            // Embed the external page in an iframe (without header - let individual page show its own title)
             $('#stageContainer').html(`
                 <div class="stage-content">
                     <div class="external-iframe-container">
-                        <div class="external-iframe-header">
-                            <div class="badge badge-primary" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 16px;">
-                                <i class="fas fa-external-link-alt"></i> External Questionnaire Page
-                            </div>
-                            <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">
-                                Please complete the questionnaire below.
-                            </p>
-                        </div>
                         <iframe
                             id="externalQuestionnaireFrame"
                             src="${iframeUrl}"

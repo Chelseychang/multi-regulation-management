@@ -38,60 +38,42 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        .external-page-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .external-page-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #F05742 0%, #D94632 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 36px;
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #08B2A4 0%, #06998C 100%);
             color: white;
+            padding: 24px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 32px;
         }
 
-        .external-page-title {
-            font-size: 28px;
+        .page-header .container {
+            max-width: 800px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
             font-weight: 700;
-            color: #2C3E50;
-            margin-bottom: 8px;
+            margin: 0 0 8px 0;
         }
 
-        .external-page-subtitle {
-            color: #718096;
-            font-size: 15px;
-        }
-
-        .badge-external {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 20px;
+        .page-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <div class="external-page-container">
-        <div class="external-page-header">
-            <div class="external-page-logo">
-                <i class="fas fa-user-circle"></i>
-            </div>
-            <div class="badge-external">
-                <i class="fas fa-external-link-alt"></i> External Page
-            </div>
-            <h1 class="external-page-title">Complete Your Profile</h1>
-            <p class="external-page-subtitle">Individual Web Setting - Personal Information Collection</p>
+    <!-- Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-user-circle"></i> Complete Your Profile</h1>
+            <p>Please provide your personal information for verification</p>
         </div>
+    </div>
+
+    <div class="external-page-container">
 
         <form id="externalPersonalInfoForm">
             <div class="onboarding-form-group">
