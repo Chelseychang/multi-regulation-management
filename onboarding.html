@@ -1798,6 +1798,14 @@
                 return;
             }
 
+            // Check for H5 Verification (Individual Web Setting)
+            const h5Verification = questionnaireConfig.h5Verification;
+            if (h5Verification && h5Verification.enabled && h5Verification.route) {
+                console.log('🌐 Redirecting to external questionnaire page:', h5Verification.route);
+                loadExternalQuestionnairePage(h5Verification);
+                return;
+            }
+
             // Render questionnaire form
             renderQuestionnaireForm(questionnaireConfig);
         }
@@ -2466,6 +2474,73 @@
         }
 
         // ========== End Questionnaire Functions ==========
+
+        // Load External Questionnaire Page (H5 Verification)
+        function loadExternalQuestionnairePage(h5Config) {
+            const route = h5Config.route || '/kyc-bank-verification.html';
+            const sessionToken = Date.now();
+
+            // Save current session before loading iframe
+            window.onboardingFlowClient.saveSession();
+
+            // Build iframe URL
+            const iframeUrl = `${route}?session=${sessionToken}&embedded=true`;
+
+            console.log('🔗 Loading external questionnaire page in iframe:', iframeUrl);
+
+            // Embed the external page in an iframe
+            $('#stageContainer').html(`
+                <div class="stage-content">
+                    <div class="external-iframe-container">
+                        <div class="external-iframe-header">
+                            <div class="badge badge-primary" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 16px;">
+                                <i class="fas fa-external-link-alt"></i> External Questionnaire Page
+                            </div>
+                            <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">
+                                Please complete the questionnaire below.
+                            </p>
+                        </div>
+                        <iframe
+                            id="externalQuestionnaireFrame"
+                            src="${iframeUrl}"
+                            style="width: 100%; height: 800px; border: 2px solid #E8EAED; border-radius: 12px; background: white;"
+                            frameborder="0"
+                            scrolling="auto">
+                        </iframe>
+                    </div>
+                </div>
+            `);
+
+            // Mark that we're using external questionnaire page
+            window.onboardingFlowClient.userData.usingExternalQuestionnaire = true;
+
+            // Listen for messages from iframe
+            window.addEventListener('message', handleQuestionnaireIframeMessage);
+        }
+
+        function handleQuestionnaireIframeMessage(event) {
+            const message = event.data;
+
+            if (message.type === 'questionnaireCompleted') {
+                console.log('✅ Questionnaire completed in iframe');
+
+                // Update session with data from iframe
+                window.onboardingFlowClient.userData.questionnaire = {
+                    completedAt: new Date().toISOString(),
+                    data: message.data
+                };
+                window.onboardingFlowClient.saveSession();
+
+                showToast('Questionnaire completed successfully!', 'success');
+
+                // Automatically move to next stage
+                setTimeout(() => {
+                    window.onboardingFlowClient.nextStage();
+                    renderStepper();
+                    renderCurrentStage();
+                }, 1000);
+            }
+        }
 
         async function loadRegistrationData() {
             // Get countries and nationalities

@@ -646,11 +646,25 @@
 
             showToast('Bank account verification submitted successfully!', 'success');
 
+            // Send message to parent window if embedded in iframe
+            if (window.parent !== window) {
+                console.log('📤 Sending completion message to parent window');
+                window.parent.postMessage({
+                    type: 'questionnaireCompleted',
+                    data: formData
+                }, '*');
+            }
+
             // Simulate redirect after 2 seconds
             setTimeout(() => {
-                // In real implementation, this would redirect to the next step
-                alert('Verification submitted! Redirecting to next step...');
-                // window.location.href = 'next-step.html';
+                if (window.parent === window) {
+                    // Standalone mode - show alert
+                    alert('Verification submitted! Redirecting to next step...');
+                    // window.location.href = 'next-step.html';
+                } else {
+                    // Embedded mode - message already sent, just show confirmation
+                    console.log('✅ Embedded mode - completion message sent');
+                }
             }, 2000);
         });
 
