@@ -1167,15 +1167,16 @@
                                 <i class="fas fa-info-circle"></i> Example: /kyc-video-verification/ to call H5 page
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> <!-- Close div from line 1163 -->
+                    </div> <!-- Close div from line 1164 -->
+                </div> <!-- Close div from line 1151 -->
 
                 <div class="section-actions">
                     <button type="button" class="btn btn-primary" onclick="saveKycConfig()">
                         <i class="fas fa-save"></i> Save Configuration
                     </button>
                 </div>
-            </div>
+            </div> <!-- Close KYC tab-pane -->
 
 
             <!-- Trading Account Tab -->
@@ -2793,7 +2794,8 @@ function handleSearch() {
     $('#configTabsContainer').show();
 
     // Switch to first tab (Registration)
-    const firstTab = new bootstrap.Tab(document.getElementById('registration-tab'));
+    const firstTabEl = document.getElementById('registration-tab');
+    const firstTab = new bootstrap.Tab(firstTabEl);
     firstTab.show();
 
     // Load configuration
