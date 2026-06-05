@@ -687,6 +687,16 @@
 
                 <!-- Individual Web Setting -->
                 <div style="background: #FFFFFF; padding: 24px; border-radius: 8px; border: 1px solid #E1EDF2; margin-top: 24px;">
+                    <!-- Phase 1 Info Notice -->
+                    <div style="background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); border-left: 4px solid #0EA5E9; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-info-circle" style="font-size: 18px; color: #0369A1;"></i>
+                            <div style="font-size: 12px; color: #075985;">
+                                <strong>Phase 1 Feature:</strong> Individual Web Setting will be implemented in Phase 1 (一期开发)
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="margin-bottom: 20px;">
                         <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #2C3E50;">
                             <i class="fas fa-cog" style="color: #08B2A4; margin-right: 8px;"></i>
@@ -873,10 +883,10 @@
                                         <!-- Group headers row -->
                                         <tr>
                                             <th rowspan="2" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; font-weight: 600; color: #2C3E50; vertical-align: middle; width: 150px;"></th>
-                                            <th colspan="3" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
+                                            <th colspan="6" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
                                                 KYC Main Flow
                                             </th>
-                                            <th colspan="4" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
+                                            <th colspan="1" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
                                                 Independent Verification Flow
                                             </th>
                                         </tr>
@@ -885,10 +895,10 @@
                                             <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL1</th>
                                             <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL2</th>
                                             <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL3</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL11</th>
                                             <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL12</th>
                                             <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL13</th>
                                             <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL14</th>
+                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL11</th>
                                         </tr>
                                     </thead>
                                     <tbody id="configOverviewTableBody">
@@ -913,21 +923,6 @@
             <!-- OTP Tab -->
             <!-- OTP Verification Tab Content -->
             <div class="tab-pane" id="otp" role="tabpanel">
-                <!-- Phase 2 Development Notice -->
-                <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-left: 4px solid #F59E0B; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-clock" style="font-size: 24px; color: #F59E0B;"></i>
-                        <div>
-                            <div style="font-weight: 600; color: #92400E; font-size: 15px; margin-bottom: 4px;">
-                                <i class="fas fa-wrench"></i> Phase 2 Development (二期开发)
-                            </div>
-                            <div style="font-size: 13px; color: #78350F;">
-                                This feature is under development and will be available in the next phase.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="section-header">
                     <h2 class="section-title" style="color: #2C3E50 !important; font-weight: 600;">OTP Verification</h2>
                     <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure OTP verification rules for different countries, channels and platforms</p>
@@ -1415,6 +1410,28 @@
                     <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">Configure questionnaire completion settings</p>
                 </div>
 
+                <!-- Phase Development Notice -->
+                <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-left: 4px solid #F59E0B; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-info-circle" style="font-size: 24px; color: #F59E0B;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #92400E; font-size: 15px; margin-bottom: 8px;">
+                                <i class="fas fa-layer-group"></i> Development Phases (开发阶段)
+                            </div>
+                            <div style="font-size: 13px; color: #78350F; line-height: 1.6;">
+                                <div style="margin-bottom: 4px;">
+                                    <i class="fas fa-check-circle" style="color: #10B981; margin-right: 4px;"></i>
+                                    <strong>Phase 1 (一期):</strong> Individual Web Setting configuration
+                                </div>
+                                <div>
+                                    <i class="fas fa-clock" style="color: #F59E0B; margin-right: 4px;"></i>
+                                    <strong>Phase 2 (二期):</strong> Question configuration, scoring, and validation features
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Enable Questionnaire -->
                 <div class="mb-4">
                     <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">1. Enable Questionnaire</h3>
@@ -1781,6 +1798,17 @@ Maximum upload file size: 15MB</textarea>
                 <!-- Individual Web Setting -->
                 <div class="mb-4">
                     <h3 style="font-size: 16px; font-weight: 600; color: #2C3E50; margin-bottom: 16px;">7. Individual Web Setting</h3>
+
+                    <!-- Phase 1 Info Notice -->
+                    <div style="background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); border-left: 4px solid #0EA5E9; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-info-circle" style="font-size: 18px; color: #0369A1;"></i>
+                            <div style="font-size: 12px; color: #075985;">
+                                <strong>Phase 1 Feature:</strong> This Individual Web Setting will be implemented in Phase 1 (一期开发)
+                            </div>
+                        </div>
+                    </div>
+
                     <p style="margin: 0 0 16px 0; font-size: 13px; color: #718096;">
                         Configure additional H5/Web page for custom flows
                     </p>
@@ -3814,8 +3842,8 @@ function loadConfigOverview() {
 
     // Collect all Main Flow and Independent Flow levels from all KYC systems
     // Organize by level identifier
-    // Main Flow: level1, level2, level3
-    // Independent Flow: level11, level12, level13, level14
+    // Main Flow: level1, level2, level3, level12, level13, level14
+    // Independent Flow: level11, level12 (note: level12 appears in BOTH flows)
     const levelMap = {
         'level1': null,
         'level2': null,
@@ -3829,11 +3857,29 @@ function loadConfigOverview() {
     kycSystemsData.forEach(system => {
         if (system.config) {
             // Process Main Flow Levels
+            // Map by kycLevel name to correct level number
             if (system.config.mainFlowLevels && system.config.mainFlowLevels.length > 0) {
-                system.config.mainFlowLevels.forEach((level, index) => {
-                    const levelKey = `level${index + 1}`;
-                    if (levelMap.hasOwnProperty(levelKey) && index < 3) {
+                console.log('[CONFIG OVERVIEW] Main Flow Levels count:', system.config.mainFlowLevels.length);
+
+                // Mapping from kycLevel name to level key
+                const mainLevelMapping = {
+                    'Personal Details Verification': 'level1',
+                    'Identity Verification': 'level2',
+                    'Residency Address Verification': 'level3',
+                    'Face Verification': 'level12',
+                    'Video Verification': 'level13',
+                    'Questionnaire Verification': 'level14'
+                };
+
+                system.config.mainFlowLevels.forEach((level) => {
+                    const levelKey = mainLevelMapping[level.kycLevel];
+                    console.log('[CONFIG OVERVIEW] Mapping main level:', level.kycLevel, '→', levelKey);
+
+                    if (levelKey && levelMap.hasOwnProperty(levelKey)) {
                         levelMap[levelKey] = level;
+                        console.log('[CONFIG OVERVIEW] ✅ Mapped', level.kycLevel, 'to', levelKey);
+                    } else {
+                        console.warn('[CONFIG OVERVIEW] ⚠️ Unknown main level:', level.kycLevel);
                     }
                 });
             }
@@ -3846,9 +3892,7 @@ function loadConfigOverview() {
                 // Mapping from kycLevel name to level key
                 const independentLevelMapping = {
                     'Bank Transfer Verification': 'level11',
-                    'Face Verification': 'level12',
-                    'Video Verification': 'level13',
-                    'Questionnaire Verification': 'level14'
+                    'Face Verification': 'level12'
                 };
 
                 system.config.independentFlowLevels.forEach((level) => {
@@ -3884,8 +3928,8 @@ function renderConfigOverview(levelMap) {
     $('#configOverviewEmpty').hide();
     tbody.closest('.table-responsive').show();
 
-    // Fixed column order
-    const columnOrder = ['level1', 'level2', 'level3', 'level11', 'level12', 'level13', 'level14'];
+    // Fixed column order - Main Flow (level1-3, level12-14), then Independent Flow (level11-12)
+    const columnOrder = ['level1', 'level2', 'level3', 'level12', 'level13', 'level14', 'level11'];
 
     // Fixed level names mapping
     const levelNames = {
@@ -4162,13 +4206,15 @@ const ACCOUNT_FEATURES = [
 const MAIN_FLOW_LEVELS = [
     'Personal Details Verification',
     'Identity Verification',
-    'Residency Address Verification'
+    'Residency Address Verification',
+    'Face Verification',
+    'Video Verification',
+    'Questionnaire Verification'
 ];
 
 const INDEPENDENT_FLOW_LEVELS = [
     'Bank Transfer Verification',
-    'Face Verification',
-    'Video Verification'
+    'Face Verification'
 ];
 
 // Helper function to populate KYC Level dropdown
