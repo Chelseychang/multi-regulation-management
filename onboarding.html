@@ -606,13 +606,19 @@
             const completedStep = urlParams.get('completed');
 
             if (completedStep === 'personalInfo') {
-                console.log('✅ Returned from external personal info page');
-                showToast('Personal information saved successfully!', 'success');
+                console.log('✅ Returned from external personal info page (H5 verification)');
+                showToast('Individual Web Setting completed successfully!', 'success');
 
                 // Load session and move to next stage
                 window.onboardingFlowClient.loadSession();
                 if (window.onboardingFlowClient.currentStage === 2) {
-                    // Mark personal details as completed and move to next stage
+                    // Mark H5 verification as completed
+                    if (!window.onboardingFlowClient.userData.personalInfo) {
+                        window.onboardingFlowClient.userData.personalInfo = {};
+                    }
+                    window.onboardingFlowClient.userData.personalInfo.h5VerificationCompleted = true;
+
+                    // Mark personal details stage as completed and move to next stage
                     window.onboardingFlowClient.userData.personalInfoCompleted = true;
                     window.onboardingFlowClient.nextStage();
                     window.onboardingFlowClient.saveSession();
@@ -972,14 +978,6 @@
 
             const config = client.config;
             const personalInfoConfig = config?.personalInfoFields || {};
-
-            // Check if Individual Web Setting (H5 verification) is enabled
-            const h5Verification = personalInfoConfig.h5Verification;
-            if (h5Verification && h5Verification.enabled) {
-                console.log('🔗 Individual Web Setting enabled, loading external form...');
-                redirectToExternalPersonalInfo(h5Verification);
-                return;
-            }
 
             // Extract fields array - handle both array and object formats
             let personalInfoFields = [];
@@ -1498,38 +1496,22 @@
         }
 
         function redirectToExternalPersonalInfo(h5Config) {
-            const route = h5Config.route || '/kyc-individual-personal-info.html';
-            const sessionToken = Date.now(); // Simple session identifier
+            let route = h5Config.route || '/kyc-individual-personal-info.html';
 
-            // Save current session before loading iframe
+            // Ensure route starts with /
+            if (!route.startsWith('/') && !route.startsWith('http')) {
+                route = '/' + route;
+            }
+
+            // Save current session before redirecting
             window.onboardingFlowClient.saveSession();
 
-            // Build iframe URL with parameters
-            const iframeUrl = `${route}?session=${sessionToken}&embedded=true`;
+            console.log('🔗 Redirecting to Individual Web Setting page:', route);
+            console.log('📋 Default form data already saved:', window.onboardingFlowClient.userData.personalInfo);
 
-            console.log('🔗 Loading external page in iframe:', iframeUrl);
-
-            // Hide the stage header (Personal Details Verification title)
-            $('.stage-header').hide();
-
-            // Embed the external page in an iframe (without header - let individual page show its own title)
-            $('.stage-content').html(`
-                <div class="external-iframe-container">
-                    <iframe
-                        id="externalPersonalInfoFrame"
-                        src="${iframeUrl}"
-                        style="width: 100%; height: 650px; border: 2px solid #E8EAED; border-radius: 12px; background: white;"
-                        frameborder="0"
-                        scrolling="auto">
-                    </iframe>
-                </div>
-            `);
-
-            // Mark that we're using external form
-            window.onboardingFlowClient.userData.usingExternalPersonalInfo = true;
-
-            // Listen for messages from iframe
-            window.addEventListener('message', handleIframeMessage);
+            // Full page redirect to H5 verification page
+            const sessionToken = Date.now();
+            window.location.href = `${route}?session=${sessionToken}&returnUrl=${encodeURIComponent(window.location.pathname)}`;
         }
 
         function handleIframeMessage(event) {
@@ -1744,6 +1726,54 @@
 
         // Complete personal details
         function completePersonalDetails() {
+            const client = window.onboardingFlowClient;
+            const config = client.config;
+            const personalInfoConfig = config?.personalInfoFields || {};
+
+            // Check if we need to redirect to H5 verification page
+            const h5Verification = personalInfoConfig.h5Verification;
+            const h5Completed = client.userData.personalInfo?.h5VerificationCompleted;
+
+            // If H5 verification is enabled and NOT yet completed, redirect to external page
+            if (h5Verification && h5Verification.enabled && !h5Completed) {
+                console.log('🔗 Default form completed. Redirecting to Individual Web Setting (H5 verification)...');
+
+                // Validate and save default form data first
+                const $form = $('#dynamicPersonalInfoForm');
+                const formData = {};
+                let hasErrors = false;
+
+                // Collect form data
+                $form.find('input, select, textarea').each(function() {
+                    const $field = $(this);
+                    const name = $field.attr('name');
+                    const value = $field.val();
+                    const isRequired = $field.prop('required');
+
+                    if (isRequired && !value) {
+                        showToast(`Please fill in ${$field.prev('label').text()}`, 'error');
+                        hasErrors = true;
+                        return false;
+                    }
+
+                    formData[name] = value;
+                });
+
+                if (hasErrors) return false;
+
+                // Save default form data to session
+                client.userData.personalInfo = formData;
+                client.saveSession();
+
+                console.log('✅ Default personal details saved:', formData);
+                console.log('➡️ Now redirecting to H5 verification page:', h5Verification.route);
+
+                // Redirect to external H5 verification page
+                redirectToExternalPersonalInfo(h5Verification);
+                return false; // Don't move to next stage yet
+            }
+
+            // If H5 verification already completed OR not enabled, validate and proceed
             const $form = $('#dynamicPersonalInfoForm');
             const formData = {};
             let hasErrors = false;
@@ -1767,10 +1797,10 @@
             if (hasErrors) return false;
 
             // Save to session
-            window.onboardingFlowClient.userData.personalInfo = formData;
-            window.onboardingFlowClient.saveSession();
+            client.userData.personalInfo = formData;
+            client.saveSession();
 
-            console.log('Personal details saved:', formData);
+            console.log('✅ Personal details completed:', formData);
             return true;
         }
 

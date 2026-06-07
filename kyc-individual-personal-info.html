@@ -3,314 +3,923 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Individual Personal Information</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Personal Details - Individual Web Setting</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.com/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/variables.css">
     <link rel="stylesheet" href="assets/css/onboarding-flow.css">
 
     <style>
+        /* Match onboarding.html exactly */
+        :root {
+            --vantage-primary: #F05742;
+            --vantage-primary-dark: #D94632;
+            --vantage-primary-light: #FF6B52;
+            --vantage-secondary: #1A3A52;
+            --vantage-accent: #FDB515;
+            --vantage-dark: #0F1419;
+            --vantage-gray: #4A5568;
+            --vantage-light-gray: #EDF2F7;
+        }
+
         body {
-            background: white;
+            background: linear-gradient(135deg, var(--vantage-secondary) 0%, #0F2537 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        body.standalone {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-        }
-
-        .external-page-container {
-            max-width: 100%;
+        .onboarding-wrapper {
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .onboarding-container {
             background: white;
-            border-radius: 0;
-            padding: 0;
-            box-shadow: none;
-        }
-
-        body.standalone .external-page-container {
-            max-width: 700px;
-            border-radius: 16px;
-            padding: 40px;
+            border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
-        /* Header */
-        .page-header {
-            background: linear-gradient(135deg, #08B2A4 0%, #06998C 100%);
-            color: white;
-            padding: 24px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 32px;
+        .progress-bar-wrapper {
+            background: #f5f7fa;
+            padding: 20px;
+            border-bottom: 1px solid #e8eaed;
         }
 
-        .page-header .container {
-            max-width: 800px;
+        .content-wrapper {
+            padding: 40px;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .page-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
+        /* Additional Web Setting Badge */
+        .web-setting-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+            color: #0369A1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
         }
 
-        .page-header p {
+        .web-setting-badge i {
             font-size: 14px;
-            opacity: 0.9;
+        }
+
+        /* Section Headers */
+        .form-section-header {
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 32px 0 20px 0;
+            border-left: 4px solid #08B2A4;
+        }
+
+        .form-section-header h3 {
             margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2C3E50;
+        }
+
+        .form-section-header p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            color: #718096;
+        }
+
+        /* Two-column layout */
+        .form-row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Conditional fields */
+        .conditional-field {
+            margin-left: 24px;
+            padding-left: 20px;
+            border-left: 3px solid #E8EAED;
+        }
+
+        /* Input with unit suffix */
+        .input-with-unit {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .input-with-unit input {
+            flex: 1;
+        }
+
+        .input-with-unit select {
+            width: auto;
+            min-width: 100px;
+        }
+
+        .input-with-unit .unit-label {
+            color: #718096;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        /* Radio group */
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            margin-top: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #2C3E50;
+        }
+
+        .radio-group input[type="radio"] {
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="page-header">
-        <div class="container">
-            <h1><i class="fas fa-user-circle"></i> Complete Your Profile</h1>
-            <p>Please provide your personal information for verification</p>
+    <div class="onboarding-wrapper">
+        <div class="onboarding-container">
+            <!-- Progress Bar with Stepper -->
+            <div class="progress-bar-wrapper">
+                <div class="onboarding-stepper" id="onboardingStepper">
+                    <!-- Stepper will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="content-wrapper">
+                <div id="onboardingStageContainer">
+                    <!-- Stage Header -->
+                    <div class="stage-header">
+                        <h2 class="stage-title">
+                            <i class="fas fa-user-circle"></i> Personal Details Verification
+                        </h2>
+                        <p class="stage-subtitle">Complete your profile to unlock trading features</p>
+                        <div class="web-setting-badge">
+                            <i class="fas fa-globe"></i>
+                            Additional Information Required
+                        </div>
+                    </div>
+
+                    <!-- Stage Content -->
+                    <div class="stage-content" style="max-width: 900px; margin: 0 auto;">
+                        <form id="externalPersonalInfoForm">
+
+                            <!-- Section 1: Additional Personal Details -->
+                            <div class="form-section-header">
+                                <h3><i class="fas fa-id-card"></i> Additional Personal Details (其他个人资料)</h3>
+                                <p>Complete your personal information</p>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Place of Birth <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="placeOfBirth" name="placeOfBirth" required>
+                                        <option value="">Please select</option>
+                                    </select>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Identity Type <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="identityType" name="identityType" required onchange="toggleIdentityUpload()">
+                                        <option value="">Please select</option>
+                                        <option value="KTP">KTP Identity Card</option>
+                                        <option value="Passport">Passport</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        ID Card Number/Passport Number <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="idNumber" name="idNumber" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Tax Number <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="taxNumber" name="taxNumber" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        House Phone Number <span class="required">*</span>
+                                    </label>
+                                    <input type="tel" class="onboarding-form-input" id="housePhone" name="housePhone" placeholder="+62" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Fax Number
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="faxNumber" name="faxNumber">
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Marriage Status <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="marriageStatus" name="marriageStatus" required onchange="toggleSpouseName()">
+                                        <option value="">Please select</option>
+                                        <option value="Single">单身 | Single</option>
+                                        <option value="Married">已婚 | Married</option>
+                                        <option value="Divorced">离异 | Divorced</option>
+                                        <option value="Widower">鳏寡 | Widower</option>
+                                    </select>
+                                </div>
+
+                                <div class="onboarding-form-group" id="spouseNameGroup" style="display: none;">
+                                    <label class="onboarding-form-label">
+                                        Spouse Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="spouseName" name="spouseName">
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Mother's Name <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="motherName" name="motherName" required>
+                            </div>
+
+                            <!-- Section 2: Residential Address -->
+                            <div class="form-section-header">
+                                <h3><i class="fas fa-home"></i> Residential Address (居住信息)</h3>
+                                <p>Your current residential information</p>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Residence Address <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="residenceAddress" name="residenceAddress" placeholder="Including house number, address line" required>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Postcode <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="postcode" name="postcode" required>
+                            </div>
+
+                            <!-- Section 3: Others Information -->
+                            <div class="form-section-header">
+                                <h3><i class="fas fa-info-circle"></i> Others Information (其他信息)</h3>
+                                <p>Additional account and experience information</p>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Home Ownership Type <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="homeOwnership" name="homeOwnership" required>
+                                        <option value="">Please select</option>
+                                        <option value="Personal">个人 | Personal</option>
+                                        <option value="Family">家庭 | Family</option>
+                                        <option value="Rent">租屋 | Rent</option>
+                                        <option value="Others">其他 | Others</option>
+                                    </select>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Trading Account Opening Purpose <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="tradingPurpose" name="tradingPurpose" required>
+                                        <option value="">Please select</option>
+                                        <option value="Hedging">对冲 | Hedging</option>
+                                        <option value="Gain">盈利 | Gain</option>
+                                        <option value="Speculative">投资 | Speculative</option>
+                                        <option value="Others">其他 | Others</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Trading Experience <span class="required">*</span>
+                                </label>
+                                <div class="radio-group">
+                                    <label>
+                                        <input type="radio" name="tradingExperience" value="Yes" onchange="toggleTradingExperienceDetails()">
+                                        是 | Yes
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="tradingExperience" value="No" onchange="toggleTradingExperienceDetails()" checked>
+                                        否 | No
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group conditional-field" id="tradingExperienceDetails" style="display: none;">
+                                <label class="onboarding-form-label">
+                                    Please specify your trading experience
+                                </label>
+                                <textarea class="onboarding-form-input" id="tradingExperienceText" name="tradingExperienceText" rows="3"></textarea>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Have you been declared bankrupt / Exchange House / Clearing House? <span class="required">*</span>
+                                </label>
+                                <div class="radio-group">
+                                    <label>
+                                        <input type="radio" name="bankruptcyExchange" value="Yes">
+                                        是 | Yes
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="bankruptcyExchange" value="No" checked>
+                                        否 | No
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Have you been declared bankrupt by the court within 5 years? <span class="required">*</span>
+                                </label>
+                                <div class="radio-group">
+                                    <label>
+                                        <input type="radio" name="bankruptcyCourt" value="Yes">
+                                        是 | Yes
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="bankruptcyCourt" value="No" checked>
+                                        否 | No
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Section 4: Emergency Contact Information -->
+                            <div class="form-section-header">
+                                <h3><i class="fas fa-phone-alt"></i> Emergency Contact Information (紧急联系人)</h3>
+                                <p>Person to contact in case of emergency</p>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Full Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="emergencyName" name="emergencyName" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Phone Number <span class="required">*</span>
+                                    </label>
+                                    <input type="tel" class="onboarding-form-input" id="emergencyPhone" name="emergencyPhone" placeholder="+62" required>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Residence Address <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="emergencyAddress" name="emergencyAddress" required>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Postal Code <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="emergencyPostcode" name="emergencyPostcode" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Relationship <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="emergencyRelationship" name="emergencyRelationship" required onchange="toggleEmergencyRelationshipOther()">
+                                        <option value="">Please select</option>
+                                        <option value="Parent">Parent</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Sibling">Sibling</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Relative">Relative</option>
+                                        <option value="Friend">Friend</option>
+                                        <option value="Colleague">Colleague</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group conditional-field" id="emergencyRelationshipOtherGroup" style="display: none;">
+                                <label class="onboarding-form-label">
+                                    Please specify relationship <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="emergencyRelationshipOther" name="emergencyRelationshipOther">
+                            </div>
+
+                            <!-- Section 5: Occupation Information -->
+                            <div class="form-section-header">
+                                <h3><i class="fas fa-briefcase"></i> Occupation Information (职业信息)</h3>
+                                <p>Your employment and professional information</p>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Occupation <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="occupation" name="occupation" required onchange="toggleOccupationOther()">
+                                        <option value="">Please select</option>
+                                        <option value="Private Sector Employee">Private Sector Employee</option>
+                                        <option value="Self-Employed / Entrepreneur">Self-Employed / Entrepreneur</option>
+                                        <option value="Homemaker">Homemaker</option>
+                                        <option value="Professional">Professional</option>
+                                        <option value="Government Employee">Government Employee</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Company Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="companyName" name="companyName" required>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group conditional-field" id="occupationOtherGroup" style="display: none;">
+                                <label class="onboarding-form-label">
+                                    Please specify occupation <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="occupationOther" name="occupationOther">
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Industry <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="industry" name="industry" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Role <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="role" name="role" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        How long have you been working in your current company? <span class="required">*</span>
+                                    </label>
+                                    <div class="input-with-unit">
+                                        <input type="number" class="onboarding-form-input" id="currentCompanyYears" name="currentCompanyYears" min="0" required>
+                                        <span class="unit-label">年 (Years)</span>
+                                    </div>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        How long have you been working in your previous company? <span class="required">*</span>
+                                    </label>
+                                    <div class="input-with-unit">
+                                        <input type="number" class="onboarding-form-input" id="previousCompanyYears" name="previousCompanyYears" min="0" required>
+                                        <span class="unit-label">年 (Years)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Company Address <span class="required">*</span>
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="companyAddress" name="companyAddress" required>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Company Postcode <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="companyPostcode" name="companyPostcode" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Company Phone Number <span class="required">*</span>
+                                    </label>
+                                    <input type="tel" class="onboarding-form-input" id="companyPhone" name="companyPhone" placeholder="+62" required>
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Fax Number
+                                </label>
+                                <input type="text" class="onboarding-form-input" id="companyFax" name="companyFax">
+                            </div>
+
+                            <!-- Section 6: Wealth Information -->
+                            <div class="form-section-header">
+                                <h3><i class="fas fa-chart-line"></i> Wealth Information (资产信息)</h3>
+                                <p>Your financial and asset information</p>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Annual Income <span class="required">*</span>
+                                    </label>
+                                    <select class="onboarding-form-input" id="annualIncome" name="annualIncome" required>
+                                        <option value="">Please select</option>
+                                        <option value="100-250M">between IDR 100-250 million</option>
+                                        <option value="250-500M">between IDR 250-500 million</option>
+                                        <option value="500M+">above IDR 500 million</option>
+                                    </select>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Invested Location
+                                    </label>
+                                    <input type="text" class="onboarding-form-input" id="investedLocation" name="investedLocation">
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Tax Object Selling Value (Assessed Property Value) <span class="required">*</span>
+                                    </label>
+                                    <input type="number" class="onboarding-form-input" id="propertyValue" name="propertyValue" min="0" required>
+                                </div>
+
+                                <div class="onboarding-form-group">
+                                    <label class="onboarding-form-label">
+                                        Time Deposit
+                                    </label>
+                                    <input type="number" class="onboarding-form-input" id="timeDeposit" name="timeDeposit" min="0">
+                                </div>
+                            </div>
+
+                            <div class="onboarding-form-group">
+                                <label class="onboarding-form-label">
+                                    Amount
+                                </label>
+                                <div class="input-with-unit">
+                                    <input type="number" class="onboarding-form-input" id="amount" name="amount" min="0">
+                                    <span class="unit-label">IDR</span>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons (matching onboarding.html) -->
+                <div class="onboarding-navigation" id="onboardingNavigation">
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-skip" id="btnPrevious" style="visibility: hidden;">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn-onboarding-primary" id="btnNext">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="external-page-container">
-
-        <form id="externalPersonalInfoForm">
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    First Name <span class="required">*</span>
-                </label>
-                <input type="text" class="onboarding-form-input" id="firstName" required>
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Middle Name
-                </label>
-                <input type="text" class="onboarding-form-input" id="middleName">
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Last Name <span class="required">*</span>
-                </label>
-                <input type="text" class="onboarding-form-input" id="lastName" required>
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Gender <span class="required">*</span>
-                </label>
-                <select class="onboarding-form-input" id="gender" required>
-                    <option value="">Select...</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Date of Birth <span class="required">*</span>
-                </label>
-                <input type="date" class="onboarding-form-input" id="dateOfBirth" required>
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Country of Residence <span class="required">*</span>
-                </label>
-                <select class="onboarding-form-input" id="countryOfResidence" required>
-                    <option value="">Select...</option>
-                </select>
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Nationality <span class="required">*</span>
-                </label>
-                <select class="onboarding-form-input" id="nationality" required>
-                    <option value="">Select...</option>
-                </select>
-            </div>
-
-            <div class="onboarding-form-group">
-                <label class="onboarding-form-label">
-                    Place of Birth <span class="required">*</span>
-                </label>
-                <input type="text" class="onboarding-form-input" id="placeOfBirth" required>
-            </div>
-
-            <div id="submitButtonContainer" style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #E8EAED;">
-                <button type="submit" class="btn-onboarding-primary" style="width: 100%;">
-                    <i class="fas fa-check"></i> Complete & Return to Main Flow
-                </button>
-            </div>
-        </form>
-
-        <div id="standaloneInfo" style="text-align: center; margin-top: 24px; color: #718096; font-size: 13px;">
-            <i class="fas fa-info-circle"></i>
-            This is a standalone page. After submission, you'll return to the onboarding flow.
-        </div>
-    </div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
     <script>
+        // Toast notification function (same as onboarding.html)
+        window.showToast = function(message, type = 'success') {
+            const $toast = $(`
+                <div class="toast toast-${type}">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-times-circle' : 'fa-info-circle'}"></i>
+                    <span>${message}</span>
+                    <button class="toast-close">&times;</button>
+                </div>
+            `);
+
+            $('#toastContainer').append($toast);
+
+            // Auto remove after 5 seconds
+            setTimeout(function() {
+                $toast.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }, 5000);
+
+            // Manual close
+            $toast.find('.toast-close').on('click', function() {
+                $toast.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            });
+        };
+
+        // Conditional field toggles
+        function toggleSpouseName() {
+            const marriageStatus = $('#marriageStatus').val();
+            const $spouseGroup = $('#spouseNameGroup');
+            const $spouseInput = $('#spouseName');
+
+            if (marriageStatus === 'Married') {
+                $spouseGroup.show();
+                $spouseInput.prop('required', true);
+            } else {
+                $spouseGroup.hide();
+                $spouseInput.prop('required', false);
+                $spouseInput.val('');
+            }
+        }
+
+        function toggleTradingExperienceDetails() {
+            const hasExperience = $('input[name="tradingExperience"]:checked').val() === 'Yes';
+            const $detailsGroup = $('#tradingExperienceDetails');
+            const $detailsInput = $('#tradingExperienceText');
+
+            if (hasExperience) {
+                $detailsGroup.show();
+                $detailsInput.prop('required', true);
+            } else {
+                $detailsGroup.hide();
+                $detailsInput.prop('required', false);
+                $detailsInput.val('');
+            }
+        }
+
+        function toggleEmergencyRelationshipOther() {
+            const relationship = $('#emergencyRelationship').val();
+            const $otherGroup = $('#emergencyRelationshipOtherGroup');
+            const $otherInput = $('#emergencyRelationshipOther');
+
+            if (relationship === 'Other') {
+                $otherGroup.show();
+                $otherInput.prop('required', true);
+            } else {
+                $otherGroup.hide();
+                $otherInput.prop('required', false);
+                $otherInput.val('');
+            }
+        }
+
+        function toggleOccupationOther() {
+            const occupation = $('#occupation').val();
+            const $otherGroup = $('#occupationOtherGroup');
+            const $otherInput = $('#occupationOther');
+
+            if (occupation === 'Other') {
+                $otherGroup.show();
+                $otherInput.prop('required', true);
+            } else {
+                $otherGroup.hide();
+                $otherInput.prop('required', false);
+                $otherInput.val('');
+            }
+        }
+
+        function toggleIdentityUpload() {
+            const identityType = $('#identityType').val();
+            // Future: Add upload functionality if needed
+            console.log('Identity type selected:', identityType);
+        }
+
         $(document).ready(function() {
             // Get parameters from URL
             const urlParams = new URLSearchParams(window.location.search);
             const sessionToken = urlParams.get('session');
             const returnUrl = urlParams.get('returnUrl') || '/onboarding.html';
-            const isEmbedded = urlParams.get('embedded') === 'true';
 
-            console.log('📄 External page loaded');
-            console.log('Session token:', sessionToken);
-            console.log('Embedded mode:', isEmbedded);
-            console.log('Return URL:', returnUrl);
+            console.log('🌐 Individual Web Setting page loaded');
+            console.log('   Session token:', sessionToken);
+            console.log('   Return URL:', returnUrl);
 
-            // Apply styling based on mode
-            if (!isEmbedded) {
-                $('body').addClass('standalone');
-            } else {
-                // Hide elements in embedded mode
-                $('.badge-external').hide();
-                $('.external-page-logo').hide();
-                $('#submitButtonContainer').hide(); // Hide submit button in iframe
-                $('#standaloneInfo').hide(); // Hide standalone info message
+            // Render stepper (matching onboarding.html Stage 2)
+            renderStepper();
 
-                // Expose submit function to parent window
-                window.submitExternalForm = function() {
-                    $('#externalPersonalInfoForm').trigger('submit');
-                };
-            }
-
-            // Load countries and nationalities
+            // Load dropdowns
             loadDropdowns();
 
-            // Load saved data if exists
+            // Load saved data from default form if exists
             loadSavedData(sessionToken);
 
             // Handle form submission
+            $('#btnNext').on('click', function(e) {
+                e.preventDefault();
+                submitForm();
+            });
+
             $('#externalPersonalInfoForm').on('submit', function(e) {
                 e.preventDefault();
-
-                const personalInfo = {
-                    firstName: $('#firstName').val().trim(),
-                    middleName: $('#middleName').val().trim(),
-                    lastName: $('#lastName').val().trim(),
-                    gender: $('#gender').val(),
-                    dateOfBirth: $('#dateOfBirth').val(),
-                    countryOfResidence: $('#countryOfResidence').val(),
-                    nationality: $('#nationality').val(),
-                    placeOfBirth: $('#placeOfBirth').val().trim()
-                };
-
-                console.log('✅ Personal info collected:', personalInfo);
-
-                // Save to sessionStorage (in real implementation, this would be an API call)
-                savePersonalInfo(sessionToken, personalInfo);
-
-                if (isEmbedded) {
-                    // Send message to parent window
-                    window.parent.postMessage({
-                        type: 'personalInfoCompleted',
-                        data: personalInfo
-                    }, '*'); // In production, specify the exact origin
-
-                    // Show success message in iframe
-                    showSuccessMessage('Information saved! You can now continue in the main flow.');
-                } else {
-                    // Show success message
-                    showSuccessMessage('Returning to onboarding flow...');
-
-                    // Return to main flow after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = returnUrl + '?session=' + sessionToken + '&completed=personalInfo';
-                    }, 2000);
-                }
+                submitForm();
             });
         });
 
+        function renderStepper() {
+            const stages = [
+                { number: 1, name: 'Registration', status: 'completed' },
+                { number: 2, name: 'Personal Details', status: 'active' },
+                { number: 3, name: 'Identity Verification', status: '' },
+                { number: 4, name: 'KYC Progress', status: '' },
+                { number: 5, name: 'Trading Account', status: '' },
+                { number: 6, name: 'Agreements', status: '' },
+                { number: 7, name: 'Questionnaire', status: '' }
+            ];
+
+            let html = '';
+            stages.forEach(stage => {
+                const statusClass = stage.status === 'completed' ? 'completed' : (stage.status === 'active' ? 'active' : '');
+                html += `
+                    <div class="stepper-step ${statusClass}">
+                        <div class="stepper-circle">${stage.status === 'completed' ? '<i class="fas fa-check"></i>' : stage.number}</div>
+                        <div class="stepper-label">${stage.name}</div>
+                    </div>
+                `;
+            });
+
+            $('#onboardingStepper').html(html);
+        }
+
         function loadDropdowns() {
-            // Load countries
+            // Load countries for Place of Birth
             fetch('assets/data/countries.json')
                 .then(res => res.json())
                 .then(countries => {
-                    const $select = $('#countryOfResidence');
                     countries.forEach(country => {
-                        const name = typeof country === 'string' ? country : country.name;
-                        $select.append(`<option value="${name}">${name}</option>`);
+                        $('#placeOfBirth').append(`<option value="${country.name}">${country.name}</option>`);
                     });
                 })
-                .catch(err => {
-                    console.warn('Could not load countries:', err);
-                });
-
-            // Load nationalities
-            fetch('assets/data/nationalities.json')
-                .then(res => res.json())
-                .then(nationalities => {
-                    const $select = $('#nationality');
-                    nationalities.forEach(nationality => {
-                        const name = typeof nationality === 'string' ? nationality : nationality.name;
-                        $select.append(`<option value="${name}">${name}</option>`);
-                    });
-                })
-                .catch(err => {
-                    console.warn('Could not load nationalities:', err);
-                });
+                .catch(err => console.error('Failed to load countries:', err));
         }
 
         function loadSavedData(sessionToken) {
-            // In real implementation, fetch from backend API
-            // For now, check sessionStorage
-            const sessionData = sessionStorage.getItem('onboarding_session');
-            if (sessionData) {
-                const data = JSON.parse(sessionData);
-                const personalInfo = data.userData?.personalInfo || {};
+            // Load data from localStorage (default form data)
+            try {
+                const sessionData = localStorage.getItem('onboardingSession');
+                if (sessionData) {
+                    const session = JSON.parse(sessionData);
+                    const personalInfo = session.userData?.personalInfo || {};
 
-                // Pre-fill form
-                $('#firstName').val(personalInfo.firstName || '');
-                $('#middleName').val(personalInfo.middleName || '');
-                $('#lastName').val(personalInfo.lastName || '');
-                $('#gender').val(personalInfo.gender || '');
-                $('#dateOfBirth').val(personalInfo.dateOfBirth || '');
-                $('#countryOfResidence').val(personalInfo.countryOfResidence || '');
-                $('#nationality').val(personalInfo.nationality || '');
-                $('#placeOfBirth').val(personalInfo.placeOfBirth || '');
+                    console.log('📋 Loading saved personal info from default form:', personalInfo);
 
-                console.log('📥 Pre-filled with saved data');
+                    // Pre-fill basic fields from default form (if they exist)
+                    // Note: This H5 page has different/additional fields, so we don't pre-fill everything
+                }
+            } catch (error) {
+                console.error('Failed to load saved data:', error);
             }
         }
 
-        function savePersonalInfo(sessionToken, personalInfo) {
-            // Update sessionStorage
-            const sessionData = JSON.parse(sessionStorage.getItem('onboarding_session') || '{}');
-            if (!sessionData.userData) {
-                sessionData.userData = {};
-            }
-            sessionData.userData.personalInfo = personalInfo;
-            sessionData.userData.personalInfoCompleted = true;
-            sessionStorage.setItem('onboarding_session', JSON.stringify(sessionData));
-
-            console.log('💾 Saved personal info to session');
-        }
-
-        function showSuccessMessage(message = 'Returning to onboarding flow...') {
+        function submitForm() {
             const $form = $('#externalPersonalInfoForm');
-            $form.html(`
-                <div style="text-align: center; padding: 40px 20px;">
-                    <div style="width: 80px; height: 80px; background: #10B981; border-radius: 50%;
-                                display: flex; align-items: center; justify-content: center;
-                                margin: 0 auto 20px; font-size: 40px; color: white;">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <h3 style="color: #2C3E50; margin-bottom: 12px;">Information Saved!</h3>
-                    <p style="color: #718096;">${message}</p>
-                </div>
-            `);
+
+            // Validate form
+            if (!$form[0].checkValidity()) {
+                $form[0].reportValidity();
+                return;
+            }
+
+            // Collect all form data
+            const formData = {
+                // Section 1: Additional Personal Details
+                placeOfBirth: $('#placeOfBirth').val(),
+                identityType: $('#identityType').val(),
+                idNumber: $('#idNumber').val(),
+                taxNumber: $('#taxNumber').val(),
+                housePhone: $('#housePhone').val(),
+                faxNumber: $('#faxNumber').val(),
+                marriageStatus: $('#marriageStatus').val(),
+                spouseName: $('#spouseName').val(),
+                motherName: $('#motherName').val(),
+
+                // Section 2: Residential Address
+                residenceAddress: $('#residenceAddress').val(),
+                postcode: $('#postcode').val(),
+
+                // Section 3: Others Information
+                homeOwnership: $('#homeOwnership').val(),
+                tradingPurpose: $('#tradingPurpose').val(),
+                tradingExperience: $('input[name="tradingExperience"]:checked').val(),
+                tradingExperienceText: $('#tradingExperienceText').val(),
+                bankruptcyExchange: $('input[name="bankruptcyExchange"]:checked').val(),
+                bankruptcyCourt: $('input[name="bankruptcyCourt"]:checked').val(),
+
+                // Section 4: Emergency Contact
+                emergencyName: $('#emergencyName').val(),
+                emergencyPhone: $('#emergencyPhone').val(),
+                emergencyAddress: $('#emergencyAddress').val(),
+                emergencyPostcode: $('#emergencyPostcode').val(),
+                emergencyRelationship: $('#emergencyRelationship').val(),
+                emergencyRelationshipOther: $('#emergencyRelationshipOther').val(),
+
+                // Section 5: Occupation Information
+                occupation: $('#occupation').val(),
+                occupationOther: $('#occupationOther').val(),
+                companyName: $('#companyName').val(),
+                industry: $('#industry').val(),
+                role: $('#role').val(),
+                currentCompanyYears: $('#currentCompanyYears').val(),
+                previousCompanyYears: $('#previousCompanyYears').val(),
+                companyAddress: $('#companyAddress').val(),
+                companyPostcode: $('#companyPostcode').val(),
+                companyPhone: $('#companyPhone').val(),
+                companyFax: $('#companyFax').val(),
+
+                // Section 6: Wealth Information
+                annualIncome: $('#annualIncome').val(),
+                investedLocation: $('#investedLocation').val(),
+                propertyValue: $('#propertyValue').val(),
+                timeDeposit: $('#timeDeposit').val(),
+                amount: $('#amount').val()
+            };
+
+            console.log('✅ Personal info collected from H5 page:', formData);
+
+            // Save to localStorage (merge with existing data)
+            try {
+                const sessionData = localStorage.getItem('onboardingSession');
+                if (sessionData) {
+                    const session = JSON.parse(sessionData);
+
+                    // Merge with existing personal info
+                    session.userData.personalInfo = {
+                        ...session.userData.personalInfo,
+                        ...formData,
+                        h5VerificationCompleted: true
+                    };
+
+                    localStorage.setItem('onboardingSession', JSON.stringify(session));
+                    console.log('💾 H5 data merged with session data');
+                }
+            } catch (error) {
+                console.error('Failed to save session data:', error);
+            }
+
+            // Show success message
+            showToast('Personal information saved successfully!', 'success');
+
+            // Return to main flow after 1 second
+            setTimeout(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const sessionToken = urlParams.get('session');
+                const returnUrl = urlParams.get('returnUrl') || '/onboarding.html';
+
+                window.location.href = returnUrl + '?session=' + sessionToken + '&completed=personalInfo';
+            }, 1000);
         }
     </script>
 </body>

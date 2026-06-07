@@ -3015,7 +3015,25 @@ const defaultPersonalInfoFields = [
 function loadPersonalInfoFields() {
     // Load from localStorage if exists, otherwise use defaults
     const savedConfig = onboardingService.getSection(currentBrand, currentLicense, 'personalInfoFields');
-    const fields = savedConfig?.fields || defaultPersonalInfoFields;
+
+    console.log('🔍 Loading Personal Info Fields...');
+    console.log('   Brand:', currentBrand, 'License:', currentLicense);
+    console.log('   Saved config:', savedConfig);
+    console.log('   Default fields count:', defaultPersonalInfoFields.length);
+
+    // Use saved fields only if they exist and are not empty, otherwise use defaults
+    let fields = defaultPersonalInfoFields;
+    if (savedConfig?.fields && Array.isArray(savedConfig.fields) && savedConfig.fields.length > 0) {
+        fields = savedConfig.fields;
+        console.log('   ✅ Using saved fields');
+    } else {
+        console.log('   ✅ Using default fields (saved was empty or missing)');
+    }
+
+    console.log('   Using fields count:', fields.length);
+
+    // ✅ FIX: Update the state with loaded fields
+    personalInfoFieldsState = JSON.parse(JSON.stringify(fields)); // Deep copy
 
     // Render fields table
     let html = '';
@@ -3045,6 +3063,8 @@ function loadPersonalInfoFields() {
     });
 
     $('#personalInfoFieldsTable').html(html);
+
+    console.log('✅ Personal Info Fields loaded into state:', personalInfoFieldsState);
 
     // Load H5 Verification settings for Personal Info
     if (savedConfig?.h5Verification) {
@@ -3101,6 +3121,8 @@ function savePersonalInfoFields() {
     };
 
     console.log('💾 Saving personal info fields configuration:', configToSave);
+    console.log('📊 Fields count:', personalInfoFieldsState.length);
+    console.log('📊 Enabled fields:', personalInfoFieldsState.filter(f => f.enabled).length);
 
     // Save to localStorage via OnboardingService
     onboardingService.saveSection(currentBrand, currentLicense, 'personalInfoFields', configToSave);
