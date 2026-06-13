@@ -749,29 +749,12 @@
                     <p class="section-subtitle" style="color: #718096 !important; font-size: 13px;">KYC system configuration and flow management</p>
                 </div>
 
-                <!-- Sub-tabs for System Configuration and Config Overview -->
-                <ul class="nav nav-tabs" id="goldenFlowSubTabs" role="tablist" style="margin-bottom: 24px;">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="systemConfig-tab" data-bs-toggle="tab" data-bs-target="#systemConfig" type="button" role="tab" style="font-size: 14px;">
-                            <i class="fas fa-cog"></i> System Configuration
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="configOverview-tab" data-bs-toggle="tab" data-bs-target="#configOverview" type="button" role="tab" style="font-size: 14px;">
-                            <i class="fas fa-th-list"></i> Config Overview
-                        </button>
-                    </li>
-                </ul>
-
-                <div class="tab-content" id="goldenFlowSubTabsContent">
-                    <!-- System Configuration Sub-tab -->
-                    <div class="tab-pane fade show active" id="systemConfig" role="tabpanel">
-                        <!-- KYC System Section -->
+                <!-- KYC System Section -->
                         <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                                 <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">
                                     <i class="fas fa-shield-alt" style="color: #08B2A4; margin-right: 8px;"></i>
-                                    KYC System
+                                    System Configuration
                                 </h3>
                                 <button type="button" class="btn btn-primary btn-sm" onclick="openAddKycSystemModal()">
                                     <i class="fas fa-plus"></i> Add
@@ -795,128 +778,14 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Config Overview Sub-tab -->
-                    <div class="tab-pane fade" id="configOverview" role="tabpanel">
-                        <div style="background: #FFFFFF; padding: 20px; border-radius: 8px; border: 1px solid #E1EDF2; margin-bottom: 20px;">
-                            <div style="margin-bottom: 16px;">
-                                <h6 style="font-size: 15px; font-weight: 600; color: #2C3E50; margin-bottom: 8px;">
-                                    <i class="fas fa-info-circle" style="color: #08B2A4; margin-right: 6px;"></i>
-                                    KYC Configuration Overview
-                                </h6>
-                                <p style="font-size: 13px; color: #718096; margin: 0;">
-                                    View all configured KYC levels with their associated account features and limits.
-                                </p>
-                            </div>
-
-                            <!-- Statistics Cards -->
-                            <div id="configOverviewStats" style="display: none; margin-bottom: 24px; margin-top: 20px;">
-                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                                    <!-- Total KYC Systems Card -->
-                                    <div style="background: #FFFFFF; border: 1px solid #E8EAED; border-radius: 12px; padding: 24px; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: all 0.3s;">
-                                        <div style="position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, #F0F4FF 0%, #E8EEFF 100%); border-radius: 0 12px 0 100%;"></div>
-                                        <div style="position: relative; z-index: 1;">
-                                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                                                <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px;">Total Systems</div>
-                                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-layer-group" style="font-size: 18px; color: white;"></i>
-                                                </div>
-                                            </div>
-                                            <div id="statsSystemCount" style="font-size: 36px; font-weight: 700; color: #1F2937; line-height: 1; margin-top: 8px;">0</div>
-                                            <div style="font-size: 12px; color: #9CA3AF; margin-top: 8px;">KYC Systems Configured</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Main Flow Levels Card -->
-                                    <div style="background: #FFFFFF; border: 1px solid #E8EAED; border-radius: 12px; padding: 24px; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: all 0.3s;">
-                                        <div style="position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, #FFF0F6 0%, #FFE8F1 100%); border-radius: 0 12px 0 100%;"></div>
-                                        <div style="position: relative; z-index: 1;">
-                                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                                                <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px;">Main Flow</div>
-                                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #EC4899 0%, #F43F5E 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-stream" style="font-size: 18px; color: white;"></i>
-                                                </div>
-                                            </div>
-                                            <div id="statsMainFlowCount" style="font-size: 36px; font-weight: 700; color: #1F2937; line-height: 1; margin-top: 8px;">0</div>
-                                            <div style="font-size: 12px; color: #9CA3AF; margin-top: 8px;">Levels Configured</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Independent Flow Levels Card -->
-                                    <div style="background: #FFFFFF; border: 1px solid #E8EAED; border-radius: 12px; padding: 24px; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: all 0.3s;">
-                                        <div style="position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, #EFF6FF 0%, #E0F2FE 100%); border-radius: 0 12px 0 100%;"></div>
-                                        <div style="position: relative; z-index: 1;">
-                                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                                                <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px;">Independent Flow</div>
-                                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #06B6D4 0%, #0EA5E9 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-shield-alt" style="font-size: 18px; color: white;"></i>
-                                                </div>
-                                            </div>
-                                            <div id="statsIndependentFlowCount" style="font-size: 36px; font-weight: 700; color: #1F2937; line-height: 1; margin-top: 8px;">0</div>
-                                            <div style="font-size: 12px; color: #9CA3AF; margin-top: 8px;">Levels Configured</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Total Countries Card -->
-                                    <div style="background: #FFFFFF; border: 1px solid #E8EAED; border-radius: 12px; padding: 24px; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: all 0.3s;">
-                                        <div style="position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border-radius: 0 12px 0 100%;"></div>
-                                        <div style="position: relative; z-index: 1;">
-                                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                                                <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px;">Countries</div>
-                                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10B981 0%, #14B8A6 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-globe-americas" style="font-size: 18px; color: white;"></i>
-                                                </div>
-                                            </div>
-                                            <div id="statsCountryCount" style="font-size: 36px; font-weight: 700; color: #1F2937; line-height: 1; margin-top: 8px;">0</div>
-                                            <div style="font-size: 12px; color: #9CA3AF; margin-top: 8px;">Countries Covered</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Overview Table -->
-                            <div class="table-responsive" style="margin-top: 20px; overflow-x: auto;">
-                                <table class="table" style="font-size: 13px; border-collapse: collapse; min-width: 1200px;">
-                                    <thead>
-                                        <!-- Group headers row -->
-                                        <tr>
-                                            <th rowspan="2" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; font-weight: 600; color: #2C3E50; vertical-align: middle; width: 150px;"></th>
-                                            <th colspan="6" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
-                                                KYC Main Flow
-                                            </th>
-                                            <th colspan="1" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">
-                                                Independent Verification Flow
-                                            </th>
-                                        </tr>
-                                        <!-- Level headers row -->
-                                        <tr>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL1</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL2</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL3</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL12</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL13</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL14</th>
-                                            <th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL11</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="configOverviewTableBody">
-                                        <!-- Rows will be populated by JavaScript -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Empty State -->
-                            <div id="configOverviewEmpty" style="display: none; padding: 60px 20px; text-align: center;">
-                                <i class="fas fa-info-circle" style="font-size: 48px; color: #CBD5E0; margin-bottom: 16px;"></i>
-                                <p style="color: #718096; font-size: 14px; margin: 0;">
-                                    No levels configured yet. Go to System Configuration to add KYC Main Flow or Independent Verification Flow levels.
-                                </p>
+                            <!-- Save Configuration Button -->
+                            <div style="margin-top: 20px; text-align: right;">
+                                <button type="button" class="btn btn-primary" onclick="saveKycSystemConfiguration()">
+                                    <i class="fas fa-save"></i> Save Configuration
+                                </button>
                             </div>
                         </div>
-                    </div>
-                </div>
             </div>
 
 
@@ -3815,8 +3684,8 @@ function renderKycSystemTable() {
                 <td>${system.name}</td>
                 <td><span style="color: #718096;">${countriesDisplay}</span></td>
                 <td>
-                    <button class="btn btn-sm" style="color: #3B82F6; padding: 4px 8px;" onclick="viewKycSystemConfigReadOnly(${system.id})" title="View Configuration">
-                        <i class="fas fa-eye"></i>
+                    <button class="btn btn-sm" style="color: #3B82F6; padding: 4px 8px;" onclick="viewKycSystemConfigOverviewOnboarding(${system.id})" title="Config Overview">
+                        <i class="fas fa-cog"></i>
                     </button>
                     <button class="btn btn-sm" style="color: #F6465D; padding: 4px 8px;" onclick="deleteKycSystem(${system.id})" title="Delete">
                         <i class="fas fa-trash"></i>
@@ -4082,10 +3951,12 @@ function openAddKycSystemModal() {
         select.append('<option value="" disabled>No available systems (create one in System Configuration first)</option>');
     } else {
         selectableSystems.forEach(system => {
-            const countriesText = system.countries.includes('All') ? 'All' :
-                system.countries.length > 2 ? `${system.countries.slice(0, 2).join(', ')} +${system.countries.length - 2}` :
-                system.countries.join(', ');
-            select.append(`<option value="${system.id}">[${system.kycConfigCode}] ${system.name} - ${countriesText}</option>`);
+            // Defensive check for countries property
+            const countries = system.countries || [];
+            const countriesText = countries.includes('All') ? 'All' :
+                countries.length > 2 ? `${countries.slice(0, 2).join(', ')} +${countries.length - 2}` :
+                countries.length > 0 ? countries.join(', ') : 'No countries';
+            select.append(`<option value="${system.id}">[${system.kycConfigCode || system.id}] ${system.name} - ${countriesText}</option>`);
         });
     }
 
@@ -4124,15 +3995,18 @@ function onKycSystemSelected() {
     const countriesContainer = $('#selected_kyc_countries');
     countriesContainer.empty();
 
-    if (system.countries.includes('All')) {
+    const countries = system.countries || [];
+    if (countries.includes('All')) {
         countriesContainer.append('<span style="background: #E1EDF2; color: #2C3E50; padding: 4px 10px; border-radius: 12px; font-size: 12px;">All Countries</span>');
-    } else {
-        system.countries.slice(0, 5).forEach(country => {
+    } else if (countries.length > 0) {
+        countries.slice(0, 5).forEach(country => {
             countriesContainer.append(`<span style="background: #E1EDF2; color: #2C3E50; padding: 4px 10px; border-radius: 12px; font-size: 12px;">${country}</span>`);
         });
-        if (system.countries.length > 5) {
-            countriesContainer.append(`<span style="background: #CBD5E0; color: #718096; padding: 4px 10px; border-radius: 12px; font-size: 12px;">+${system.countries.length - 5} more</span>`);
+        if (countries.length > 5) {
+            countriesContainer.append(`<span style="background: #CBD5E0; color: #718096; padding: 4px 10px; border-radius: 12px; font-size: 12px;">+${countries.length - 5} more</span>`);
         }
+    } else {
+        countriesContainer.append('<span style="background: #E1EDF2; color: #718096; padding: 4px 10px; border-radius: 12px; font-size: 12px;">No countries configured</span>');
     }
 
     $('#kyc_system_details').show();
@@ -6619,7 +6493,221 @@ function openOnboardingPreview() {
     // Open in new tab
     window.open(previewUrl, '_blank');
 }
+
+// Config Overview Functions for Onboarding Flow
+function viewKycSystemConfigOverviewOnboarding(systemId) {
+    const system = kycSystemsData.find(s => s.id === systemId);
+    if (!system) {
+        console.error('[ERROR] System not found:', systemId);
+        return;
+    }
+
+    // Populate system info
+    $('#overviewKycId').text(system.id);
+    $('#overviewKycName').text(system.name);
+
+    // Display countries
+    const countriesDisplay = system.countries.includes('All')
+        ? '<span class="badge bg-info">All</span>'
+        : system.countries.map(c => `<span class="badge bg-secondary" style="margin-right: 4px;">${c}</span>`).join('');
+    $('#overviewKycCountries').html(countriesDisplay);
+
+    // Get configuration and render table
+    const config = system.config || { mainFlowLevels: [], independentFlowLevels: [] };
+    renderConfigOverviewTableOnboarding(config);
+
+    // Open modal
+    const modal = new bootstrap.Modal(document.getElementById('configOverviewModal'));
+    modal.show();
+}
+
+function renderConfigOverviewTableOnboarding(config) {
+    const mainFlowLevels = config.mainFlowLevels || [];
+    const independentFlowLevels = config.independentFlowLevels || [];
+
+    // KYC Level name to level number mapping
+    const kycLevelMapping = {
+        'Personal Details Verification': 1,
+        'Identity Verification': 2,
+        'Residency Address Verification': 3,
+        'Bank Transfer Verification': 11,
+        'Face Verification': 12,
+        'Video Verification': 13,
+        'Questionnaire Verification': 14
+    };
+
+    // Function to get level number from KYC Level name
+    const getLevelNumber = (kycLevel) => {
+        return kycLevelMapping[kycLevel] || '?';
+    };
+
+    // Build table headers dynamically
+    const $thead = $('#overviewTableHeader');
+    $thead.empty();
+
+    // First row: Group headers
+    let groupHeaderRow = '<tr>';
+    groupHeaderRow += '<th rowspan="2" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; font-weight: 600; color: #2C3E50; vertical-align: middle; width: 150px;"></th>';
+
+    if (mainFlowLevels.length > 0) {
+        groupHeaderRow += '<th colspan="' + mainFlowLevels.length + '" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">KYC Main Flow</th>';
+    }
+
+    if (independentFlowLevels.length > 0) {
+        groupHeaderRow += '<th colspan="' + independentFlowLevels.length + '" style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 12px;">Independent Verification Flow</th>';
+    }
+
+    groupHeaderRow += '</tr>';
+    $thead.append(groupHeaderRow);
+
+    // Second row: Level headers (using actual level numbers from kycLevel field)
+    let levelHeaderRow = '<tr>';
+
+    mainFlowLevels.forEach((level) => {
+        const levelNum = getLevelNumber(level.kycLevel);
+        levelHeaderRow += '<th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL' + levelNum + '</th>';
+    });
+
+    independentFlowLevels.forEach((level) => {
+        const levelNum = getLevelNumber(level.kycLevel);
+        levelHeaderRow += '<th style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; text-align: center; font-weight: 600; color: #2C3E50; font-size: 11px; min-width: 120px;">LEVEL' + levelNum + '</th>';
+    });
+
+    levelHeaderRow += '</tr>';
+    $thead.append(levelHeaderRow);
+
+    // Build table body
+    const $tbody = $('#overviewTableBody');
+    $tbody.empty();
+
+    // Check if there are any levels configured
+    if (mainFlowLevels.length === 0 && independentFlowLevels.length === 0) {
+        $tbody.append('<tr><td colspan="100" style="text-align: center; padding: 60px 20px; color: #718096;">No levels configured yet. Configure KYC Main Flow or Independent Verification Flow levels first.</td></tr>');
+        return;
+    }
+
+    // Row data to display
+    const rowLabels = [
+        { key: 'kycLevel', label: 'KYC Level' },
+        { key: 'levelDescription', label: 'Level Description' },
+        { key: 'levelSubdescription', label: 'Level Subdescription' },
+        { key: 'tradingAccountFeatures', label: 'Trading Account Features' },
+        { key: 'walletAccountFeatures', label: 'Wallet Account Features' }
+    ];
+
+    rowLabels.forEach(rowDef => {
+        let row = '<tr>';
+        row += '<td style="border: 1px solid #E1EDF2; padding: 12px; background: #F5F7FA; font-weight: 600; color: #2C3E50;">' + rowDef.label + '</td>';
+
+        // Main flow columns
+        mainFlowLevels.forEach(level => {
+            const value = level[rowDef.key];
+            let cellContent = '-';
+
+            if (Array.isArray(value) && value.length > 0) {
+                cellContent = value.join(', ');
+            } else if (value) {
+                cellContent = value;
+            }
+
+            row += '<td style="border: 1px solid #E1EDF2; padding: 12px; text-align: center; font-size: 12px; color: #2C3E50;">' + cellContent + '</td>';
+        });
+
+        // Independent flow columns
+        independentFlowLevels.forEach(level => {
+            const value = level[rowDef.key];
+            let cellContent = '-';
+
+            if (Array.isArray(value) && value.length > 0) {
+                cellContent = value.join(', ');
+            } else if (value) {
+                cellContent = value;
+            }
+
+            row += '<td style="border: 1px solid #E1EDF2; padding: 12px; text-align: center; font-size: 12px; color: #2C3E50;">' + cellContent + '</td>';
+        });
+
+        row += '</tr>';
+        $tbody.append(row);
+    });
+}
+
+// Save KYC System Configuration (on the main page)
+function saveKycSystemConfiguration() {
+    // Save the current KYC systems data to localStorage via OnboardingService
+    if (!onboardingService) {
+        if (window.showToast) {
+            window.showToast('Onboarding service not available', 'error');
+        }
+        return;
+    }
+
+    try {
+        onboardingService.saveSection(currentBrand, currentLicense, 'goldenFlowConfig', {
+            kycSystems: kycSystemsData
+        });
+
+        // Show success message
+        if (window.showToast) {
+            window.showToast('KYC System configuration saved successfully!', 'success');
+        } else {
+            alert('KYC System configuration saved successfully!');
+        }
+
+        console.log('[KYC CONFIG] Configuration saved:', kycSystemsData);
+    } catch (error) {
+        console.error('[KYC CONFIG] Error saving configuration:', error);
+        if (window.showToast) {
+            window.showToast('Error saving configuration: ' + error.message, 'error');
+        } else {
+            alert('Error saving configuration: ' + error.message);
+        }
+    }
+}
 </script>
+
+<!-- Config Overview Modal -->
+<div class="modal fade" id="configOverviewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Config Overview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Display KYC System Info -->
+                <div style="margin-bottom: 20px; padding: 15px; background-color: #F8FAFB; border-radius: 8px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div>
+                            <strong style="color: #6B7280; font-size: 13px;">KYC ID:</strong>
+                            <span id="overviewKycId" style="color: #2C3E50; font-size: 14px; margin-left: 8px;"></span>
+                        </div>
+                        <div>
+                            <strong style="color: #6B7280; font-size: 13px;">KYC System Name:</strong>
+                            <span id="overviewKycName" style="color: #2C3E50; font-size: 14px; margin-left: 8px;"></span>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <strong style="color: #6B7280; font-size: 13px;">Countries:</strong>
+                            <div id="overviewKycCountries" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overview Table with Dynamic Columns -->
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="font-size: 13px; border-collapse: collapse;">
+                        <thead id="overviewTableHeader">
+                            <!-- Will be populated dynamically by JavaScript -->
+                        </thead>
+                        <tbody id="overviewTableBody">
+                            <!-- Will be populated dynamically by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
 /* Custom Radio Buttons - More Rounded Style */
