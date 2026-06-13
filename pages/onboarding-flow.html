@@ -4036,27 +4036,40 @@ function saveKycSystem() {
     }
 
     // Add to onboarding flow (use reference to the system from System Configuration)
+    // Add defensive checks for all fields
     kycSystemsData.push({
-        id: selectedSystem.id,
-        kycConfigCode: selectedSystem.kycConfigCode,
-        type: selectedSystem.type,
-        name: selectedSystem.name,
-        countries: selectedSystem.countries,
+        id: selectedSystem.id || 0,
+        kycConfigCode: selectedSystem.kycConfigCode || selectedSystem.id || '',
+        type: selectedSystem.type || 'Custom',
+        name: selectedSystem.name || 'Unnamed System',
+        countries: Array.isArray(selectedSystem.countries) ? selectedSystem.countries : [],
         config: selectedSystem.config || { mainFlowLevels: [], independentFlowLevels: [] }
     });
 
     renderKycSystemTable();
 
     // Save to localStorage via OnboardingService
-    onboardingService.saveSection(currentBrand, currentLicense, 'goldenFlowConfig', {
-        kycSystems: kycSystemsData
-    });
+    try {
+        if (onboardingService) {
+            onboardingService.saveSection(currentBrand, currentLicense, 'goldenFlowConfig', {
+                kycSystems: kycSystemsData
+            });
+            console.log('[KYC SYSTEM] Saved successfully to localStorage');
+        } else {
+            console.warn('[KYC SYSTEM] OnboardingService not available, data not persisted');
+        }
+    } catch (error) {
+        console.error('[KYC SYSTEM] Error saving to localStorage:', error);
+        // Don't block the UI, just log the error
+    }
 
     // Hide modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('addKycSystemModal'));
-    modal.hide();
+    if (modal) {
+        modal.hide();
+    }
 
-    showToast(`KYC System "${selectedSystem.name}" added successfully!`, 'success');
+    showToast(`KYC System "${selectedSystem.name || 'System'}" added successfully!`, 'success');
 }
 
 function editKycSystem(id) {
