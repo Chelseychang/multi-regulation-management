@@ -6674,7 +6674,7 @@ function saveKycSystemConfiguration() {
                 <h5 class="modal-title">Config Overview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                 <!-- Display KYC System Info -->
                 <div style="margin-bottom: 20px; padding: 15px; background-color: #F8FAFB; border-radius: 8px;">
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
@@ -6694,8 +6694,8 @@ function saveKycSystemConfiguration() {
                 </div>
 
                 <!-- Overview Table with Dynamic Columns -->
-                <div class="table-responsive">
-                    <table class="table table-bordered" style="font-size: 13px; border-collapse: collapse;">
+                <div class="table-responsive" style="max-height: 500px; overflow-x: auto; overflow-y: auto;">
+                    <table class="table table-bordered" style="font-size: 13px; border-collapse: collapse; min-width: 100%;">
                         <thead id="overviewTableHeader">
                             <!-- Will be populated dynamically by JavaScript -->
                         </thead>
