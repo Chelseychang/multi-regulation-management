@@ -287,7 +287,7 @@ class OnboardingFlowClient {
             registrationFields: {},
             personalInfoFields: [],
             otpConfig: { email: { enabled: true }, phone: { enabled: false, countries: [] } },
-            kycConfig: { provider: 'Sumsub', poiDocuments: [], poaDocuments: [] },
+            kycConfig: { provider: 'Sumsub', poiDocuments: [], selfieWithIdEnabled: false, poaDocuments: [], poaRequired: true },
             goldenFlowConfig: { selectedSystem: 1, mainFlowLevels: [], independentFlowLevels: [] },
             tradingAccountConfig: { primary: { enabled: true, defaultType: 'MT5' }, secondary: { enabled: false, supportedTypes: [] } },
             agreementConfig: { items: [], selectionMethod: 'all', generatePdf: false },

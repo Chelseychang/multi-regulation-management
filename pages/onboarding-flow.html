@@ -888,15 +888,53 @@
                             </div>
                             <div>
                                 <h4 style="margin: 0; font-size: 15px; font-weight: 600; color: #2C3E50;">Proof of Identity (POI)</h4>
-                                <p style="margin: 4px 0 0 0; font-size: 12px; color: #718096;">Select accepted document types for identity verification</p>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: #718096;">Configure identity verification document requirements</p>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
-                                Accepted Documents <span style="color: #F6465D;">*</span>
-                            </label>
-                            <div id="poi_documents_selector"></div>
+                        <!-- Part 1: Normal POI -->
+                        <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #E5E7EB;">
+                            <div style="margin-bottom: 12px;">
+                                <h5 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #2C3E50;">
+                                    <i class="fas fa-id-badge" style="color: #3B82F6; margin-right: 6px;"></i>
+                                    1. Normal POI
+                                </h5>
+                                <p style="margin: 0; font-size: 12px; color: #718096;">
+                                    Standard identity documents for verification
+                                </p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" style="font-size: 13px; font-weight: 500; color: #2C3E50; margin-bottom: 8px;">
+                                    Accepted Documents <span style="color: #F6465D;">*</span>
+                                </label>
+                                <div id="poi_documents_selector"></div>
+                            </div>
+                        </div>
+
+                        <!-- Part 2: Selfie with ID -->
+                        <div>
+                            <div style="margin-bottom: 12px;">
+                                <h5 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #2C3E50;">
+                                    <i class="fas fa-camera" style="color: #3B82F6; margin-right: 6px;"></i>
+                                    2. Selfie with ID
+                                </h5>
+                                <p style="margin: 0; font-size: 12px; color: #718096;">
+                                    Require user to submit a selfie holding their ID document
+                                </p>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="selfie_with_id_enabled" style="width: 44px; height: 24px; cursor: pointer;">
+                                    <label class="form-check-label" for="selfie_with_id_enabled" style="font-size: 14px; color: #2C3E50; margin-left: 8px; cursor: pointer; font-weight: 600;">
+                                        Enable Selfie with ID
+                                    </label>
+                                </div>
+                                <small class="text-muted" style="font-size: 11px; display: block; margin-top: 4px; margin-left: 52px;">
+                                    When enabled, users will be required to upload a selfie holding their identity document
+                                </small>
+                            </div>
                         </div>
                     </div>
 
@@ -3381,6 +3419,7 @@ const poaDocuments = [
 const defaultKycConfig = {
     provider: 'Sumsub',  // Options: Sumsub, Advance AI, Green ID
     poiDocuments: ['Passport', 'National ID Card', 'Driving License'],
+    selfieWithIdEnabled: false,  // Whether Selfie with ID is required
     poaRequired: true,  // Whether POA is required
     poaDocuments: ['Bank Statement', 'Utility Bill', 'Other Official Government-Issued Letters'],
     h5Verification: {
@@ -3486,6 +3525,10 @@ function loadKycConfig() {
         poiDocumentsManager.setCountries(poiDocuments);
     }
 
+    // Load Selfie with ID setting (backward compatibility)
+    const selfieWithIdEnabled = config.selfieWithIdEnabled !== undefined ? config.selfieWithIdEnabled : false;
+    $('#selfie_with_id_enabled').prop('checked', selfieWithIdEnabled);
+
     // Load POA Required setting (backward compatibility)
     const poaRequired = config.poaRequired !== undefined ? config.poaRequired : true;
     $('#poa_required').prop('checked', poaRequired);
@@ -3553,6 +3596,9 @@ function saveKycConfig() {
     // Collect POI document types from TagInputManager
     const poiDocuments = poiDocumentsManager ? poiDocumentsManager.getSelectedItems() : [];
 
+    // Get Selfie with ID setting
+    const selfieWithIdEnabled = $('#selfie_with_id_enabled').is(':checked');
+
     // Get POA Required setting
     const poaRequired = $('#poa_required').is(':checked');
 
@@ -3591,6 +3637,7 @@ function saveKycConfig() {
 
     // Build KYC config (acceptedDocTypes = poiDocuments + poaDocuments)
     kycConfigState.poiDocuments = poiDocuments;
+    kycConfigState.selfieWithIdEnabled = selfieWithIdEnabled;
     kycConfigState.poaRequired = poaRequired;
     kycConfigState.poaDocuments = poaDocuments;
     kycConfigState.h5Verification = {

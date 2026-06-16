@@ -1,0 +1,258 @@
+{
+  "VAU-VMF": {
+    "tradingAccountConfig": {
+      "accountTypes": [
+        {
+          "id": "standard",
+          "name": "Standard Account",
+          "description": "Perfect for beginners with flexible leverage",
+          "features": [
+            "Leverage up to 1:500",
+            "Spreads from 1.4 pips",
+            "No commission",
+            "Minimum deposit $50"
+          ],
+          "enabled": true
+        },
+        {
+          "id": "raw",
+          "name": "Raw ECN Account",
+          "description": "Institutional-grade spreads with commission",
+          "features": [
+            "Spreads from 0.0 pips",
+            "Commission $3 per lot",
+            "Leverage up to 1:500",
+            "Minimum deposit $500"
+          ],
+          "enabled": true
+        },
+        {
+          "id": "pro",
+          "name": "Pro ECN Account",
+          "description": "For professional traders",
+          "features": [
+            "Spreads from 0.0 pips",
+            "Commission $2 per lot",
+            "Leverage up to 1:200",
+            "Minimum deposit $20,000"
+          ],
+          "enabled": true
+        }
+      ]
+    },
+    "agreementConfig": {
+      "enabled": true,
+      "items": [
+        {
+          "id": 1,
+          "key": "terms_conditions",
+          "name": "Terms and Conditions",
+          "documentUrl": "https://www.vantagemarkets.co.id/terms-conditions",
+          "required": true
+        },
+        {
+          "id": 2,
+          "key": "privacy_policy",
+          "name": "Privacy Policy",
+          "documentUrl": "https://www.vantagemarkets.co.id/privacy-policy",
+          "required": true
+        },
+        {
+          "id": 3,
+          "key": "risk_disclosure",
+          "name": "Risk Disclosure",
+          "documentUrl": "https://www.vantagemarkets.co.id/risk-disclosure",
+          "required": true
+        }
+      ],
+      "h5Verification": {
+        "enabled": true,
+        "route": "agreement-individual.html"
+      }
+    },
+    "questionnaireConfig": {
+      "enabled": true,
+      "questions": [
+        {
+          "id": 1,
+          "question": "What is your trading experience level?",
+          "key": "trading_experience",
+          "type": "single",
+          "required": true,
+          "options": [
+            "No experience",
+            "Less than 1 year",
+            "1-3 years",
+            "3-5 years",
+            "More than 5 years"
+          ]
+        },
+        {
+          "id": 2,
+          "question": "What is your annual income?",
+          "key": "annual_income",
+          "type": "single",
+          "required": true,
+          "options": [
+            "Less than $25,000",
+            "$25,000 - $50,000",
+            "$50,000 - $100,000",
+            "$100,000 - $250,000",
+            "More than $250,000"
+          ]
+        },
+        {
+          "id": 3,
+          "question": "What percentage of your income do you plan to invest?",
+          "key": "investment_percentage",
+          "type": "single",
+          "required": true,
+          "options": [
+            "Less than 10%",
+            "10% - 25%",
+            "25% - 50%",
+            "More than 50%"
+          ]
+        },
+        {
+          "id": 4,
+          "question": "What is your primary trading goal?",
+          "key": "trading_goal",
+          "type": "multiple",
+          "required": false,
+          "options": [
+            "Capital preservation",
+            "Income generation",
+            "Capital growth",
+            "Speculation",
+            "Hedging"
+          ]
+        }
+      ],
+      "sourceFunds": {
+        "enabled": true,
+        "question": "What is your source of funds?",
+        "options": [
+          "Employment income",
+          "Business income",
+          "Savings",
+          "Inheritance",
+          "Investment income",
+          "Other"
+        ]
+      },
+      "sourceWealth": {
+        "enabled": true,
+        "question": "What is your source of wealth?",
+        "options": [
+          "Employment",
+          "Business ownership",
+          "Investment portfolio",
+          "Real estate",
+          "Inheritance",
+          "Other"
+        ]
+      },
+      "h5Verification": {
+        "enabled": true,
+        "route": "kyc-bank-verification.html"
+      }
+    },
+    "kycConfig": {
+      "provider": "Sumsub",
+      "poiDocuments": [
+        "Passport",
+        "National ID Card",
+        "Driver's License"
+      ],
+      "selfieWithIdEnabled": false,
+      "poaDocuments": [
+        "Bank Statement",
+        "Utility Bill",
+        "Government Letters"
+      ],
+      "poaRequired": true,
+      "h5Verification": {
+        "enabled": false,
+        "route": ""
+      },
+      "apiParameters": {
+        "userId": "",
+        "auditType": "",
+        "requiredKycItems": [],
+        "acceptedDocTypes": [],
+        "poaAddress": "",
+        "isImageRequired": false,
+        "isExpiryRequired": false,
+        "textKeys": {}
+      }
+    },
+    "personalInfoFields": {
+      "fields": [
+        {
+          "key": "firstName",
+          "label": "First Name",
+          "type": "text",
+          "required": true,
+          "enabled": true
+        },
+        {
+          "key": "lastName",
+          "label": "Last Name",
+          "type": "text",
+          "required": true,
+          "enabled": true
+        },
+        {
+          "key": "dateOfBirth",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true,
+          "enabled": true
+        },
+        {
+          "key": "address",
+          "label": "Residential Address",
+          "type": "text",
+          "required": true,
+          "enabled": true
+        },
+        {
+          "key": "city",
+          "label": "City",
+          "type": "text",
+          "required": true,
+          "enabled": true
+        },
+        {
+          "key": "postalCode",
+          "label": "Postal Code",
+          "type": "text",
+          "required": true,
+          "enabled": true
+        },
+        {
+          "key": "country",
+          "label": "Country",
+          "type": "select",
+          "required": true,
+          "enabled": true
+        }
+      ],
+      "h5Verification": {
+        "enabled": false,
+        "route": ""
+      }
+    },
+    "otpConfig": {
+      "email": {
+        "enabled": true,
+        "provider": "SendGrid"
+      },
+      "phone": {
+        "enabled": false,
+        "provider": ""
+      }
+    }
+  }
+}
